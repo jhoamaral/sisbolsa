@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<ui:composition template="/template/principal_template.xhtml">
+	<ui:define name="topbar">
+		<div id="topbar"></div>
+	</ui:define>
+
+	<ui:define name="menu">
+		<h:form>
+			<p:menubar>
+					<c:forEach items="#{principalController.listaMenus}" var="menu">
+						<p:submenu label="#{menu.descricao}" >
+							<c:forEach items="#{menu.menus}" var="submenu">
+								<p:menuitem value="#{submenu.descricao}" oncomplete="location.reload()">
+									<f:setPropertyActionListener 
+											target="#{principalController.menu}"
+											value="#{submenu}" /> 
+								</p:menuitem>	
+							</c:forEach>
+						</p:submenu>
+					</c:forEach>
+					<p:menuitem value="Sair" action="#{principalController.logout()}" />
+			</p:menubar>
+			  
+
+		</h:form>
+	</ui:define>
+		
+		<ui:define name="footer">
+		<h:form>
+			<p:breadCrumb rendered="#{not empty principalController.menu.id}" >  
+				<p:menuitem value=""/> 
+    			<p:menuitem value="#{principalController.menu.menu.descricao}"/>  
+    			<p:menuitem value="#{principalController.menu.descricao}" />  
+			</p:breadCrumb>
+		</h:form>
+		</ui:define>
+
+		<ui:define name="title">
+			<p:outputPanel id="titlepage">
+				<h1>#{principalController.menu.legenda}</h1>
+			</p:outputPanel>
+		</ui:define>	
+	
+		<ui:define name="conteudo">
+			<p:outputPanel id="main">	
+				<p:outputPanel autoUpdate="true">
+					<p:growl id="mensage" showDetail="true" life="5000" />
+				</p:outputPanel>
+				<p:dialog modal="true" widgetVar="statusDialog" header="Status" resizable="false" height="50"  
+       				 draggable="false" closable="false">  
+    					<h:outputLabel value="Aguarde, Processando as informações..." />
+				</p:dialog> 
+				<ui:include src="#{principalController.menu.link}" id="includeDetail"/>
+			</p:outputPanel>
+		</ui:define>
+
+
+</ui:composition>
+
+</html>

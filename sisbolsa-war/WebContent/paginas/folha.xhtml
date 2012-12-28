@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form>
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Folha de Pagamento" >
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Referencia: " />
+					<p:inputMask value="#{folhaController.object.referencia}"  converter="SqlDateTimeConverter" mask="99/99/9999" size="6"/>
+					
+					<h:outputLabel value="Periodo Letivo: " />
+					<p:selectOneMenu 
+							value="#{folhaController.object.periodoletivo}"
+							converter="#{converterController.periodoLetivoConverter}">
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Tipo de Folha: " />
+					<p:selectOneMenu value="#{folhaController.object.tipo}">
+						<f:selectItem itemLabel="Selecione..." itemValue=""/>
+						<f:selectItem itemLabel="Regular" itemValue="REGULAR"/>
+						<f:selectItem itemLabel="Extra" itemValue="EXTRA"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Data do Pagamento: " size="6" />
+					<p:inputMask value="#{folhaController.object.dataDeposito}"  converter="SqlDateTimeConverter" mask="99/99/9999"/>
+					
+					<h:outputLabel value="Aberta: " />
+					<p:selectBooleanCheckbox value="#{folhaController.object.aberto}" />
+				</h:panelGrid>
+			</p:fieldset>
+			<h:panelGrid columns="3" rendered="#{not empty folhaController.object.id}">
+				<p:commandButton value="" styleClass="editButton" actionListener="#{folhaController.salvar}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="deleteButton" actionListener="#{folhaController.excluir}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="cancelButton" actionListener="#{folhaController.novo}" process="campos" update="@form"/>
+			</h:panelGrid>
+			<h:panelGrid columns="1"  rendered="#{empty folhaController.object.id}">
+				<p:commandButton value="" styleClass="saveButton" actionListener="#{folhaController.salvar}" process="campos" update="lista, campos"/>
+			</h:panelGrid>
+			</p:outputPanel>
+
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{folhaController.filtro}" > 
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." /> 
+				</div>
+				<p:dataTable var="obj" id="lista" value="#{folhaController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
+					paginatorPosition="bottom" selection="#{folhaController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Ano" sortBy="#{obj.periodoletivo.ano}">
+						<h:outputText value="#{obj.periodoletivo.ano}" /> 
+                	</p:column>
+                	
+                	<p:column headerText="Semestre" sortBy="#{obj.periodoletivo.semestre}">
+						<h:outputText value="#{obj.periodoletivo.semestre}" /> 
+                	</p:column>
+                	
+					<p:column headerText="Referencia" sortBy="#{obj.referencia}">
+						<h:outputText value="#{obj.referencia}" converter="SqlDateTimeConverter" /> 
+                	</p:column>
+                	
+                	<p:column headerText="Data de pagamento" sortBy="#{obj.dataDeposito}">
+						<h:outputText value="#{obj.dataDeposito}" converter="SqlDateTimeConverter" /> 
+                	</p:column>
+                	
+                	<p:column headerText="Tipo" sortBy="#{obj.tipo}">
+						<h:outputText value="#{obj.tipo}" /> 
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+		</h:form>
+</ui:composition>
+
+
+</html>

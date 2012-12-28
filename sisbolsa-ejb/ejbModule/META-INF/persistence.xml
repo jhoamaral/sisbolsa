@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="sisbolsa-ejb" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/bolsaDS</jta-data-source>
+		
+			
+		<class>br.com.domain.Tipoparentesco</class>
+		<class>br.com.domain.Matriculaperiodo</class>
+		<class>br.com.domain.Estadocivil</class>
+		<class>br.com.domain.Logradouro</class>
+		<class>br.com.domain.Historicovalor</class>
+		<class>br.com.domain.Periodoletivo</class>
+		<class>br.com.domain.Item</class>
+		<class>br.com.domain.Pessoa</class>
+		<class>br.com.domain.Curso</class>
+		<class>br.com.domain.Socioeconeomico</class>
+		<class>br.com.domain.Pessoaben</class>
+		<class>br.com.domain.Cursofaculdade</class>
+		<class>br.com.domain.Identidade</class>
+		<class>br.com.domain.Familiar</class>
+		<class>br.com.domain.Tipoevento</class>
+		<class>br.com.domain.Situacaojuridica</class>
+		<class>br.com.domain.Eventofixo</class>
+		<class>br.com.domain.Telefone</class>
+		<class>br.com.domain.Tipotelefone</class>
+		<class>br.com.domain.Titulo</class>
+		<class>br.com.domain.Eventocauculado</class>
+		<class>br.com.domain.Cpf</class>
+		<class>br.com.domain.Folha</class>
+		<class>br.com.domain.Faculdade</class>
+		<class>br.com.domain.Escolaridade</class>
+		<class>br.com.domain.Menu</class>
+		<class>br.com.domain.Endereco</class>
+		<class>br.com.domain.Evento</class>
+		<class>br.com.domain.Ben</class>
+		<class>br.com.domain.Situacaooperacional</class>
+		<class>br.com.domain.Matricula</class>
+		<class>br.com.domain.Usuario</class>
+		<class>br.com.domain.Condicoesmoradia</class>
+		<class>br.com.domain.Boleto</class>
+		<shared-cache-mode>ALL</shared-cache-mode>
+		<properties>
+		 	<property name="hibernate.cache.use_second_level_cache" value="true"/>
+		 	<property name="hibernate.cache.use_minimal_puts" value="true"/>
+		 	<property name="hibernate.cache.infinispan.statistics" value="true"/>
+		 	
+		 	<property name="hibernate.cache.infinispan.entity.eviction.strategy" value= "LRU"/>
+			<property  name="hibernate.cache.infinispan.entity.eviction.wake_up_interval" value= "2000"/>
+			<property name="hibernate.cache.infinispan.entity.eviction.max_entries" value= "5000"/>
+			<property name="hibernate.cache.infinispan.entity.expiration.lifespan" value= "60000"/>
+			<property name="hibernate.cache.infinispan.entity.expiration.max_idle" value= "30000"/>
+		 	
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.jdbc.batch_size" value="50" />
+
+			<!--  <property name="hibernate.connection.autocommit" value="true"/>
+			<property name="hibernate.current_session_context_class" value="jta"/> -->
+			<property name="jboss.entity.manager.factory.jndi.name"	value="java:/emFactory" />		
+		</properties>
+	</persistence-unit>
+</persistence>

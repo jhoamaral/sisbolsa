@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form>
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Bens" >
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Descrição: " />
+					<p:inputText value="#{condicoesMoradiaController.object.descricao}" />
+				</h:panelGrid>
+			</p:fieldset>
+			<h:panelGrid columns="3" rendered="#{not empty condicoesMoradiaController.object.id}">
+				<p:commandButton value="" styleClass="editButton" actionListener="#{condicoesMoradiaController.salvar}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="deleteButton" actionListener="#{condicoesMoradiaController.excluir}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="cancelButton" actionListener="#{condicoesMoradiaController.novo}" process="campos" update="@form"/>
+			</h:panelGrid>
+			<h:panelGrid columns="1"  rendered="#{empty condicoesMoradiaController.object.id}">
+				<p:commandButton value="" styleClass="saveButton" actionListener="#{condicoesMoradiaController.salvar}" process="campos" update="lista, campos"/>
+			</h:panelGrid>
+			</p:outputPanel>
+
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{condicoesMoradiaController.filtro}" > 
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." /> 
+				</div>
+				<p:dataTable var="obj" id="lista" value="#{condicoesMoradiaController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
+					paginatorPosition="bottom" selection="#{condicoesMoradiaController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Descrição" sortBy="#{obj.descricao}">
+						#{obj.descricao}
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+		</h:form>
+</ui:composition>
+
+
+</html>

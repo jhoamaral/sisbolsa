@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form>
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Endereço" >
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Rua: " />
+					<p:inputText value="#{logradouroController.object.rua}" size="80" />
+					<h:outputLabel value="Bairro: " />
+					<p:inputText value="#{logradouroController.object.bairro}" size="20"/>
+					<h:outputLabel value="CEP: " />
+					<p:inputMask value="#{logradouroController.object.cep}" size="8" mask="99999-999"/>
+					<h:outputLabel value="Cidade " />
+					<p:inputText value="#{logradouroController.object.cidade}" size="40" />
+				</h:panelGrid>
+			</p:fieldset>
+			<h:panelGrid columns="3" rendered="#{not empty logradouroController.object.id}">
+				<p:commandButton value="" styleClass="editButton" actionListener="#{logradouroController.salvar}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="deleteButton" actionListener="#{logradouroController.excluir}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="cancelButton" actionListener="#{logradouroController.novo}" process="campos" update="@form"/>
+			</h:panelGrid>
+			<h:panelGrid columns="1"  rendered="#{empty logradouroController.object.id}">
+				<p:commandButton value="" styleClass="saveButton" actionListener="#{logradouroController.salvar}" process="campos" update="lista, campos"/>
+			</h:panelGrid>
+			</p:outputPanel>
+
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{logradouroController.filtro}" > 
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." /> 
+				</div>
+				<p:dataTable var="obj" id="lista" value="#{logradouroController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
+					paginatorPosition="bottom" selection="#{logradouroController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Rua" sortBy="#{obj.rua}">
+						#{obj.rua}
+                	</p:column>
+                	<p:column headerText="Bairro" sortBy="#{obj.bairro}">
+						#{obj.bairro}
+                	</p:column>
+                	<p:column headerText="CEP" sortBy="#{obj.cep}">
+						#{obj.cep}
+                	</p:column>
+                	<p:column headerText="Cidade" sortBy="#{obj.cidade}">
+						#{obj.cidade}
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+		</h:form>
+</ui:composition>
+
+
+</html>

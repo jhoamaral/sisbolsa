@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+	<h:form target="_blank" id="print" prependId="false"
+		style="display:none">
+		<p:commandButton ajax="false" id="dclrenda">
+			<p:fileDownload
+				value="#{matriculaPeriodoController.imprimirDeclaracaoRenda()}"
+				contentDisposition="inline" />
+		</p:commandButton>
+		<p:commandButton ajax="false" id="ficha">
+			<p:fileDownload value="#{matriculaPeriodoController.imprimirFicha()}"
+				contentDisposition="inline" />
+		</p:commandButton>
+	</h:form>
+
+	<p:dialog widgetVar="janela" modal="true" resizable="false"
+		header="Item">
+		<h:form id="new">
+			<p:outputPanel id="listaEventos">
+				<p:dataTable var="obj"
+					value="#{matriculaPeriodoController.eventosList}"
+					rowKey="#{obj.id}" paginator="true" rows="5"
+					paginatorAlwaysVisible="false" paginatorPosition="bottom">
+					<p:column headerText="Descrição">
+						<h:outputText value="#{obj.evento.descricao}(#{obj.descricao})" />
+					</p:column>
+					<p:column headerText="Tipo">
+						<h:outputText value="#{obj.evento.tipoevento.descricao}" />
+					</p:column>
+					<p:column headerText="Valor">
+						<h:outputText value="#{obj.valor}" converter="MoedaConverter" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+	</p:dialog>
+
+
+	<h:form id="form">
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulario">
+
+				<p:outputPanel id="campos">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Bolsista: " />
+						<p:autoComplete
+							value="#{matriculaPeriodoController.object.matricula}"
+							converter="#{converterController.matriculaConverter}" var="o"
+							itemLabel="#{o.pessoa.nome}" itemValue="#{o}"
+							forceSelection="true"
+							completeMethod="#{matriculaPeriodoController.completePessoa}"
+							size="60" maxResults="15" required="true"
+							requiredMessage="Selecione um bolsista">
+							<p:ajax event="itemSelect"
+								update="campos detalhes "
+								listener="#{matriculaPeriodoController.verificaSocioEconomico()}" />
+							<p:column>
+							#{o.pessoa.cpf.numero}
+						</p:column>
+						<p:column>
+							#{o.pessoa.nome}
+						</p:column>
+						<p:column>
+							#{o.cursofaculdade.curso.descricao}
+						</p:column>
+						<p:column>
+							#{o.cursofaculdade.faculdade.sigla}
+						</p:column>
+						</p:autoComplete>
+						<h:outputLabel value="Curso: " />
+						<p:outputPanel
+							rendered="#{not empty matriculaPeriodoController.object.matricula}">
+							<p:inputText
+								value="#{matriculaPeriodoController.object.matricula.cursofaculdade.curso.descricao}"
+								readonly="true" id="itCurso" size="60" />
+						</p:outputPanel>
+						<p:outputPanel
+							rendered="#{empty matriculaPeriodoController.object.matricula}">
+							<p:inputText value="" readonly="true" />
+						</p:outputPanel>
+						<h:outputLabel value="Faculdade: " />
+						<p:outputPanel
+							rendered="#{not empty matriculaPeriodoController.object.matricula}">
+							<p:inputText
+								value="#{matriculaPeriodoController.object.matricula.cursofaculdade.faculdade.nome}"
+								readonly="true" size="60" />
+						</p:outputPanel>
+						<p:outputPanel
+							rendered="#{empty matriculaPeriodoController.object.matricula}">
+							<p:inputText value="" readonly="true" />
+						</p:outputPanel>
+						
+						<h:outputLabel value="Periodo Letivo: " />
+						<p:selectOneMenu
+							value="#{matriculaPeriodoController.object.periodoletivo}"
+							converter="#{converterController.periodoLetivoConverter}"
+							required="true" requiredMessage="Selecione um periodo letivo">
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel value="CR Anterior " />
+						<p:inputText value="#{matriculaPeriodoController.object.cr}"
+							converter="MoedaConverter" />
+					</h:panelGrid>
+				</p:outputPanel>
+				<p:tabView id="detalhes" activeIndex="0">
+					<p:tab title="Socio Econômico" id="socioeconomico">
+						<h:panelGrid columns="6">
+							<h:outputLabel value="Situação Jurídica: " />
+							<p:selectOneMenu
+								value="#{matriculaPeriodoController.object.socioeconeomico.situacaojuridica}"
+								converter="#{converterController.situacaoJuridicaConverter}"
+								required="true"
+								requiredMessage="Selecione uma Situação juridica">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems
+									value="#{comboBoxController.listaSituacaoJuridica}" />
+							</p:selectOneMenu>
+							<h:outputLabel value="Situação Ocupacional: " />
+							<p:selectOneMenu
+								value="#{matriculaPeriodoController.object.socioeconeomico.situacaooperacional}"
+								converter="#{converterController.situacaoOperacionalConverter}"
+								required="true"
+								requiredMessage="Selecione uma Situação ocupacional">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems
+									value="#{comboBoxController.listaSituacaoOperacional}" />
+							</p:selectOneMenu>
+							<h:outputLabel value="Renda: " />
+							<p:inputText
+								value="#{matriculaPeriodoController.object.socioeconeomico.renda}"
+								converter="MoedaConverter" />
+
+							<h:outputLabel value="Condições de Moradia: " />
+							<p:selectOneMenu
+								value="#{matriculaPeriodoController.object.socioeconeomico.condicoesmoradia}"
+								converter="#{converterController.condicoesMoradiaConverter}"
+								required="true"
+								requiredMessage="Selecione uma Condição de moradia">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems
+									value="#{comboBoxController.listaCondicoesMoradia}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel value="Instalações Sanitarias: " />
+							<p:selectOneRadio
+								value="#{matriculaPeriodoController.object.socioeconeomico.instalacoessanitarias}">
+								<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+								<f:selectItem itemLabel="Não" itemValue="#{false}" />
+							</p:selectOneRadio>
+
+
+							<h:outputLabel value="Tempo de Residência: " />
+							<h:column>
+								<p:inputText
+									value="#{matriculaPeriodoController.object.socioeconeomico.temporesidencia}"
+									size="3" />
+								<h:outputLabel value=" (Anos)" />
+							</h:column>
+
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Boletos">
+						<h:panelGrid id="boletos" columns="5">
+							<h:outputLabel value="Referencia:" />
+							<p:inputMask
+								value="#{matriculaPeriodoController.boletoSelecionado.data}"
+								mask="99/99/9999" converter="SqlDateTimeConverter"
+								required="true" requiredMessage="Digite a referencia do boleto" />
+
+							<h:outputLabel value="Valor: " />
+							<p:inputText
+								value="#{matriculaPeriodoController.boletoSelecionado.valor}"
+								converter="MoedaConverter" />
+
+							<p:commandButton value="" styleClass="addIcon" process="@parent"
+								action="#{matriculaPeriodoController.addBoleto()}"
+								update="@parent listaBoleto">
+							</p:commandButton>
+						</h:panelGrid>
+						<p:outputPanel id="listaBoleto">
+							<p:dataTable var="obj"
+								value="#{matriculaPeriodoController.boletoList}"
+								rowKey="#{obj.id}" paginator="true" rows="5"
+								paginatorAlwaysVisible="false" paginatorPosition="bottom">
+								<p:column headerText="Referencia" sortBy="#{obj.data}">
+									<h:outputText value="#{obj.data}"
+										converter="SqlDateTimeConverter" />
+								</p:column>
+
+								<p:column headerText="Valor">
+									<h:outputText value="#{obj.valor}" converter="MoedaConverter" />
+									<p:commandButton update=":form:tabs:detalhes:listaBoleto"
+										process="@this" value="" styleClass="removeIcon"
+										style="float:right"
+										action="#{matriculaPeriodoController.removeBoleto()}">
+										<f:setPropertyActionListener value="#{obj}"
+											target="#{matriculaPeriodoController.boletoSelecionado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+
+					</p:tab>
+					<p:tab title="Impressão"
+						rendered="#{not empty matriculaPeriodoController.object.id}">
+						<h:panelGrid columns="3">
+							<p:commandButton value="DECL RENDA" process="@none" type="button"
+								onclick="jQuery('#dclrenda').click()" />
+							<p:commandButton value="FICHA" process="@none" type="button"
+								onclick="jQuery('#ficha').click()" />
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Pagamentos"
+						rendered="#{not empty matriculaPeriodoController.object.id}">
+						<p:outputPanel id="istaPagamentos">
+							<p:dataTable var="obj"
+								value="#{matriculaPeriodoController.itemsList}"
+								rowKey="#{obj.id}" paginator="true" rows="5"
+								paginatorAlwaysVisible="false" paginatorPosition="bottom">
+								<p:column headerText="Folha">
+									<h:outputText value="#{obj.folha.referencia}"
+										converter="SqlDateTimeConverter" />
+								</p:column>
+								<p:column headerText="Valor">
+									<h:outputText value="#{obj.valor}" converter="MoedaConverter" />
+									<p:commandButton update=":new" process="@this" value=""
+										styleClass="searchIcon" style="float:right"
+										action="#{matriculaPeriodoController.findEventos()}"
+										oncomplete="janela.show()">
+										<f:setPropertyActionListener value="#{obj}"
+											target="#{matriculaPeriodoController.itemSelecionado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+
+					</p:tab>
+				</p:tabView>
+
+				<h:panelGrid columns="3"
+					rendered="#{not empty matriculaPeriodoController.object.id}">
+					<p:commandButton value="" styleClass="editButton"
+						actionListener="#{matriculaPeriodoController.salvar}"
+						process="@this campos tabs:detalhes:socioeconomico" update="@form" />
+					<p:commandButton value="" styleClass="deleteButton"
+						actionListener="#{matriculaPeriodoController.excluir}"
+						process="@this campos tabs:detalhes:socioeconomico" update="@form" />
+					<p:commandButton value="" styleClass="cancelButton"
+						actionListener="#{matriculaPeriodoController.novo}"
+						process="@this campos tabs:detalhes:socioeconomico" update="@form" />
+				</h:panelGrid>
+				<h:panelGrid columns="1"
+					rendered="#{empty matriculaPeriodoController.object.id}">
+					<p:commandButton value="" styleClass="saveButton"
+						actionListener="#{matriculaPeriodoController.salvar}"
+						process="@this campos tabs:detalhes:socioeconomico"
+						update="@parent @form" />
+				</h:panelGrid>
+
+
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<table>
+					<tr>
+						<td>
+							<div>
+								<p:selectOneMenu
+									value="#{matriculaPeriodoController.periodoletivoSelecionado}"
+									converter="#{converterController.periodoLetivoConverter}">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
+									<p:ajax event="change" onstart="statusDialog.show();"
+										onsuccess="statusDialog.hide();" process="@this"
+										update="lista"
+										listener="#{matriculaPeriodoController.carregaAllObjects()}" />
+								</p:selectOneMenu>
+							</div>
+						</td>
+
+						<td>
+							<div id="search">
+								<p:inputText id="search"
+									value="#{matriculaPeriodoController.filtro}">
+									<p:ajax event="keyup" update="lista" />
+								</p:inputText>
+								<p:watermark for="search" value="Pesquise aqui..." />
+							</div>
+						</td>
+					</tr>
+
+				</table>
+
+				<p:dataTable var="obj" id="lista"
+					value="#{matriculaPeriodoController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false"
+					selectionMode="single" paginatorPosition="bottom"
+					selection="#{matriculaPeriodoController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Descrição"
+						sortBy="#{obj.matricula.pessoa.nome}">
+						#{obj.matricula.pessoa.nome}
+                	</p:column>
+
+					<p:column headerText="Ano" sortBy="#{obj.periodoletivo.ano}">
+						#{obj.periodoletivo.ano}
+                	</p:column>
+
+					<p:column headerText="Semestre"
+						sortBy="#{obj.periodoletivo.semestre}">
+						#{obj.periodoletivo.semestre}
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</ui:composition>
+
+
+</html>

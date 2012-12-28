@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form>
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Evento" >
+				<h:panelGrid columns="6">
+					<h:outputLabel value="Código: " />
+					<p:inputText value="#{eventoController.object.codigo}" size="10"/>
+				
+					<h:outputLabel value="Descrição: " />
+					<p:inputText value="#{eventoController.object.descricao}" size="30" />
+					
+					<h:outputLabel value="Tipo de Evento" />
+					<p:selectOneMenu value="#{eventoController.object.tipoevento}"
+						converter="#{converterController.tipoEventoConverter}">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{comboBoxController.listaTipoEvento}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:fieldset legend="Valor" >
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Valor: " />
+						<p:inputText value="#{eventoController.ultimoHistoricovalor.valor}"  converter="MoedaConverter"/>
+						
+						<h:outputLabel value="Percentual: " />
+						<p:inputText value="#{eventoController.ultimoHistoricovalor.percentual}" />
+					</h:panelGrid>
+				</p:fieldset>
+				
+			</p:fieldset>
+			<h:panelGrid columns="3" rendered="#{not empty eventoController.object.id}">
+				<p:commandButton value="" styleClass="editButton" actionListener="#{eventoController.salvar}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="deleteButton" actionListener="#{eventoController.excluir}" process="campos" update="@form"/>
+				<p:commandButton value="" styleClass="cancelButton" actionListener="#{eventoController.novo}" process="campos" update="@form"/>
+			</h:panelGrid>
+			<h:panelGrid columns="1"  rendered="#{empty eventoController.object.id}">
+				<p:commandButton value="" styleClass="saveButton" actionListener="#{eventoController.salvar}" process="campos" update="lista, campos"/>
+			</h:panelGrid>
+			</p:outputPanel>
+
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{eventoController.filtro}" > 
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." /> 
+				</div>
+				<p:dataTable var="obj" id="lista" value="#{eventoController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
+					paginatorPosition="bottom" selection="#{eventoController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Código" sortBy="#{obj.codigo}">
+						#{obj.codigo}
+                	</p:column>
+					<p:column headerText="Descrição" sortBy="#{obj.descricao}">
+						#{obj.descricao}
+                	</p:column>
+                	<p:column headerText="Valor" sortBy="#{obj.ultimoHistoricovalor.valor}">
+						#{obj.ultimoHistoricovalor.valor}
+                	</p:column>
+                	<p:column headerText="Percentual" sortBy="#{obj.ultimoHistoricovalor.percentual}">
+						#{obj.ultimoHistoricovalor.percentual}
+                	</p:column>
+                	<p:column headerText="Tipo de Evento" sortBy="#{obj.tipoevento.descricao}">
+						#{obj.tipoevento.descricao}
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+		</h:form>
+</ui:composition>
+
+
+</html>

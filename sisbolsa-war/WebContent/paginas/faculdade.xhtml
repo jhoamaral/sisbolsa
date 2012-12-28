@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+	<h:form prependId="false" id="form">
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+				<p:fieldset legend="Faculdade">
+					<p:outputPanel id="campos">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Nome: " />
+						<p:inputText value="#{faculdadeController.object.nome}"
+							size="50" />
+						<h:outputLabel value="Sigla: " />
+						<p:inputText value="#{faculdadeController.object.sigla}" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="3"
+						rendered="#{not empty faculdadeController.object.id}">
+						<p:commandButton value="" styleClass="editButton"
+							actionListener="#{faculdadeController.salvar}" process="campos"
+							update="@form" />
+						<p:commandButton value="" styleClass="deleteButton" disabled="#{not empty faculdadeController.object.cursofaculdades}"
+							actionListener="#{faculdadeController.excluir}" process="campos"
+							update="@form" />
+						<p:commandButton value="" styleClass="cancelButton"
+							actionListener="#{faculdadeController.novo}" process="campos"
+							update="@form" />
+					</h:panelGrid>
+					<h:panelGrid columns="1"
+						rendered="#{empty faculdadeController.object.id}">
+						<p:commandButton value="" styleClass="saveButton" 
+							actionListener="#{faculdadeController.salvar}" process="campos"
+							update="@form" />
+					</h:panelGrid>
+				</p:outputPanel>
+				</p:fieldset>
+
+				
+				<p:fieldset legend="Cursos">
+					<h:panelGrid columns="3">
+					<h:outputLabel value="Curso: " />
+					<p:selectOneMenu id="cbCurso"
+						value="#{faculdadeController.cursoSelecionado.curso}"
+						converter="#{faculdadeController.cursoConverter}">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{faculdadeController.comboBoxCurso}" />
+					</p:selectOneMenu>
+					<p:commandButton value="" styleClass="addIcon" disabled="#{empty faculdadeController.object.id}"
+					action="#{faculdadeController.addCurso()}" process="@form"
+					update="@form" />
+				</h:panelGrid>
+				
+				<p:dataTable var="curso" id="listaCurso"
+					value="#{faculdadeController.cursos}" rowKey="#{curso.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" >
+					<p:column headerText="Cursos">
+							#{curso.curso.descricao}
+							
+						<p:commandButton  update="@form"
+							value="" styleClass="removeIcon" style="float:right" action="#{faculdadeController.removeCurso()}"
+							async="true">
+							<f:setPropertyActionListener value="#{curso}"
+								target="#{faculdadeController.cursoSelecionado}" />
+						</p:commandButton>
+                	</p:column>
+
+				</p:dataTable>
+				</p:fieldset>
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{faculdadeController.filtro}">
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." />
+				</div>
+				<p:dataTable var="faculdade" id="lista"
+					value="#{faculdadeController.objects}" rowKey="#{faculdade.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false"
+					selectionMode="single" paginatorPosition="bottom"
+					selection="#{faculdadeController.object}">
+					<p:ajax event="rowSelect" update="@form" />
+					<p:column headerText="Sigla" sortBy="#{faculdade.sigla}">
+						#{faculdade.sigla}
+                	</p:column>
+					<p:column headerText="Nome" sortBy="#{faculdade.nome}">
+						#{faculdade.nome}
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</ui:composition>
+
+
+</html>

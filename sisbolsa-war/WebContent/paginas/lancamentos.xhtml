@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition>
+		<p:dialog widgetVar="janelaHist" modal="true" resizable="false" header="Item">
+			<h:form id="hist">
+				<p:outputPanel id="listaEventos">
+				<p:dataTable var="obj" value="#{lancamentosController.eventosList}" rowKey="#{obj.id}"
+					paginator="true" rows="5" paginatorAlwaysVisible="false" 
+					paginatorPosition="bottom">
+					<p:column headerText="Descrição">
+						<h:outputText value="#{obj.evento.descricao}(#{obj.descricao})" /> 
+                	</p:column>
+                	<p:column headerText="Tipo">
+						<h:outputText value="#{obj.evento.tipoevento.descricao}" /> 
+                	</p:column>
+                	<p:column headerText="Valor">
+						<h:outputText value="#{obj.valor}" converter="MoedaConverter" /> 
+                	</p:column>
+				</p:dataTable>
+				</p:outputPanel>			
+			</h:form>
+		</p:dialog>
+
+		<p:confirmDialog message="Foi encontrada uma diferença no valor do boleto anterior. Deseja calcular essa diferença automaticamente?"  
+         	header="Anteção!" severity="alert"  widgetVar="msgDiferenca">  
+             <h:form>
+        	<p:commandButton id="confirm" value="Sim"  action="#{lancamentosController.addDiferenca()}"
+        		update=":new:eventos:listaItem" oncomplete="msgDiferenca.hide()" />  
+       		<p:commandButton id="decline" value="Não" onclick="msgDiferenca.hide()" />
+       		</h:form>      			  
+    	</p:confirmDialog>
+
+		<p:dialog widgetVar="janela" modal="true" resizable="false" header="Item" closable="false" width="860">
+			<h:form id="new">
+				<h:panelGrid columns="1">
+					<h:panelGrid id="novoItem" columns="2">
+						<h:outputLabel value="Periodo Letivo: " />
+						<p:selectOneMenu value="#{lancamentosController.periodoletivoSelecionado}"
+							converter="#{converterController.periodoLetivoConverter}">
+							<p:ajax  event="change" listener="#{lancamentosController.carregaListMatricula()}"/>
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}"/>
+						</p:selectOneMenu>	
+						<h:outputLabel value="Bolsista: " />
+						<p:autoComplete value="#{lancamentosController.novoItem.matriculaperiodo}" converter="#{converterController.matriculaPeriodoConverter}"
+							var="o" itemLabel="#{o.matricula.pessoa.nome}" itemValue="#{o}" completeMethod="#{lancamentosController.completeMatricula}" size="60"
+							 minQueryLength="5" forceSelection="true" readonly="#{not empty lancamentosController.novoItem.id}" 
+							 required="true"
+							 requiredMessage="Selecione um bolsista">
+								<p:ajax  event="itemSelect" listener="#{lancamentosController.carregaUltimoBoleto}" update="@form"/>
+							<p:column>
+								#{o.matricula.pessoa.cpf.numero}
+							</p:column>
+							<p:column>
+								#{o.matricula.pessoa.nome}
+							</p:column>
+						</p:autoComplete>	
+					</h:panelGrid>
+					<h:panelGrid columns="4">
+						<h:outputLabel value="Boleto: " />
+						<p:selectOneMenu id="soBoleto" value="#{lancamentosController.boletoSelecionado}"
+							converter="#{converterController.boletoConverter}">
+							<p:ajax  event="change" update="itValor"/>
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{lancamentosController.listaBoleto}"/>
+						</p:selectOneMenu>	
+						
+						<h:outputLabel value="Valor: " />
+						<p:inputText id="itValor" value="#{lancamentosController.boletoSelecionado.valor}"  converter="MoedaConverter" readonly="true"/>
+						
+						<h:outputLabel value="CR: " />
+						<p:inputText id="itCr" value="#{lancamentosController.novoItem.matriculaperiodo.cr}" />
+					</h:panelGrid>	
+				</h:panelGrid>
+				
+				<p:tabView  id="eventos">
+					<p:tab title="Eventos">
+
+				<h:panelGrid id="camposEvento" columns="7">
+					<h:outputLabel value="Evento: " />
+					<p:autoComplete value="#{lancamentosController.novoEvento.evento}" converter="#{converterController.eventoConverter}"
+						var="o" itemLabel="#{o.descricao}" itemValue="#{o}" completeMethod="#{lancamentosController.completeEvento}"
+						required="true"
+						requiredMessage="Selecione um evento">
+							<p:ajax event="itemSelect" listener="#{lancamentosController.calculuaEvento}" update="@form"/>
+						<p:column>
+							#{o.codigo}
+						</p:column>
+						<p:column>
+							#{o.descricao}
+						</p:column>
+						<p:column>
+							#{o.tipoevento.descricao}
+						</p:column>
+					</p:autoComplete>
+					<h:outputLabel value="Descrição: " />
+					<p:inputText value="#{lancamentosController.novoEvento.descricao}" size="40" />
+						
+					<h:outputLabel value="Valor: " />
+					<p:inputText value="#{lancamentosController.novoEvento.valor}" converter="MoedaConverter" readonly="#{lancamentosController.valorBloqueado}"/>
+					
+					<p:commandButton value="" styleClass="addIcon"
+							process="@parent" action="#{lancamentosController.addEvento()}"
+							update="@parent listaItem"
+							oncomplete="if(#{lancamentosController.existeDiferenca}){msgDiferenca.show()}"> 
+					</p:commandButton>	
+				</h:panelGrid>
+				<p:outputPanel id="listaItem">
+				<p:dataTable var="obj" value="#{lancamentosController.listEventos}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" 
+					paginatorPosition="bottom">
+					<p:column headerText="Descrição">
+						<h:outputText value="#{obj.evento.descricao}(#{obj.descricao})" /> 
+                	</p:column>
+                	<p:column headerText="Tipo">
+						<h:outputText value="#{obj.evento.tipoevento.descricao}" /> 
+                	</p:column>
+                	<p:column headerText="Valor">
+						<h:outputText value="#{obj.valor}" converter="MoedaConverter" /> 
+                	</p:column>
+                	<p:column headerText="Usuário">
+						<h:outputText value="#{obj.usuario.nome}" /> 
+						<p:commandButton  update=":new:eventos:listaItem" process="@this"
+							value="" styleClass="removeIcon" style="float:right" action="#{lancamentosController.removeEvento()}">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{lancamentosController.novoEvento}" />
+						</p:commandButton>
+                	</p:column>
+				</p:dataTable>
+				
+				</p:outputPanel>
+				</p:tab>
+				
+				<p:tab title="Historico">
+					<p:outputPanel id="listaPagamentos">
+						<p:dataTable var="obj" value="#{lancamentosController.itemsHistoricoList}" rowKey="#{obj.id}"
+							paginator="true" rows="5" paginatorAlwaysVisible="false"						
+							paginatorPosition="bottom">
+							<p:column headerText="Folha">
+								<h:outputText value="#{obj.folha.referencia}" converter="SqlDateTimeConverter" />
+							</p:column>	
+							<p:column headerText="Valor">
+								<h:outputText value="#{obj.valor}" converter="MoedaConverter" />
+								<p:commandButton  update=":hist" process="@this"
+										value="" styleClass="searchIcon" style="float:right" action="#{lancamentosController.findEventos()}"
+										oncomplete="janelaHist.show()">
+										<f:setPropertyActionListener value="#{obj}"
+											target="#{lancamentosController.itemSelecionado}" />
+									</p:commandButton>
+							</p:column>	
+						</p:dataTable>	
+					</p:outputPanel>	
+				
+				</p:tab>
+				
+				
+				</p:tabView>
+			<h:panelGrid columns="2" >
+				<p:commandButton value="" styleClass="calculateButton" 
+						action="#{lancamentosController.addItem()}" process="@this novoItem" 
+						update=":form @form" oncomplete="janela.hide();" 
+						onstart="statusDialog.show();"
+						onsuccess="statusDialog.hide();"/>
+				<p:commandButton value="" styleClass="cancelButton" action="#{lancamentosController.configItem()}" immediate="true" process="@form" update=":form @form" oncomplete="janela.hide();" />
+			</h:panelGrid>				
+			</h:form>
+		</p:dialog>
+		
+		<h:form id="form">
+		<p:tabView id="tabs" style="width:960px;">
+			<p:tab title="Formulário">
+
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Folha de Pagamento" >
+				<h:panelGrid columns="4">
+				
+					<h:outputLabel value="Referencia: " />
+					<p:inputText value="#{lancamentosController.object.referencia}" converter="SqlDateTimeConverter" readonly="true"/>
+					
+					<h:outputLabel value="Tipo: " />
+					<p:inputText value="#{lancamentosController.object.tipo}"  readonly="true" />
+					
+					<h:outputLabel value="Valor Total: " />
+					<p:inputText value="#{lancamentosController.object.valorTotal}"  readonly="true"  converter="MoedaConverter"/>
+					<p:commandButton value="" styleClass="refreshIcon" action="#{lancamentosController.calculaFolha()}" onclick="statusDialog.show()"  oncomplete="statusDialog.hide()" process="@this" update="campos"/>
+				</h:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Itens" >
+					<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{lancamentosController.configItem()}" oncomplete="janela.show()" update="@all :new"/>
+					<p:inputText id="searchItem" value="#{lancamentosController.filtroItens}" size="50"> 
+						<p:ajax event="keyup" update="listaItem" />
+					</p:inputText>
+					<p:watermark for="searchItem" value="Pesquise aqui..." /> 
+
+				<p:dataTable var="obj" id="listaItem" value="#{lancamentosController.listItens}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" 
+					paginatorPosition="bottom">					
+					<p:column headerText="Nome" >
+						<h:outputText value="#{obj.matriculaperiodo.matricula.pessoa.nome}" /> 
+                	</p:column>
+                	<p:column headerText="Valor depositado" >
+						<h:outputText value="#{obj.valor}" converter="MoedaConverter"/> 
+						<p:commandButton  update="@all :new :form" process="@this" action="#{lancamentosController.removeItem()}"
+							value="" styleClass="removeIcon" style="float:right">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{lancamentosController.novoItem}" />
+						</p:commandButton>
+						<p:commandButton  update="@all :new" process="@this" oncomplete="janela.show()"
+							value="" styleClass="editIcon"  style="float:right">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{lancamentosController.novoItem}" />
+						</p:commandButton>
+                	</p:column>
+				</p:dataTable>
+			</p:fieldset>
+			</p:outputPanel>
+			</p:tab>
+			<p:tab title="Pesquisar">
+				<div id="search">
+					<p:inputText id="search" value="#{lancamentosController.filtro}" > 
+						<p:ajax event="keyup" update="lista" />
+					</p:inputText>
+					<p:watermark for="search" value="Pesquise aqui..." /> 
+				</div>
+				<p:dataTable var="obj" id="lista" value="#{lancamentosController.objects}" rowKey="#{obj.id}"
+					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
+					paginatorPosition="bottom" selection="#{lancamentosController.object}">
+					<p:ajax event="rowSelect" update="@form" listener="#{lancamentosController.carregaListMatricula()}"/>
+					<p:column headerText="Ano" >
+						<h:outputText value="#{obj.periodoletivo.ano}" /> 
+                	</p:column>
+                	
+                	<p:column headerText="Semestre" >
+						<h:outputText value="#{obj.periodoletivo.semestre}" /> 
+                	</p:column>
+                	
+					<p:column headerText="Referencia" >
+						<h:outputText value="#{obj.referencia}" >
+							<f:convertDateTime pattern="MMM/yyyy"/>
+						</h:outputText> 
+                	</p:column>
+                	
+                	<p:column headerText="Tipo" sortBy="#{obj.tipo}">
+						<h:outputText value="#{obj.tipo}" /> 
+                	</p:column>
+				</p:dataTable>
+
+			</p:tab>
+		</p:tabView>
+		</h:form>
+</ui:composition>
+</html>

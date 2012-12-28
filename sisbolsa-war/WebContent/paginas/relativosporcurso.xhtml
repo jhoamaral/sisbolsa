@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form target="_blank" id="print" prependId="false" >
+			<p:tabView id="tabs" style="width:960px;">
+				<p:tab title="Imprimir">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Faculdade: " />
+					<p:selectOneMenu value="#{ativosPorCursoController.faculdadeSelecionado}"
+					required="true"
+					requiredMessage="Selecione uma Faculdade">
+						<p:ajax event="change" process="@this" update="cbCurso" />
+						<f:selectItem itemLabel="Selecione..."/>
+						<f:selectItem itemLabel="Todos" itemValue="%"/>
+						<f:selectItems value="#{ativosPorCursoController.listaFaculdade}"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Curso: " />
+					<p:selectOneMenu id="cbCurso" value="#{ativosPorCursoController.cursoSelecionado}"
+					required="true"
+					requiredMessage="Selecione um Curso">
+						<f:selectItem itemLabel="Selecione..."/>
+						<f:selectItem itemLabel="Todos" itemValue="%"/>
+						<f:selectItems value="#{ativosPorCursoController.listaCursoFaculdade}"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Perìdo Letivo: " />
+					<p:selectOneMenu value="#{ativosPorCursoController.periodoletivoSelecionado}"  converter="#{converterController.periodoLetivoConverter}"
+					required="true"
+					requiredMessage="Selecione um Período Letivo">
+						<f:selectItem itemLabel="Selecione..."/>
+						<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Peíodo do Bolsista: " />
+					<p:inputText value="#{ativosPorCursoController.periodoDoBolsista}" 
+					/>
+						
+					
+				</h:panelGrid>
+				<p:commandButton value="Imprimir" ajax="false" id="folha">
+					<p:fileDownload value="#{ativosPorCursoController.imprimir()}" contentDisposition="inline"/>
+				</p:commandButton>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+</ui:composition>
+
+
+</html>

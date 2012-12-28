@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+
+<ui:composition>
+		<h:form>
+			<p:outputPanel id="campos">
+			<p:fieldset legend="Senha" >
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Senha atual: " />
+					<p:password value="#{passwordController.passwordDigitado}" required="true" feedback="false" requiredMessage="Digite sua senha!"/>
+					
+					<h:outputLabel value="Nova senha: " />
+					<p:password value="#{passwordController.novoPassword}" match="confirm" feedback="false" required="true" requiredMessage="Digite sua nova senha!" validatorMessage="Senhas digitadas não são iguais" />
+					<h:outputLabel value="Confirme a nova senha: " />
+					<p:password id="confirm" value="#{passwordController.novoPassword}" feedback="false" required="true" requiredMessage="Confirme sua nova senha!"/>
+					
+				</h:panelGrid>
+			</p:fieldset>
+			<h:panelGrid columns="1">
+				<p:commandButton value="" styleClass="saveButton" actionListener="#{passwordController.changePassword()}" process="campos" update="@form"/>
+			</h:panelGrid>
+			</p:outputPanel>
+		</h:form>
+</ui:composition>
+
+
+</html>
