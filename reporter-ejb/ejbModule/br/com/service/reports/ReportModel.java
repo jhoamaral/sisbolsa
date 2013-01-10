@@ -11,14 +11,14 @@ public enum ReportModel {
 	 POSSIVEIS_FORMANDOS("possiveis_formandos.jasper"),
 	 DECLARACAO_RENDIMENTOS("declaracao_rendimentos.jasper");
 	
-	InputStream stream;
+	String path;
 	
 	private ReportModel(String path){
-		this.stream =getClass().getResourceAsStream(path);
+		this.path = path;
 	}
 	
 	public InputStream value(){
-		return this.stream;
+		return getClass().getResourceAsStream(path);
 	}
 	
 	
