@@ -81,7 +81,7 @@ public class EventoController extends AbstractController<Evento> implements Seri
 
 	@Override
 	public void novo() {
-		this.setObject(new Evento());
+		this.obj = new Evento();
 		this.setFiltro("");
 		this.setUltimoHistoricovalor(new Historicovalor());
 		this.getUltimoHistoricovalor().setEvento(this.obj);

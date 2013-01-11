@@ -1,464 +1,395 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 
 
 
 <ui:composition>
-		<p:dialog widgetVar="janelaMatricula" modal="true" resizable="false" header="Matricula" closable="false"
-			width="800">
-			<h:form id="newMatricula">
-				<h:panelGrid id="matricula" columns="4">									
-						<h:outputLabel value="Faculdade: " />					
-						<p:selectOneMenu 
-							value="#{pessoaController.faculdadeSelecionada}"
-							converter="#{converterController.faculdadeConverter}"
-							required="true"
-							requiredMessage="Selecione uma faculdade">
-							<p:ajax event="change" process="@this" update="cbCurso" />
-							<f:selectItem itemLabel="Selecione..." />
-							<f:selectItems value="#{pessoaController.listaFaculdade}" />
-						</p:selectOneMenu>
 
-						
-						<h:outputLabel value="Curso: " />
-						<p:selectOneMenu id="cbCurso"
-							value="#{pessoaController.matriculaSelecionado.cursofaculdade}"
-							converter="#{converterController.cursoFaculdadeConverter}"
-							required="true"
-							requiredMessage="Selecione um curso">
-							<f:selectItem itemLabel="Selecione..." />
-							<f:selectItems value="#{pessoaController.listaCursoFaculdade}" />
-						</p:selectOneMenu>
-
-						<h:outputLabel value="Matricula: " />
-						<p:inputText value="#{pessoaController.matriculaSelecionado.matricula}" size="15" />
-						
-						<h:outputLabel value="Duração do curso: " />
+	<p:dialog widgetVar="janelaEndereco" modal="true" resizable="false" header="Endereço" closable="false" width="800">
+		<h:form id="newEndereco">
+			<h:panelGrid id="endereco" columns="1">
+				<h:panelGrid columns="6">
+					<h:outputLabel value="Rua: " />
+					<p:autoComplete value="#{pessoaController.enderecoSelecionado.logradouro}" converter="#{converterController.logradouroConverter}" var="o" itemLabel="#{o.rua}" itemValue="#{o}" forceSelection="true" completeMethod="#{pessoaController.completeLogradouro}" size="60" scrollHeight="160"
+						required="true" requiredMessage="Selecione uma Rua" dropdown="true">
+						<p:ajax event="itemSelect" update="endereco" />
 						<p:column>
-							<p:inputMask value="#{pessoaController.matriculaSelecionado.duracaoCurso}" size="2" 
-								required="true"
-								requiredMessage="Digite a duração do curso"/>
-							<h:outputLabel value="Periodos" />
-						
-						</p:column>
-						
-						<h:outputLabel value="Admissão na Bolsa: " />
-						<p:inputMask value="#{pessoaController.matriculaSelecionado.dataIngresso}" mask="99/99/9999" size="6" converter="SqlDateTimeConverter"
-							required="true"
-							requiredMessage="Digite a Admissão na Bolsa"/>
-						
-						<h:outputLabel value="Ingresso na Faculdade: " />
-						<p:selectOneMenu
-							value="#{pessoaController.matriculaSelecionado.periodoletivo}"
-							converter="#{converterController.periodoLetivoConverter}"
-							required="true"
-							requiredMessage="Digite o Ingresso na Faculdade">
-							<f:selectItem itemLabel="Selecione..." />
-							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
-						</p:selectOneMenu>
-					</h:panelGrid>
-					<h:panelGrid columns="2" >
-						<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.addMatricula()}" process="@form" update=":form:tabs:detalhes:listaMatricula @form" 
-							oncomplete="janelaMatricula.hide();"/>
-						<p:commandButton value="" styleClass="cancelButton" action="#{pessoaController.configMatricula()}" immediate="true" process="@form" update="@form" oncomplete="janelaMatricula.hide();" />
-					</h:panelGrid>
-			</h:form>
-		</p:dialog>
+									#{o.rua}
+								</p:column>
+						<p:column>
+									#{o.bairro}
+								</p:column>
+					</p:autoComplete>
 
-		<h:form id="form">
+					<h:outputLabel value="Número: " />
+					<p:inputText value="#{pessoaController.enderecoSelecionado.numero}" size="3" />
+
+					<h:outputLabel value="Complemento: " />
+					<p:inputText value="#{pessoaController.enderecoSelecionado.complemento}" size="30" />
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="6">
+					<h:outputLabel value="Bairro: " />
+					<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.bairro}" size="40" readonly="true" />
+
+					<h:outputLabel value="Cep: " />
+					<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.cep}" readonly="true" size="9" />
+
+					<h:outputLabel value="Cidade: " />
+					<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.cidade}" readonly="true" size="40" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.addEndereco()}" process="@form" update=":form:tabs:detalhes:listaEnd @form" oncomplete="janelaEndereco.hide();" />
+				<p:commandButton value="" styleClass="cancelButton" action="#{pessoaController.configEndereco()}" immediate="true" process="@form" update="@form" oncomplete="janelaEndereco.hide();" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="janelaComposicaoFamiliar" modal="true" resizable="false" header="Composição Familiar" closable="false" width="800">
+		<h:form id="newComposicaoFamiliar">
+			<h:panelGrid id="composicaoFamiliar" columns="8">
+				<h:outputLabel value="Nome: " />
+				<p:inputMask value="#{pessoaController.parenteSelecionado.nome}" required="true" requiredMessage="Digite o nome do Familiar" />
+
+				<h:outputLabel value="Nascimento: " />
+				<p:inputMask value="#{pessoaController.parenteSelecionado.dataNascimento}" mask="99/99/9999" converter="SqlDateTimeConverter" required="true" requiredMessage="Digite o nascimento do Familiar" />
+
+				<h:outputLabel value="Renda:" />
+				<p:inputMask value="#{pessoaController.parenteSelecionado.renda}" converter="MoedaConverter" required="true" requiredMessage="Digite a renda do Familiar" />
+
+				<h:outputLabel value="Parentesco: " />
+				<p:selectOneMenu value="#{pessoaController.parenteSelecionado.tipoparentesco}" converter="#{converterController.tipoParentescoConverter}" required="true" requiredMessage="Selecione o parentesco do Familiar">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{comboBoxController.listaTipoParentesco}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.addParentesco()}" process="@form" update=":form:tabs:detalhes:listaPar @form" oncomplete="janelaComposicaoFamiliar.hide();" />
+				<p:commandButton value="" styleClass="cancelButton" action="#{pessoaController.configParente()}" immediate="true" process="@form" update="@form" oncomplete="janelaComposicaoFamiliar.hide();" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog widgetVar="janelaMatricula" modal="true" resizable="false" header="Matricula" closable="false" width="800">
+		<h:form id="newMatricula">
+			<h:panelGrid id="matricula" columns="4">
+				<h:outputLabel value="Faculdade: " />
+				<p:selectOneMenu value="#{pessoaController.faculdadeSelecionada}" converter="#{converterController.faculdadeConverter}" required="true" requiredMessage="Selecione uma faculdade">
+					<p:ajax event="change" process="@this" update="cbCurso" />
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{pessoaController.listaFaculdade}" />
+				</p:selectOneMenu>
+
+
+				<h:outputLabel value="Curso: " />
+				<p:selectOneMenu id="cbCurso" value="#{pessoaController.matriculaSelecionado.cursofaculdade}" converter="#{converterController.cursoFaculdadeConverter}" required="true" requiredMessage="Selecione um curso">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{pessoaController.listaCursoFaculdade}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel value="Matricula: " />
+				<p:inputText value="#{pessoaController.matriculaSelecionado.matricula}" size="15" />
+
+				<h:outputLabel value="Duração do curso: " />
+				<p:column>
+					<p:inputMask value="#{pessoaController.matriculaSelecionado.duracaoCurso}" size="2" required="true" requiredMessage="Digite a duração do curso" />
+					<h:outputLabel value="Periodos" />
+
+				</p:column>
+
+				<h:outputLabel value="Admissão na Bolsa: " />
+				<p:inputMask value="#{pessoaController.matriculaSelecionado.dataIngresso}" mask="99/99/9999" size="6" converter="SqlDateTimeConverter" required="true" requiredMessage="Digite a Admissão na Bolsa" />
+
+				<h:outputLabel value="Ingresso na Faculdade: " />
+				<p:selectOneMenu value="#{pessoaController.matriculaSelecionado.periodoletivo}" converter="#{converterController.periodoLetivoConverter}" required="true" requiredMessage="Digite o Ingresso na Faculdade">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.addMatricula()}" process="@form" update=":form:tabs:detalhes:listaMatricula @form" oncomplete="janelaMatricula.hide();" />
+				<p:commandButton value="" styleClass="cancelButton" action="#{pessoaController.configMatricula()}" immediate="true" process="@form" update="@form" oncomplete="janelaMatricula.hide();" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<h:form id="form">
 		<p:tabView id="tabs" style="width:960px;">
 			<p:tab title="Formulário">
 
-			<p:fieldset legend="Dados Pessoais" id="dadosPessoais">
-			<h:panelGrid columns="2" >
-				<h:panelGrid columns="2">
-					<h:outputLabel value="Nome: " />
-					<p:inputText value="#{pessoaController.object.nome}"  size="80"
-					required="true"
-					requiredMessage="Digite um nome"/>
-					
-					<h:outputLabel value="Pai: " />
-					<p:inputText value="#{pessoaController.object.pai}" size="80" />
-					
-					<h:outputLabel value="Mãe: " />
-					<p:inputText value="#{pessoaController.object.mae}" size="80" />
-				</h:panelGrid>
-				<h:panelGrid columns="2">
-					<h:outputLabel value="Data de Nascimento " size="11" />
-					<p:inputMask value="#{pessoaController.object.dataNascimento}" mask="99/99/9999" size="6" converter="SqlDateTimeConverter"/>
-					<h:outputLabel value="Escolaridade: " />
-					<p:selectOneMenu 
-						value="#{pessoaController.object.escolaridade}"
-						converter="#{converterController.escolaridadeConverter}">
-						<f:selectItem itemLabel="Selecione..." />
-						<f:selectItems value="#{comboBoxController.listaEscolaridade}" />
-					</p:selectOneMenu>
-					
-					<h:outputLabel value="Estado Civil " />
-					<p:selectOneMenu 
-						value="#{pessoaController.object.estadocivil}"
-						converter="#{converterController.estadoCivilConverter}">
-						<f:selectItem itemLabel="Selecione..." />
-						<f:selectItems value="#{comboBoxController.listaEstadoCivil}" />
-					</p:selectOneMenu>	
-				</h:panelGrid>
-			</h:panelGrid>
-			</p:fieldset>
-			<p:tabView id="detalhes" activeIndex="0">
-				<p:tab title="Documentos"  id="documentos">
-				
-				<h:panelGrid columns="2">
-					<p:fieldset legend="Cpf: " style="width:340px">
-						<h:panelGrid columns="4">
-							<h:outputLabel value="Número: " />
-							<p:inputMask value="#{pessoaController.object.cpf.numero}" mask="999.999.999-99" size="11"/>
-						</h:panelGrid>
-					</p:fieldset>
-					
-					<p:fieldset legend="Identidade: " >
-						<h:panelGrid columns="6">
-							<h:outputLabel value="Número: " />
-							<p:inputText value="#{pessoaController.object.identidade.numero}" />
-		
-							<h:outputLabel value="Org. Emissor: " />
-							<p:inputMask value="#{pessoaController.object.identidade.emissor}" size="39"/>
-						</h:panelGrid>
-					</p:fieldset>
-				</h:panelGrid>
-				<p:fieldset legend="Título">
-					<h:panelGrid columns="10">
-						<h:outputLabel value="Número: " />
-						<p:inputText value="#{pessoaController.object.titulo.numero}" />
-						
-						<h:outputLabel value="Zona: " />
-						<p:inputText value="#{pessoaController.object.titulo.zona}" size="3"/>
-						
-						<h:outputLabel value="Seção: " />
-						<p:inputText value="#{pessoaController.object.titulo.secao}" size="3"/>
+				<p:fieldset legend="Dados Pessoais" id="dadosPessoais">
+					<h:panelGrid columns="2">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Nome: " />
+							<p:inputText value="#{pessoaController.object.nome}" size="80" required="true" requiredMessage="Digite um nome" />
 
+							<h:outputLabel value="Pai: " />
+							<p:inputText value="#{pessoaController.object.pai}" size="80" />
+
+							<h:outputLabel value="Mãe: " />
+							<p:inputText value="#{pessoaController.object.mae}" size="80" />
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Data de Nascimento " size="11" />
+							<p:inputMask value="#{pessoaController.object.dataNascimento}" mask="99/99/9999" size="6" converter="SqlDateTimeConverter" />
+							<h:outputLabel value="Escolaridade: " />
+							<p:selectOneMenu value="#{pessoaController.object.escolaridade}" converter="#{converterController.escolaridadeConverter}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems value="#{comboBoxController.listaEscolaridade}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel value="Estado Civil " />
+							<p:selectOneMenu value="#{pessoaController.object.estadocivil}" converter="#{converterController.estadoCivilConverter}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems value="#{comboBoxController.listaEstadoCivil}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
 					</h:panelGrid>
 				</p:fieldset>
-				</p:tab>
-				
-				<p:tab title="Contatos" id="contatos">
-					<h:panelGrid columns="2">
-						<h:outputLabel value="Email: " />
-						<p:inputText value="#{pessoaController.object.email}" size="30" id="email"/>
-					</h:panelGrid>
-						
-					<p:fieldset legend="Telefones">
-						<h:panelGrid id="tel" columns="7">
-							<h:outputLabel value="DDD: " />
-							<p:inputMask value="#{pessoaController.telefoneSelecionado.dd}" mask="99" size="3"
-								required="true"
-								requiredMessage="Digite o DDD do telefone"/>
-							
-							<h:outputLabel value="Número:" />
-							<p:inputMask value="#{pessoaController.telefoneSelecionado.numero}" mask="9999-9999"  
-								required="true"
-								requiredMessage="Digite o Número do telefone"/>
-							
-							<h:outputLabel value="Tipo: " />
-							<p:selectOneMenu 
-								value="#{pessoaController.telefoneSelecionado.tipotelefone}"
-								converter="#{converterController.tipoTelefoneConverter}"  
-								required="true"
-								requiredMessage="Selecione o Tipo do telefone">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems value="#{comboBoxController.listaTipoTelefone}" />
-							</p:selectOneMenu>
-							<p:commandButton value="" styleClass="addIcon"
-								process="@parent" action="#{pessoaController.addTelefone()}"
-								update="@parent listaTel"> 
-							</p:commandButton>							
+				<p:tabView id="detalhes" activeIndex="0">
+					<p:tab title="Documentos" id="documentos">
+
+						<h:panelGrid columns="2">
+							<p:fieldset legend="Cpf: " style="width:340px">
+								<h:panelGrid columns="4">
+									<h:outputLabel value="Número: " />
+									<p:inputMask value="#{pessoaController.object.cpf.numero}" mask="999.999.999-99" size="11" />
+								</h:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Identidade: ">
+								<h:panelGrid columns="6">
+									<h:outputLabel value="Número: " />
+									<p:inputText value="#{pessoaController.object.identidade.numero}" />
+
+									<h:outputLabel value="Org. Emissor: " />
+									<p:inputMask value="#{pessoaController.object.identidade.emissor}" size="39" />
+								</h:panelGrid>
+							</p:fieldset>
 						</h:panelGrid>
-						<p:outputPanel id="listaTel">
-						<p:dataTable var="obj" value="#{pessoaController.telefoneList}" rowKey="#{obj.id}"
-							paginator="true" rows="10" paginatorAlwaysVisible="false" 						
-							paginatorPosition="bottom">
-							
-							<p:column headerText="DDD">
+						<p:fieldset legend="Título">
+							<h:panelGrid columns="10">
+								<h:outputLabel value="Número: " />
+								<p:inputText value="#{pessoaController.object.titulo.numero}" />
+
+								<h:outputLabel value="Zona: " />
+								<p:inputText value="#{pessoaController.object.titulo.zona}" size="3" />
+
+								<h:outputLabel value="Seção: " />
+								<p:inputText value="#{pessoaController.object.titulo.secao}" size="3" />
+
+							</h:panelGrid>
+						</p:fieldset>
+					</p:tab>
+
+					<p:tab title="Contatos" id="contatos">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Email: " />
+							<p:inputText value="#{pessoaController.object.email}" size="30" id="email" />
+						</h:panelGrid>
+
+						<p:fieldset legend="Telefones">
+							<h:panelGrid id="tel" columns="7">
+								<h:outputLabel value="DDD: " />
+								<p:inputMask value="#{pessoaController.telefoneSelecionado.dd}" mask="99" size="3" required="true" requiredMessage="Digite o DDD do telefone" />
+
+								<h:outputLabel value="Número:" />
+								<p:inputMask value="#{pessoaController.telefoneSelecionado.numero}" mask="9999-9999" required="true" requiredMessage="Digite o Número do telefone" />
+
+								<h:outputLabel value="Tipo: " />
+								<p:selectOneMenu value="#{pessoaController.telefoneSelecionado.tipotelefone}" converter="#{converterController.tipoTelefoneConverter}" required="true" requiredMessage="Selecione o Tipo do telefone">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems value="#{comboBoxController.listaTipoTelefone}" />
+								</p:selectOneMenu>
+								<p:commandButton value="" styleClass="addIcon" process="@parent" action="#{pessoaController.addTelefone()}" update="@parent listaTel">
+								</p:commandButton>
+							</h:panelGrid>
+							<p:outputPanel id="listaTel">
+								<p:dataTable var="obj" value="#{pessoaController.telefoneList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+									<p:column headerText="DDD">
 									#{obj.dd}
 							</p:column>
-							<p:column headerText="Numero">
+									<p:column headerText="Numero">
 									#{obj.numero}
 							</p:column>
-							<p:column headerText="Tipo">
+									<p:column headerText="Tipo">
 									#{obj.tipotelefone.descricao}
-									<p:commandButton  update=":form:tabs:detalhes:listaTel" process="@this"
-										value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeTelefone()}">
-										<f:setPropertyActionListener value="#{obj}"
-											target="#{pessoaController.telefoneSelecionado}" />
-									</p:commandButton>
-                			</p:column>
-						</p:dataTable>	
-						</p:outputPanel>				
-				</p:fieldset>	
-				</p:tab>
-				
-				<p:tab title="Endereço">
-					<h:panelGrid id="end" columns="1">
-						<h:panelGrid columns="6">
-							<h:outputLabel value="Rua: " />
-							<p:autoComplete value="#{pessoaController.enderecoSelecionado.logradouro}" converter="#{converterController.logradouroConverter}"
-								var="o" itemLabel="#{o.rua}" itemValue="#{o}" forceSelection="true" completeMethod="#{pessoaController.completeLogradouro}" size="60" scrollHeight="160"
-								required="true"
-								requiredMessage="Selecione uma Rua"
-								dropdown="true">
-								<p:ajax event="itemSelect" update="end" />
-								<p:column>
-									#{o.rua}
-								</p:column>
-								<p:column>
-									#{o.bairro}
-								</p:column>
-							</p:autoComplete>
-							
-							<h:outputLabel value="Número: " />
-							<p:inputText value="#{pessoaController.enderecoSelecionado.numero}"  size="3"/>
-							
-							<h:outputLabel value="Complemento: " />
-							<p:inputText value="#{pessoaController.enderecoSelecionado.complemento}" size="30" 	/>
-							
-							
-						</h:panelGrid>
-						<h:panelGrid columns="6">
-							<h:outputLabel value="Bairro: " />
-							<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.bairro}" size="40" readonly="true"/>
-						
-							<h:outputLabel value="Cep: " />
-							<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.cep}" readonly="true" size="9" />
-						
-							<h:outputLabel value="Cidade: " />
-							<p:inputText value="#{pessoaController.enderecoSelecionado.logradouro.cidade}" readonly="true" size="40"  />
-						</h:panelGrid>
-						
-						<p:commandButton value="" styleClass="addIcon"
-							process="@parent" action="#{pessoaController.addEndereco()}"
-							update="@parent listaEnd"> 
-						</p:commandButton>
-					</h:panelGrid>
-					<p:outputPanel  id="listaEnd">
-					<p:dataTable var="obj" value="#{pessoaController.enderecoList}" rowKey="#{obj.id}"
-							paginator="true" rows="10" paginatorAlwaysVisible="false"						
-							paginatorPosition="bottom">
-							
-							<p:column headerText="Rua">
+									<p:commandButton update=":form:tabs:detalhes:listaTel" process="@this" value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeTelefone()}">
+											<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.telefoneSelecionado}" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</p:outputPanel>
+						</p:fieldset>
+					</p:tab>
+
+					<p:tab title="Endereço">
+						<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{pessoaController.configEndereco()}" oncomplete="janelaEndereco.show()" update=":newEndereco" />
+						<p:outputPanel id="listaEnd">
+							<p:dataTable var="obj" value="#{pessoaController.enderecoList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+								<p:column headerText="Rua">
 									#{obj.logradouro.rua}
 							</p:column>
-							<p:column headerText="Numero">
+								<p:column headerText="Numero">
 									#{obj.numero}
 							</p:column>
-							<p:column headerText="Bairro">
+								<p:column headerText="Bairro">
 									#{obj.logradouro.bairro}
-									<p:commandButton  update=":form:tabs:detalhes:listaEnd" process="@this"
-										value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeEndereco()}">
-										<f:setPropertyActionListener value="#{obj}"
-											target="#{pessoaController.enderecoSelecionado}" />
+									<p:commandButton update=":form:tabs:detalhes:listaEnd" process="@this" value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeEndereco()}">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.enderecoSelecionado}" />
 									</p:commandButton>
-                			</p:column>
-						</p:dataTable>	
-						</p:outputPanel>	
-				</p:tab>
-				
-				<p:tab title="Composição Familiar">						
-						<h:panelGrid id="par" columns="9">
-							<h:outputLabel value="Nome: " />
-							<p:inputMask value="#{pessoaController.parenteSelecionado.nome}" 
-								required="true"
-								requiredMessage="Digite o nome do Familiar"/>
-							
-							<h:outputLabel value="Nascimento: " />
-							<p:inputMask value="#{pessoaController.parenteSelecionado.dataNascimento}" mask="99/99/9999" converter="SqlDateTimeConverter" 
-								required="true"
-								requiredMessage="Digite o nascimento do Familiar"/>
-							
-							<h:outputLabel value="Renda:" />
-							<p:inputMask value="#{pessoaController.parenteSelecionado.renda}" converter="MoedaConverter" 
-								required="true"
-								requiredMessage="Digite a renda do Familiar"/>
-							
-							<h:outputLabel value="Parentesco: " />
-							<p:selectOneMenu 
-								value="#{pessoaController.parenteSelecionado.tipoparentesco}"
-								converter="#{converterController.tipoParentescoConverter}"
-								required="true"
-								requiredMessage="Selecione o parentesco do Familiar">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems value="#{comboBoxController.listaTipoParentesco}" />
-							</p:selectOneMenu>
-							<p:commandButton value="" styleClass="addIcon"
-								process="@parent" action="#{pessoaController.addParentesco()}"
-								update="@parent listaPar"> 
-							</p:commandButton>							
-						</h:panelGrid>
-						
+									<p:commandButton update=":newEndereco" process="@this" oncomplete="janelaEndereco.show()" value="" styleClass="editIcon" style="float:right">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.enderecoSelecionado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+					</p:tab>
+
+					<p:tab title="Composição Familiar">
+						<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{pessoaController.configParente()}" oncomplete="janelaComposicaoFamiliar.show()" update=":newComposicaoFamiliar" />
 						<p:outputPanel id="listaPar">
-						<p:dataTable  var="obj" value="#{pessoaController.parenteList}" rowKey="#{obj.id}"
-							paginator="true" rows="10" paginatorAlwaysVisible="false"						
-							paginatorPosition="bottom">
-							<p:column headerText="Nome">
+							<p:dataTable var="obj" value="#{pessoaController.parenteList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+								<p:column headerText="Nome">
 									#{obj.nome}
 							</p:column>
-							<p:column headerText="Nascimento">
+								<p:column headerText="Nascimento">
 									<h:outputText value="#{obj.dataNascimento}" converter="SqlDateTimeConverter" />
-							</p:column>
-							<p:column headerText="Renda" >
+								</p:column>
+								<p:column headerText="Renda">
 									#{obj.renda}
 							</p:column>
-							<p:column headerText="Parentesco">
+								<p:column headerText="Parentesco">
 									#{obj.tipoparentesco.descricao}
-									<p:commandButton  update=":form:tabs:detalhes:listaPar" process="@this"
-										value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeParente()}">
-										<f:setPropertyActionListener value="#{obj}"
-											target="#{pessoaController.parenteSelecionado}" />
+									<p:commandButton update=":form:tabs:detalhes:listaPar" process="@this" value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeParente()}">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.parenteSelecionado}" />
 									</p:commandButton>
-                			</p:column>
-						</p:dataTable>
-						</p:outputPanel>					
-	
-				</p:tab>
-				
-				<p:tab title="Bens">						
-						<h:panelGrid id="bem" columns="7">							
+									<p:commandButton update=":newComposicaoFamiliar" process="@this" oncomplete="janelaComposicaoFamiliar.show()" value="" styleClass="editIcon" style="float:right">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.parenteSelecionado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+
+					</p:tab>
+
+					<p:tab title="Bens">
+						<h:panelGrid id="bem" columns="7">
 							<h:outputLabel value="Bem: " />
-							<p:selectOneMenu 
-								value="#{pessoaController.pessoabenSelecionado.ben}"
-								converter="#{converterController.benConverter}"
-								required="true" requiredMessage="Selecione um Bem">
+							<p:selectOneMenu value="#{pessoaController.pessoabenSelecionado.ben}" converter="#{converterController.benConverter}" required="true" requiredMessage="Selecione um Bem">
 								<f:selectItem itemLabel="Selecione..." />
 								<f:selectItems value="#{comboBoxController.listaBen}" />
 							</p:selectOneMenu>
-							<p:commandButton value="" styleClass="addIcon"
-								process="@parent" action="#{pessoaController.addBen()}"
-								update="@parent listaBem"> 
-							</p:commandButton>							
+							<p:commandButton value="" styleClass="addIcon" process="@parent" action="#{pessoaController.addBen()}" update="@parent listaBem">
+							</p:commandButton>
 						</h:panelGrid>
 						<p:outputPanel id="listaBem">
-						<p:dataTable var="obj" value="#{pessoaController.pessoaBensList}" rowKey="#{obj.id}"
-							paginator="true" rows="10" paginatorAlwaysVisible="false"						
-							paginatorPosition="bottom">
-							<p:column headerText="Nome">
+							<p:dataTable var="obj" value="#{pessoaController.pessoaBensList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+								<p:column headerText="Nome">
 									#{obj.ben.descricao}
-									<p:commandButton  update=":form:tabs:detalhes:listaBem" process="@this"
-										value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeBen()}">
-										<f:setPropertyActionListener value="#{obj}"
-											target="#{pessoaController.pessoabenSelecionado}" />
+									<p:commandButton update=":form:tabs:detalhes:listaBem" process="@this" value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeBen()}">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.pessoabenSelecionado}" />
 									</p:commandButton>
-                			</p:column>
-						</p:dataTable>					
+								</p:column>
+							</p:dataTable>
 						</p:outputPanel>
-				</p:tab>
-				
-				<p:tab title="Matriculas">		
-					<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{pessoaController.configMatricula()}" oncomplete="janelaMatricula.show()" update=":newMatricula"/>
-						<p:outputPanel id="listaMatricula">									
-						<p:dataTable  var="obj" value="#{pessoaController.matriculasList}" rowKey="#{obj.id}"
-							paginator="true" rows="10" paginatorAlwaysVisible="false"						
-							paginatorPosition="bottom">
-							<p:column headerText="Curso" sortBy="#{obj.cursofaculdade.curso.descricao}">
+					</p:tab>
+
+					<p:tab title="Matriculas">
+						<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{pessoaController.configMatricula()}" oncomplete="janelaMatricula.show()" update=":newMatricula" />
+						<p:outputPanel id="listaMatricula">
+							<p:dataTable var="obj" value="#{pessoaController.matriculasList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+								<p:column headerText="Curso" sortBy="#{obj.cursofaculdade.curso.descricao}">
 								#{obj.cursofaculdade.curso.descricao}
                 			</p:column>
-                			
-                			<p:column headerText="Faculdade" sortBy="#{obj.cursofaculdade.faculdade.nome}">
+
+								<p:column headerText="Faculdade" sortBy="#{obj.cursofaculdade.faculdade.nome}">
 								#{obj.cursofaculdade.faculdade.nome}
                 			</p:column>
-                			                			
-                			<p:column headerText="Matricula" sortBy="#{obj.matricula}">
+
+								<p:column headerText="Matricula" sortBy="#{obj.matricula}">
 								#{obj.matricula}
                 			</p:column>
-                			
-                			<p:column headerText="Admissão na Bolsa" sortBy="#{obj.dataIngresso}">
-								<h:outputText value="#{obj.dataIngresso}"  converter="SqlDateTimeConverter"/>
-                			</p:column>
-                			
-                			<p:column headerText="Ingresso na Faculdade" >
+
+								<p:column headerText="Admissão na Bolsa" sortBy="#{obj.dataIngresso}">
+									<h:outputText value="#{obj.dataIngresso}" converter="SqlDateTimeConverter" />
+								</p:column>
+
+								<p:column headerText="Ingresso na Faculdade">
 								#{obj.periodoletivo.ano}/#{obj.periodoletivo.semestre}
                 			</p:column>
-                  			
-                			<p:column headerText="Duração do Curso" sortBy="#{obj.duracaoCurso}">
-								<h:outputLabel value="#{obj.duracaoCurso} Periodos"  />				
-								<p:commandButton  update=":form:tabs:detalhes:listaMatricula" process="@this"
-									value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeMatricula()}">
-									<f:setPropertyActionListener value="#{obj}"
-										target="#{pessoaController.matriculaSelecionado}" />
-								</p:commandButton>
-								<p:commandButton  update=":newMatricula" process="@this" oncomplete="janelaMatricula.show()"
-									value="" styleClass="editIcon"  style="float:right">
-									<f:setPropertyActionListener value="#{obj}"
-										target="#{pessoaController.matriculaSelecionado}" />
-								</p:commandButton>
-                			</p:column>
-						</p:dataTable>	
-						</p:outputPanel>				
-				</p:tab>
-				<p:tab title="Observação" id="observacao">					
-						<h:panelGrid columns="1" style="width:100%">	
-						<p:inputTextarea value="#{pessoaController.object.observacao}" style="width:100%" rows="5"/>
+
+								<p:column headerText="Duração do Curso" sortBy="#{obj.duracaoCurso}">
+									<h:outputLabel value="#{obj.duracaoCurso} Periodos" />
+									<p:commandButton update=":form:tabs:detalhes:listaMatricula" process="@this" value="" styleClass="removeIcon" style="float:right" action="#{pessoaController.removeMatricula()}">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.matriculaSelecionado}" />
+									</p:commandButton>
+									<p:commandButton update=":newMatricula" process="@this" oncomplete="janelaMatricula.show()" value="" styleClass="editIcon" style="float:right">
+										<f:setPropertyActionListener value="#{obj}" target="#{pessoaController.matriculaSelecionado}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+					</p:tab>
+					<p:tab title="Observação" id="observacao">
+						<h:panelGrid columns="1" style="width:100%">
+							<p:inputTextarea value="#{pessoaController.object.observacao}" style="width:100%" rows="5" />
 						</h:panelGrid>
-				</p:tab>
-				<p:tab title="Dados Bancários" id="bancarios">					
-						<h:panelGrid columns="2">	
-						<h:outputLabel value="Agência: " />
-						<p:inputText value="#{pessoaController.object.agencia}" />
-						
-						<h:outputLabel value="Conta: " />
-						<p:inputText value="#{pessoaController.object.conta}" />
-						
+					</p:tab>
+					<p:tab title="Dados Bancários" id="bancarios">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Agência: " />
+							<p:inputText value="#{pessoaController.object.agencia}" />
+
+							<h:outputLabel value="Conta: " />
+							<p:inputText value="#{pessoaController.object.conta}" />
+
 						</h:panelGrid>
-				</p:tab>
-			</p:tabView>
-			
-			<h:panelGrid columns="3" rendered="#{not empty pessoaController.object.id}">
-				<p:commandButton value="" styleClass="editButton" actionListener="#{pessoaController.salvar}" 
-					process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" 
-					update="@form" onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
-				<p:commandButton value="" styleClass="deleteButton" actionListener="#{pessoaController.excluir}" 
-					process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" 
-					update="@form"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-				<p:commandButton value="" styleClass="cancelButton" actionListener="#{pessoaController.novo}" 
-					process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" 
-					update="@form"/>
-			</h:panelGrid>
-			<h:panelGrid columns="1"  rendered="#{empty pessoaController.object.id}">
-				<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.salvar}" 
-					process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao"
-					update="@form"  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
-			</h:panelGrid>
+					</p:tab>
+				</p:tabView>
+
+				<h:panelGrid columns="3" rendered="#{not empty pessoaController.object.id}">
+					<p:commandButton value="" styleClass="editButton" actionListener="#{pessoaController.salvar}" process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" update="@form" onstart="statusDialog.show();"
+						onsuccess="statusDialog.hide();" />
+					<p:commandButton value="" styleClass="deleteButton" actionListener="#{pessoaController.excluir}" process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" update="@form" onstart="statusDialog.show();"
+						onsuccess="statusDialog.hide();" />
+					<p:commandButton value="" styleClass="cancelButton" actionListener="#{pessoaController.novo}" process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" update="@form" />
+				</h:panelGrid>
+				<h:panelGrid columns="1" rendered="#{empty pessoaController.object.id}">
+					<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.salvar}" process="@this dadosPessoais :form:tabs:detalhes:documentos :form:tabs:detalhes:email :form:tabs:detalhes:bancarios :form:tabs:detalhes:observacao" update="@form" onstart="statusDialog.show();"
+						onsuccess="statusDialog.hide();" />
+				</h:panelGrid>
 			</p:tab>
 			<p:tab title="Pesquisar">
 				<div id="search">
-					<p:inputText id="search" value="#{pessoaController.filtro}" > 
+					<p:inputText id="search" value="#{pessoaController.filtro}">
 						<p:ajax event="keyup" update="lista" />
 					</p:inputText>
-					<p:watermark for="search" value="Pesquise aqui..." /> 
+					<p:watermark for="search" value="Pesquise aqui..." />
 				</div>
-				<p:dataTable var="obj" id="lista" value="#{pessoaController.objects}" rowKey="#{obj.id}"
-					paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" 
-					paginatorPosition="bottom" selection="#{pessoaController.object}">
+				<p:dataTable var="obj" id="lista" value="#{pessoaController.objects}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" selectionMode="single" paginatorPosition="bottom" selection="#{pessoaController.object}">
 					<p:ajax event="rowSelect" update="@form" />
 					<p:column headerText="Nome" sortBy="#{obj.nome}">
 						#{obj.nome}
                 	</p:column>
-                	<p:column headerText="Cpf" sortBy="#{obj.cpf.numero}">
+					<p:column headerText="Cpf" sortBy="#{obj.cpf.numero}">
 						#{obj.cpf.numero}
                 	</p:column>
-                	<p:column headerText="Identidade" sortBy="#{obj.identidade.numero}">
+					<p:column headerText="Identidade" sortBy="#{obj.identidade.numero}">
 						#{obj.identidade.numero}
                 	</p:column>
-                	<p:column headerText="Título" sortBy="#{obj.titulo.numero}">
+					<p:column headerText="Título" sortBy="#{obj.titulo.numero}">
 						#{obj.titulo.numero}
                 	</p:column>
 				</p:dataTable>
 			</p:tab>
 		</p:tabView>
-		</h:form>
+	</h:form>
 </ui:composition>
 
 

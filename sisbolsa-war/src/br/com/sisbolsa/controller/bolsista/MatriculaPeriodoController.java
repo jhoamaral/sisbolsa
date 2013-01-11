@@ -252,8 +252,6 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 		findMat.join("left join fetch c.telefones d");
 		findMat.addEquals("a", this.obj);
 		findMat.setLimit(1);
-		System.out.println(findMat.getSql());
-		System.out.println(findMat.getAllList().size());
 		Map<String,String> params = new HashMap<String, String>();	
 		params.put("logo", contexto.getExternalContext().getRealPath(Constantes.LOGO));
 		params.put("periodo",String.valueOf(UtilService.calculaPeriodoAtual(this.obj.getMatricula().getPeriodoletivo(),this.obj.getPeriodoletivo()))); 

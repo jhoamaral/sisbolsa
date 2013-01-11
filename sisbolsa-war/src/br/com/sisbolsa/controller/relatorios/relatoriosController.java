@@ -18,7 +18,6 @@ import br.com.domain.Matriculaperiodo;
 import br.com.dto.ItemFolhaDTO;
 import br.com.repositorio.Repositorio;
 import br.com.service.ReportService;
-import br.com.service.generetor.GeneratorEnum;
 import br.com.service.reports.ReportModel;
 import br.com.sisbolsa.util.Constantes;
 @ManagedBean

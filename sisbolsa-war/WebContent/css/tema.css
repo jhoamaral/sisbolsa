@@ -312,6 +312,7 @@ a.ui-menuitem-link.ui-corner-all.ui-state-hover{
  	-moz-box-shadow: none !important;
 	-webkit-box-shadow:none !important;
 	box-shadow: none !important;
+	margin-bottom: 5px;
  }
  
  .calculateButton{

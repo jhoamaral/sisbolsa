@@ -6,8 +6,7 @@ import java.util.Map;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
-import br.com.service.reports.ReportModel;
 
 public interface Generator {
-	void gerar(InputStream inputStream,OutputStream outputStream, Map map, JRDataSource jrDataSource) throws JRException;
+	void gerar(InputStream inputStream,OutputStream outputStream, Map<?,?> map, JRDataSource jrDataSource) throws JRException;
 }

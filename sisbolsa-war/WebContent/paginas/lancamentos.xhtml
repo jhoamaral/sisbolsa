@@ -41,9 +41,9 @@
 			<h:form id="new">
 				<h:panelGrid columns="1">
 					<h:panelGrid id="novoItem" columns="2">
-						<h:outputLabel value="Periodo Letivo: " />
+						<h:outputLabel value="Periodo Letivo: " rendered="#{empty lancamentosController.novoItem.id}"/>
 						<p:selectOneMenu value="#{lancamentosController.periodoletivoSelecionado}"
-							converter="#{converterController.periodoLetivoConverter}">
+							converter="#{converterController.periodoLetivoConverter}" rendered="#{empty lancamentosController.novoItem.id}">
 							<p:ajax  event="change" listener="#{lancamentosController.carregaListMatricula()}"/>
 							<f:selectItem itemLabel="Selecione..." />
 							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}"/>
@@ -76,7 +76,7 @@
 						<p:inputText id="itValor" value="#{lancamentosController.boletoSelecionado.valor}"  converter="MoedaConverter" readonly="true"/>
 						
 						<h:outputLabel value="CR: " />
-						<p:inputText id="itCr" value="#{lancamentosController.novoItem.matriculaperiodo.cr}" />
+						<p:inputText id="itCr" value="#{lancamentosController.novoItem.matriculaperiodo.cr}" readonly="true"/>
 					</h:panelGrid>	
 				</h:panelGrid>
 				

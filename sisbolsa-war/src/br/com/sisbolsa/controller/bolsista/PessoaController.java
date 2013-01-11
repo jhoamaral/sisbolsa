@@ -24,8 +24,7 @@ import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
 @ViewScoped
-public class PessoaController extends AbstractController<Pessoa> implements
-		Serializable {
+public class PessoaController extends AbstractController<Pessoa> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Socioeconeomico socioeconeomicoSelecionado = new Socioeconeomico();
@@ -48,8 +47,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			try {
 				return new ArrayList(this.obj.getTelefones());
 			} catch (Exception e) {
-				Repositorio<Telefone> getTelefones = Repositorio
-						.GetInstance(Telefone.class);
+				Repositorio<Telefone> getTelefones = Repositorio.GetInstance(Telefone.class);
 				getTelefones.addEquals("pessoa", this.obj);
 				this.obj.setTelefones(getTelefones.getAllSet());
 				return new ArrayList(this.obj.getTelefones());
@@ -67,8 +65,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			try {
 				return new ArrayList(this.obj.getEnderecos());
 			} catch (Exception e) {
-				Repositorio<Endereco> getEnderecos = Repositorio
-						.GetInstance(Endereco.class);
+				Repositorio<Endereco> getEnderecos = Repositorio.GetInstance(Endereco.class);
 				getEnderecos.addEquals("pessoa", this.obj);
 				this.obj.setEnderecos(getEnderecos.getAllSet());
 				return new ArrayList(this.obj.getEnderecos());
@@ -85,8 +82,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			try {
 				return new ArrayList(this.obj.getFamiliares());
 			} catch (Exception e) {
-				Repositorio<Familiar> getObjects = Repositorio
-						.GetInstance(Familiar.class);
+				Repositorio<Familiar> getObjects = Repositorio.GetInstance(Familiar.class);
 				getObjects.addEquals("pessoa", this.obj);
 				this.obj.setFamiliares(getObjects.getAllSet());
 				return new ArrayList(this.obj.getFamiliares());
@@ -103,8 +99,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			try {
 				return new ArrayList(this.obj.getPessoabens());
 			} catch (Exception e) {
-				Repositorio<Pessoaben> getObjects = Repositorio
-						.GetInstance(Pessoaben.class);
+				Repositorio<Pessoaben> getObjects = Repositorio.GetInstance(Pessoaben.class);
 				getObjects.addEquals("pessoa", this.obj);
 				this.obj.setPessoabens(getObjects.getAllSet());
 				return new ArrayList(this.obj.getPessoabens());
@@ -121,8 +116,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			try {
 				return new ArrayList(this.obj.getMatriculas());
 			} catch (Exception e) {
-				Repositorio<Matricula> getObjects = Repositorio
-						.GetInstance(Matricula.class);
+				Repositorio<Matricula> getObjects = Repositorio.GetInstance(Matricula.class);
 				getObjects.addEquals("pessoa", this.obj);
 				this.obj.setMatriculas(getObjects.getAllSet());
 				return new ArrayList(this.obj.getMatriculas());
@@ -146,8 +140,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 		return socioeconeomicoSelecionado;
 	}
 
-	public void setSocioeconeomicoSelecionado(
-			Socioeconeomico socioeconeomicoSelecionado) {
+	public void setSocioeconeomicoSelecionado(Socioeconeomico socioeconeomicoSelecionado) {
 		this.socioeconeomicoSelecionado = socioeconeomicoSelecionado;
 	}
 
@@ -191,8 +184,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 
 		this.matriculaSelecionado = matriculaSelecionado;
 		if (this.matriculaSelecionado.getCursofaculdade() instanceof Cursofaculdade) {
-			this.faculdadeSelecionada = this.matriculaSelecionado
-					.getCursofaculdade().getFaculdade();
+			this.faculdadeSelecionada = this.matriculaSelecionado.getCursofaculdade().getFaculdade();
 		}
 		System.out.println(this.matriculaSelecionado);
 	}
@@ -224,16 +216,13 @@ public class PessoaController extends AbstractController<Pessoa> implements
 		List<Logradouro> suggestions = new ArrayList<Logradouro>();
 
 		if (this.listLogradouro.isEmpty()) {
-			Repositorio<Logradouro> getLogradouros = Repositorio
-					.GetInstance(Logradouro.class);
+			Repositorio<Logradouro> getLogradouros = Repositorio.GetInstance(Logradouro.class);
 			getLogradouros.addOrder("rua");
 			this.listLogradouro = getLogradouros.getAllList();
 		}
 
 		for (Logradouro obj : this.listLogradouro) {
-			if (obj.getRua().toLowerCase().startsWith(query.toLowerCase())
-					|| obj.getBairro().toLowerCase()
-							.startsWith(query.toLowerCase()))
+			if (obj.getRua().toLowerCase().indexOf(query.toLowerCase()) > -1 || obj.getBairro().toLowerCase().indexOf(query.toLowerCase()) > -1)
 				suggestions.add(obj);
 		}
 
@@ -242,8 +231,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 
 	public List<SelectItem> getListaFaculdade() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		Repositorio<Faculdade> getObj = Repositorio
-				.GetInstance(Faculdade.class);
+		Repositorio<Faculdade> getObj = Repositorio.GetInstance(Faculdade.class);
 		getObj.addOrder("nome");
 		for (Faculdade obj : getObj.getAllList()) {
 			lista.add(new SelectItem(obj, String.valueOf(obj.getNome())));
@@ -254,8 +242,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 
 	public List<SelectItem> getListaCursoFaculdade() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		Repositorio<Cursofaculdade> getObj = Repositorio
-				.GetInstance(Cursofaculdade.class);
+		Repositorio<Cursofaculdade> getObj = Repositorio.GetInstance(Cursofaculdade.class);
 		getObj.addEquals("faculdade", this.getFaculdadeSelecionada());
 		getObj.addOrder("curso.descricao");
 		for (Cursofaculdade obj : getObj.getAllList()) {
@@ -269,8 +256,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 		try {
 			this.telefoneSelecionado.setPessoa(this.obj);
 			if (this.obj.getId() instanceof String) {
-				Repositorio<Telefone> saveTel = Repositorio
-						.GetInstance(Telefone.class);
+				Repositorio<Telefone> saveTel = Repositorio.GetInstance(Telefone.class);
 				saveTel.cadastrar(this.telefoneSelecionado);
 
 			} else {
@@ -287,10 +273,8 @@ public class PessoaController extends AbstractController<Pessoa> implements
 	public void removeTelefone() {
 		try {
 			this.obj.getTelefones().remove(telefoneSelecionado);
-			if ((this.obj.getId() instanceof String)
-					&& (this.telefoneSelecionado.getId() instanceof String)) {
-				Repositorio<Telefone> saveTel = Repositorio
-						.GetInstance(Telefone.class);
+			if ((this.obj.getId() instanceof String) && (this.telefoneSelecionado.getId() instanceof String)) {
+				Repositorio<Telefone> saveTel = Repositorio.GetInstance(Telefone.class);
 				saveTel.delete(this.telefoneSelecionado);
 			}
 
@@ -302,18 +286,27 @@ public class PessoaController extends AbstractController<Pessoa> implements
 
 	}
 
+	public void configEndereco() {
+		this.setEnderecoSelecionado(new Endereco());
+	}
+
 	public void addEndereco() {
 		try {
-			this.getEnderecoSelecionado().setPessoa(this.obj);
-			if (this.obj.getId() instanceof String) {
-				Repositorio<Endereco> saveTel = Repositorio
-						.GetInstance(Endereco.class);
-				saveTel.cadastrar(this.getEnderecoSelecionado());
+			if (!(this.enderecoSelecionado.getId() instanceof String)) {
+				this.getEnderecoSelecionado().setPessoa(this.obj);
+				if (this.obj.getId() instanceof String) {
+					Repositorio<Endereco> saveTel = Repositorio.GetInstance(Endereco.class);
+					saveTel.cadastrar(this.getEnderecoSelecionado());
 
+				} else {
+					this.getEnderecoSelecionado().setId(UtilService.generateOid());
+				}
+
+				this.obj.getEnderecos().add(this.getEnderecoSelecionado());
 			} else {
-				this.getEnderecoSelecionado().setId(UtilService.generateOid());
+				Repositorio<Endereco> saveTel = Repositorio.GetInstance(Endereco.class);
+				saveTel.editar(this.getEnderecoSelecionado());
 			}
-			this.obj.getEnderecos().add(this.getEnderecoSelecionado());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -324,12 +317,9 @@ public class PessoaController extends AbstractController<Pessoa> implements
 	public void removeEndereco() {
 
 		try {
-			System.out.println(this.obj.getEnderecos().remove(
-					this.enderecoSelecionado));
-			if ((this.obj.getId() instanceof String)
-					&& (this.getEnderecoSelecionado().getId() instanceof String)) {
-				Repositorio<Endereco> saveTel = Repositorio
-						.GetInstance(Endereco.class);
+			this.obj.getEnderecos().remove(this.enderecoSelecionado);
+			if ((this.obj.getId() instanceof String) && (this.getEnderecoSelecionado().getId() instanceof String)) {
+				Repositorio<Endereco> saveTel = Repositorio.GetInstance(Endereco.class);
 				saveTel.delete(this.getEnderecoSelecionado());
 			}
 
@@ -340,18 +330,27 @@ public class PessoaController extends AbstractController<Pessoa> implements
 
 	}
 
+	public void configParente() {
+		this.setParenteSelecionado(new Familiar());
+	}
+
 	public void addParentesco() {
 		try {
-			this.parenteSelecionado.setPessoa(this.obj);
-			if (this.obj.getId() instanceof String) {
-				Repositorio<Familiar> saveTel = Repositorio
-						.GetInstance(Familiar.class);
-				saveTel.cadastrar(this.parenteSelecionado);
+			if (!(this.parenteSelecionado.getId() instanceof String)) {
+				this.parenteSelecionado.setPessoa(this.obj);
+				if (this.obj.getId() instanceof String) {
+					Repositorio<Familiar> saveTel = Repositorio.GetInstance(Familiar.class);
+					saveTel.cadastrar(this.parenteSelecionado);
+
+				} else {
+					this.parenteSelecionado.setId(UtilService.generateOid());
+				}
+				this.obj.getFamiliares().add(this.parenteSelecionado);
 
 			} else {
-				this.parenteSelecionado.setId(UtilService.generateOid());
+				Repositorio<Familiar> saveTel = Repositorio.GetInstance(Familiar.class);
+				saveTel.editar(this.parenteSelecionado);
 			}
-			this.obj.getFamiliares().add(this.parenteSelecionado);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -362,10 +361,8 @@ public class PessoaController extends AbstractController<Pessoa> implements
 	public void removeParente() {
 		try {
 			this.obj.getFamiliares().remove(parenteSelecionado);
-			if ((this.obj.getId() instanceof String)
-					&& (this.parenteSelecionado.getId() instanceof String)) {
-				Repositorio<Familiar> saveTel = Repositorio
-						.GetInstance(Familiar.class);
+			if ((this.obj.getId() instanceof String) && (this.parenteSelecionado.getId() instanceof String)) {
+				Repositorio<Familiar> saveTel = Repositorio.GetInstance(Familiar.class);
 				saveTel.delete(this.parenteSelecionado);
 			}
 
@@ -386,17 +383,14 @@ public class PessoaController extends AbstractController<Pessoa> implements
 			if (!(this.matriculaSelecionado.getId() instanceof String)) {
 				this.getMatriculaSelecionado().setPessoa(this.obj);
 				if (this.obj.getId() instanceof String) {
-					Repositorio<Matricula> saveTel = Repositorio
-							.GetInstance(Matricula.class);
+					Repositorio<Matricula> saveTel = Repositorio.GetInstance(Matricula.class);
 					saveTel.cadastrar(this.getMatriculaSelecionado());
 				} else {
-					this.getMatriculaSelecionado().setId(
-							UtilService.generateOid());
+					this.getMatriculaSelecionado().setId(UtilService.generateOid());
 				}
 				this.obj.getMatriculas().add(this.getMatriculaSelecionado());
 			} else {
-				Repositorio<Matricula> saveMatricula = Repositorio
-						.GetInstance(Matricula.class);
+				Repositorio<Matricula> saveMatricula = Repositorio.GetInstance(Matricula.class);
 				saveMatricula.editar(this.matriculaSelecionado);
 			}
 		} catch (Exception e) {
@@ -411,10 +405,8 @@ public class PessoaController extends AbstractController<Pessoa> implements
 	public void removeMatricula() {
 		try {
 			this.obj.getMatriculas().remove(getMatriculaSelecionado());
-			if ((this.obj.getId() instanceof String)
-					&& (this.getMatriculaSelecionado().getId() instanceof String)) {
-				Repositorio<Matricula> saveTel = Repositorio
-						.GetInstance(Matricula.class);
+			if ((this.obj.getId() instanceof String) && (this.getMatriculaSelecionado().getId() instanceof String)) {
+				Repositorio<Matricula> saveTel = Repositorio.GetInstance(Matricula.class);
 				saveTel.delete(this.getMatriculaSelecionado());
 			}
 
@@ -429,8 +421,7 @@ public class PessoaController extends AbstractController<Pessoa> implements
 		try {
 			this.pessoabenSelecionado.setPessoa(this.obj);
 			if (this.obj.getId() instanceof String) {
-				Repositorio<Pessoaben> saveTel = Repositorio
-						.GetInstance(Pessoaben.class);
+				Repositorio<Pessoaben> saveTel = Repositorio.GetInstance(Pessoaben.class);
 				saveTel.cadastrar(this.pessoabenSelecionado);
 
 			} else {
@@ -447,10 +438,8 @@ public class PessoaController extends AbstractController<Pessoa> implements
 	public void removeBen() {
 		try {
 			this.obj.getPessoabens().remove(pessoabenSelecionado);
-			if ((this.obj.getId() instanceof String)
-					&& (this.pessoabenSelecionado.getId() instanceof String)) {
-				Repositorio<Pessoaben> saveTel = Repositorio
-						.GetInstance(Pessoaben.class);
+			if ((this.obj.getId() instanceof String) && (this.pessoabenSelecionado.getId() instanceof String)) {
+				Repositorio<Pessoaben> saveTel = Repositorio.GetInstance(Pessoaben.class);
 				saveTel.delete(this.pessoabenSelecionado);
 			}
 		} catch (Exception e) {

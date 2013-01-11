@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.Stateless;
-import javax.faces.context.FacesContext;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -31,7 +30,7 @@ public class ReportService {
 	public ByteArrayInputStream gerar(ReportModel reportModel,  Collection<?> collection) throws IOException, ClassNotFoundException{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
-			GeneratorEnum.PDF.value().gerar(reportModel.value(), output, new HashMap(), new JRBeanCollectionDataSource(collection));
+			GeneratorEnum.PDF.value().gerar(reportModel.value(), output, new HashMap<Object,Object>(), new JRBeanCollectionDataSource(collection));
 		} catch (JRException e) {
 			e.printStackTrace();
 		}
