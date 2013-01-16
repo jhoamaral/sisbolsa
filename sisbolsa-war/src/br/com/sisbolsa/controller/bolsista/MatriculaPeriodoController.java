@@ -250,6 +250,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 		findMat.join("left join fetch a.matricula b");
 		findMat.join("left join fetch b.pessoa c");
 		findMat.join("left join fetch c.telefones d");
+		findMat.join("left join fetch c.familiares f");
 		findMat.addEquals("a", this.obj);
 		findMat.setLimit(1);
 		Map<String,String> params = new HashMap<String, String>();	

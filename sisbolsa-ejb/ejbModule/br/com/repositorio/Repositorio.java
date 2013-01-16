@@ -49,7 +49,6 @@ public class Repositorio<T> {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		
 		return repo;
 	}
 	
