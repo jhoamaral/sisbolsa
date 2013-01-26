@@ -183,6 +183,10 @@ public class LancamentosController extends AbstractController<Folha> implements
 		} catch (NoRecordFoundException e) {
 		} catch (NullPointerException e) {
 		}
+		Repositorio<Eventocauculado> repositorio = Repositorio.GetInstance(Eventocauculado.class);
+		repositorio.addEquals("itemid", this.novoItem);
+		this.novoItem.setEventocauculados(repositorio.getAllSet());
+		
 
 	}
 
@@ -287,7 +291,7 @@ public class LancamentosController extends AbstractController<Folha> implements
 			getItem.addEquals("matriculaperiodo",
 					(Matriculaperiodo) event.getObject());
 			getItem.addEquals("folha", this.obj);
-			this.novoItem = getItem.getFirstRow();
+			this.setNovoItem(getItem.getFirstRow());
 
 		} catch (NoRecordFoundException e) {
 			this.novoItem.setMatriculaperiodo((Matriculaperiodo) event
