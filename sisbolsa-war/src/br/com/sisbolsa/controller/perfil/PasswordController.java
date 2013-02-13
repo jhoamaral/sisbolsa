@@ -24,7 +24,7 @@ public class PasswordController extends AbstractController<Usuario> implements S
 	private Usuario user;
 
 	public PasswordController() {
-		super(Repositorio.GetInstance(Usuario.class), 0,"login");
+		super( 0,"login");
 	}
 
 	@Override
@@ -64,12 +64,10 @@ public class PasswordController extends AbstractController<Usuario> implements S
 
 	public void changePassword(){
 		FacesContext context = FacesContext.getCurrentInstance();
-		
-		Repositorio<Usuario> save = Repositorio.GetInstance(Usuario.class);
 		if(this.getPasswordDigitado().equals(this.user.getSenha())){
 			this.user.setSenha(this.getNovoPassword());
 			try {
-				save.editar(user);
+				Repositorio.editar(user);
 				this.novo();
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Sucesso!", "Senha alterada com sucesso!"));
 			} catch (Exception e) {

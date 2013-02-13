@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Condicoesmoradia;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class CondicoesMoradiaController extends AbstractController<Condicoesmora
 	private static final long serialVersionUID = -6773170615007046046L;
 
 	public CondicoesMoradiaController() {
-		super(Repositorio.GetInstance(Condicoesmoradia.class), 1,"descricao");
+		super( 1,"descricao");
 	}
 
 	@Override

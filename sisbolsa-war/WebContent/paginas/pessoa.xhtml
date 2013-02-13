@@ -50,22 +50,39 @@
 
 	<p:dialog widgetVar="janelaComposicaoFamiliar" modal="true" resizable="false" header="Composição Familiar" closable="false" width="800">
 		<h:form id="newComposicaoFamiliar">
-			<h:panelGrid id="composicaoFamiliar" columns="8">
-				<h:outputLabel value="Nome: " />
-				<p:inputMask value="#{pessoaController.parenteSelecionado.nome}" required="true" requiredMessage="Digite o nome do Familiar" />
-
-				<h:outputLabel value="Nascimento: " />
-				<p:inputMask value="#{pessoaController.parenteSelecionado.dataNascimento}" mask="99/99/9999" converter="SqlDateTimeConverter" required="true" requiredMessage="Digite o nascimento do Familiar" />
-
-				<h:outputLabel value="Renda:" />
-				<p:inputMask value="#{pessoaController.parenteSelecionado.renda}" converter="MoedaConverter" required="true" requiredMessage="Digite a renda do Familiar" />
-
-				<h:outputLabel value="Parentesco: " />
-				<p:selectOneMenu value="#{pessoaController.parenteSelecionado.tipoparentesco}" converter="#{converterController.tipoParentescoConverter}" required="true" requiredMessage="Selecione o parentesco do Familiar">
-					<f:selectItem itemLabel="Selecione..." />
-					<f:selectItems value="#{comboBoxController.listaTipoParentesco}" />
-				</p:selectOneMenu>
-			</h:panelGrid>
+			<p:panelGrid id="composicaoFamiliar">
+			<p:row>
+				<p:column>
+					<h:outputLabel value="Nome: " />
+				</p:column>
+				<p:column colspan="3">
+					<p:inputMask value="#{pessoaController.parenteSelecionado.nome}" required="true" requiredMessage="Digite o nome do Familiar" size="80"/>
+				</p:column>
+				<p:column>
+					<h:outputLabel value="Nascimento: " />
+				</p:column>
+				<p:column>
+					<p:inputMask value="#{pessoaController.parenteSelecionado.dataNascimento}" mask="99/99/9999" converter="SqlDateTimeConverter" required="true" requiredMessage="Digite o nascimento do Familiar" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<h:outputLabel value="Renda:" />
+				</p:column>
+				<p:column>
+					<p:inputMask value="#{pessoaController.parenteSelecionado.renda}" converter="MoedaConverter" required="true" requiredMessage="Digite a renda do Familiar" />
+				</p:column>
+				<p:column>
+					<h:outputLabel value="Parentesco: " />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu value="#{pessoaController.parenteSelecionado.tipoparentesco}" converter="#{converterController.tipoParentescoConverter}" required="true" requiredMessage="Selecione o parentesco do Familiar">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{comboBoxController.listaTipoParentesco}" />
+					</p:selectOneMenu>
+				</p:column>
+			</p:row>
+			</p:panelGrid>
 			<h:panelGrid columns="2">
 				<p:commandButton value="" styleClass="saveButton" action="#{pessoaController.addParentesco()}" process="@form" update=":form:tabs:detalhes:listaPar @form" oncomplete="janelaComposicaoFamiliar.hide();" />
 				<p:commandButton value="" styleClass="cancelButton" action="#{pessoaController.configParente()}" immediate="true" process="@form" update="@form" oncomplete="janelaComposicaoFamiliar.hide();" />

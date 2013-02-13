@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Tipoparentesco;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -20,7 +19,7 @@ public class TipoParentescoController extends AbstractController<Tipoparentesco>
 	private static final long serialVersionUID = 1L;
 
 	public TipoParentescoController() {
-		super(Repositorio.GetInstance(Tipoparentesco.class), 1,"descricao");
+		super( 1,"descricao");
 	}
 
 	@Override

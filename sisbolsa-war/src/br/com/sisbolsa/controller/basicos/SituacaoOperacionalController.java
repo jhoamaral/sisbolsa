@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Situacaooperacional;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class SituacaoOperacionalController extends AbstractController<Situacaoop
 	private static final long serialVersionUID = -6773170615007046046L;
 
 	public SituacaoOperacionalController() {
-		super(Repositorio.GetInstance(Situacaooperacional.class), 1,"descricao");
+		super( 1,"descricao");
 	}
 
 	@Override

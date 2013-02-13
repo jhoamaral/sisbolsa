@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityNotFoundException;
 
 import org.primefaces.model.DefaultStreamedContent;
 
@@ -29,6 +30,9 @@ import br.com.domain.Tipoparentesco;
 import br.com.dto.PessoaEndereco;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
+import br.com.repositorio.querybuilder.query.QuerySingleResult;
 import br.com.service.ReportService;
 import br.com.service.ServiceBolsista;
 import br.com.service.ServicePeriodoletivo;
@@ -59,7 +63,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	private Periodoletivo periodoletivoSelecionado;
 
 	public MatriculaPeriodoController() {
-		super(Repositorio.GetInstance(Matriculaperiodo.class), 3,"matricula.pessoa.nome");
+		super( 3,"matricula.pessoa.nome");
 		
 	}
 	
@@ -76,9 +80,10 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 			try{
 				return new ArrayList(this.obj.getBoletos());
 			}catch (Exception e) {
-				Repositorio<Boleto> getTelefones = Repositorio.GetInstance(Boleto.class);
-				getTelefones.addEquals("matriculaperiodo", this.obj);
-				this.obj.setBoletos(getTelefones.getAllSet());
+				QueryListResult<Boleto> query = QueryManager.BOLETO.findBoletoByMatriculaperiodo()
+															.withMatriculaperiodo(this.obj);
+				Set<Boleto> lista = new LinkedHashSet<Boleto>(Repositorio.executeQuery(query));
+				this.obj.setBoletos(lista);
 				return new ArrayList(this.obj.getBoletos());
 			} 
 		} else {
@@ -103,10 +108,10 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Item> getItemsList() {
 		if (this.obj instanceof Matriculaperiodo) {
-			Repositorio<Item> getObjects = Repositorio.GetInstance(Item.class);
-			getObjects.addEquals("matriculaperiodo", this.obj);
-			getObjects.addOrder("folha.referencia desc");
-			this.obj.setItems(getObjects.getAllSet());
+			QueryListResult<Item> query = QueryManager.ITEM.findItemByMatriculaperiodo()
+													  .withMatriculaperiodo(this.obj);
+			Set<Item> lista = new LinkedHashSet<Item>(Repositorio.executeQuery(query));
+			this.obj.setItems(lista);
 			return new ArrayList(this.obj.getItems());
 		} else {
 			return new ArrayList();
@@ -159,10 +164,11 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 		this.itemSelecionado = itemSelecionado;
 	}
 	
-	public void findEventos(){
-		Repositorio<Eventocauculado> getEventos = Repositorio.GetInstance(Eventocauculado.class);
-		getEventos.addEquals("item", this.itemSelecionado);
-		this.itemSelecionado.setEventocauculados(getEventos.getAllSet());
+	public void findEventos(){		
+		QueryListResult<Eventocauculado> query = QueryManager.EVENTO.findEventoCalculadoByItem()
+															 .withItem(this.itemSelecionado);
+		Set<Eventocauculado> lista = new LinkedHashSet<Eventocauculado>(Repositorio.executeQuery(query));
+		this.itemSelecionado.setEventocauculados(lista);
 	}
 
 	public List<SelectItem> getListaMesesBoleto(){
@@ -171,26 +177,24 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 			lista = WebUtils.getMesesDoPeriodoComboBox(this.obj.getPeriodoletivo());
 		}else{
 			try{
-				lista = WebUtils.getMesesDoPeriodoComboBox(WebUtils.getPeriodoletivoAtual());
-			}catch (EntityNotFoundException e) {
-			
-			}
-			
+				lista = WebUtils.getMesesDoPeriodoComboBox(servicePeriodoletivo.getPeriodoletivoAtual());
+			}catch (NoRecordFoundException e) {}
 		}
 		return lista;
 	}
 
-	public List<Matricula> completePessoa(String query) {  
+	public List<Matricula> completePessoa(String suggest) {  
 		 List<Matricula> suggestions = new ArrayList<Matricula>();
 		 
 		 if(this.listPessoa.isEmpty()){
-			 Repositorio<Matricula> getPessoas = Repositorio.GetInstance(Matricula.class);
-			 this.listPessoa = getPessoas.getAllList();
+			 QueryListResult<Matricula> query = QueryManager.GENERIC.allObejctOrdered(Matricula.class)
+					 										.withOrder("pessoa.nome");
+			 this.listPessoa = Repositorio.executeQuery(query);
 		 }
 	          
 		 for(Matricula obj : this.listPessoa) {  
-			 	if(obj.getPessoa().getNome().toLowerCase().startsWith(query.toLowerCase()) || 
-			 	  String.valueOf(obj.getPessoa().getCpf().getNumero()).toLowerCase().startsWith(query.toLowerCase()) )  
+			 	if(obj.getPessoa().getNome().toLowerCase().startsWith(suggest.toLowerCase()) || 
+			 	  String.valueOf(obj.getPessoa().getCpf().getNumero()).toLowerCase().startsWith(suggest.toLowerCase()) )  
 			 	suggestions.add(obj);  
 		 }  
 	          
@@ -222,9 +226,10 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	
 	public DefaultStreamedContent imprimirDeclaracaoRenda(){
-		Repositorio<Familiar> findMat = Repositorio.GetInstance(Familiar.class);
-		findMat.addEquals("pessoa", this.obj.getMatricula().getPessoa());
-		List<Familiar> lista = findMat.getAllList();
+		QueryListResult<Familiar> query = QueryManager.PESSOA.findFamiliaresByPessoa()
+													  .withPessoa(this.obj.getMatricula().getPessoa());
+		List<Familiar> lista = Repositorio.executeQuery(query);
+		
 		Familiar parente = new Familiar();
 		parente.setNome( this.obj.getMatricula().getPessoa().getNome());
 		parente.setRenda( this.obj.getSocioeconeomico().getRenda());
@@ -234,6 +239,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 		euMesmo.setDescricao("------");
 		parente.setTipoparentesco(euMesmo);
 		lista.add(parente);
+		
 		try {
 			return new DefaultStreamedContent(reportService.gerar(ReportModel.DECLARACAO_RENDIMENTOS,PessoaEndereco.getObj(lista)));
 		} catch (Exception e) {
@@ -245,19 +251,17 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	public DefaultStreamedContent imprimirFicha(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
-		Repositorio<Matriculaperiodo> findMat = Repositorio.GetInstance(Matriculaperiodo.class);
-		findMat.setAlias("a");
-		findMat.join("left join fetch a.matricula b");
-		findMat.join("left join fetch b.pessoa c");
-		findMat.join("left join fetch c.telefones d");
-		findMat.join("left join fetch c.familiares f");
-		findMat.addEquals("a", this.obj);
-		findMat.setLimit(1);
-		Map<String,String> params = new HashMap<String, String>();	
-		params.put("logo", contexto.getExternalContext().getRealPath(Constantes.LOGO));
-		params.put("periodo",String.valueOf(UtilService.calculaPeriodoAtual(this.obj.getMatricula().getPeriodoletivo(),this.obj.getPeriodoletivo()))); 
 		try {
-			return new DefaultStreamedContent(reportService.gerar(ReportModel.FICHA_CADASTRO,params,findMat.getAllList()));
+			QuerySingleResult<Matriculaperiodo> query = QueryManager.PESSOA.findMatriculaPeriodoWithCollections()
+																	.withMatriculaperiodo(this.obj);		
+			List<Matriculaperiodo> lista = new ArrayList<Matriculaperiodo>();
+			lista.add(Repositorio.executeQuery(query));
+			
+			Map<String,String> params = new HashMap<String, String>();	
+			params.put("logo", contexto.getExternalContext().getRealPath(Constantes.LOGO));
+			params.put("periodo",String.valueOf(UtilService.calculaPeriodoAtual(this.obj.getMatricula().getPeriodoletivo(),this.obj.getPeriodoletivo()))); 
+			
+			return new DefaultStreamedContent(reportService.gerar(ReportModel.FICHA_CADASTRO,params,lista));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -269,9 +273,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 		try {
 			this.getBoletoSelecionado().setMatriculaperiodo(this.obj);
 			if (this.obj.getId() instanceof String) {
-				Repositorio<Boleto> save = Repositorio.GetInstance(Boleto.class);
-				save.cadastrar(this.getBoletoSelecionado());
-
+				Repositorio.cadastrar(this.getBoletoSelecionado());
 			} else {
 				this.getBoletoSelecionado().setId(UtilService.generateOid());
 			}
@@ -286,13 +288,9 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	public void removeBoleto() {
 		try {
 			this.obj.getBoletos().remove(this.getBoletoSelecionado());
-			if ((this.obj.getId() instanceof String)
-					&& (this.getBoletoSelecionado().getId() instanceof String)) {
-				Repositorio<Boleto> save = Repositorio
-						.GetInstance(Boleto.class);
-				save.delete(this.getBoletoSelecionado());
+			if ((this.obj.getId() instanceof String) && (this.getBoletoSelecionado().getId() instanceof String)) {
+				Repositorio.delete(this.getBoletoSelecionado());
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -300,11 +298,11 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 
 	}
 	
+	@Override
 	public void carregaAllObjects(){
-		repositorio.clear();
-		repositorio.addOrder(this.getOrderField());
-		repositorio.addEquals("periodoletivo", this.periodoletivoSelecionado);
-		this.setAllObj(repositorio.getAllList());
+		QueryListResult<Matriculaperiodo> query = QueryManager.PESSOA.findMatriculaPeriodoByPeriodoLetivo()
+															  .withPeriodoLetivo(this.periodoletivoSelecionado);
+		this.setAllObj(Repositorio.executeQuery(query));
 	}
 
 }

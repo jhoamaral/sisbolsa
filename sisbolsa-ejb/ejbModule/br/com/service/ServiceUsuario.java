@@ -1,22 +1,16 @@
 package br.com.service;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
 import br.com.domain.Usuario;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.LoginException;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 @Stateless
 public class ServiceUsuario {
-	
-	private Repositorio<Usuario> repositorioUsuario;
-	
-	@PostConstruct
-	public void setObjClass(){
-		this.repositorioUsuario = Repositorio.GetInstance(Usuario.class);
-	}
 	
     public Usuario autentica(Usuario login) throws LoginException{
     	Usuario user = null;
@@ -33,7 +27,6 @@ public class ServiceUsuario {
     		if(!(user.getSenha().equals(login.getSenha()))){
     			throw new LoginException("Senha incorreta!");
     		}
-    		
     	}catch (NoRecordFoundException e) {
     		throw new LoginException("Usuário não encontrado!");
 		}
@@ -41,12 +34,8 @@ public class ServiceUsuario {
     }
     
     public Usuario findByLogin(Usuario usuario) throws NoRecordFoundException{
-		Usuario user = null;
-		repositorioUsuario.addEquals("login", usuario.getLogin().toLowerCase());
-		user = repositorioUsuario.getFirstRow();
-		return user;
+		QuerySingleResult<Usuario> query = QueryManager.USUARIO.findByLogin()
+													   .withLogin(usuario.getLogin().toLowerCase());
+		return Repositorio.executeQuery(query);
 	}
-
-
-
 }

@@ -2,7 +2,6 @@ package br.com.sisbolsa.controller.relatorios;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -17,6 +16,8 @@ import br.com.domain.Item;
 import br.com.domain.Matriculaperiodo;
 import br.com.dto.ItemFolhaDTO;
 import br.com.repositorio.Repositorio;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.service.ReportService;
 import br.com.service.reports.ReportModel;
 import br.com.sisbolsa.util.Constantes;
@@ -52,20 +53,14 @@ public class relatoriosController  implements Serializable{
 	}
 
 	public DefaultStreamedContent imprimirFolha(){
-		Repositorio<Item> getFolha = Repositorio.GetInstance(Item.class);
-		getFolha.setAlias("b");
-		getFolha.join("LEFT join FETCH b.eventocauculados c");
-		getFolha.join("LEFT join FETCH b.matriculaperiodo d");
-		getFolha.join("LEFT join FETCH d.matricula e");
-		getFolha.join("LEFT join FETCH e.pessoa f");
-		getFolha.addEquals("b.folha", this.folhaSelecionado);
-		getFolha.addOrder("e.cursofaculdade.faculdade.sigla asc,f.nome asc");
+		QueryListResult<Item> query = QueryManager.FOLHA.findFolhasWithCollections()
+												   .withFolha(this.folhaSelecionado);
 		
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("numCI", this.numeroCI);
 		 
 		try {
-			return new DefaultStreamedContent(reportService.gerar(ReportModel.FOLHA_DE_PAGAMENTOS,params,ItemFolhaDTO.getList(getFolha.getAllList())));
+			return new DefaultStreamedContent(reportService.gerar(ReportModel.FOLHA_DE_PAGAMENTOS,params,ItemFolhaDTO.getList(Repositorio.executeQuery(query))));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,17 +70,15 @@ public class relatoriosController  implements Serializable{
 	
 	public DefaultStreamedContent imprimirRecibo(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
-		Repositorio<Matriculaperiodo> getMatriculas = Repositorio.GetInstance(Matriculaperiodo.class);
-		getMatriculas.setAlias("b");
-		getMatriculas.addEquals("periodoletivo",  folhaSelecionado.getPeriodoletivo());
-		getMatriculas.addOrder("b.matricula.cursofaculdade.faculdade.sigla asc,b.matricula.pessoa.nome asc");
+		QueryListResult<Matriculaperiodo> query = QueryManager.FOLHA.findMatriculaPeriodoByPeriodoLetivoOrderedByCurso()
+															  .withPeriodoLetivo(this.folhaSelecionado.getPeriodoletivo());
 		
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("logo", contexto.getExternalContext().getRealPath(Constantes.LOGO));
 		params.put("ref", folhaSelecionado.getReferencia());
 		 
 		try {
-			return  new DefaultStreamedContent( reportService.gerar(ReportModel.RECIBO_DE_BOLETOS,params,getMatriculas.getAllList()));
+			return  new DefaultStreamedContent( reportService.gerar(ReportModel.RECIBO_DE_BOLETOS,params,Repositorio.executeQuery(query)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,21 +86,14 @@ public class relatoriosController  implements Serializable{
 	}
 	
 	public DefaultStreamedContent imprimirConferenciaFolha(){
-		Repositorio<Matriculaperiodo> getFolha = Repositorio.GetInstance(Matriculaperiodo.class);
-		@SuppressWarnings("unchecked")
-		List<Matriculaperiodo> values = getFolha.getEntityManager().createQuery("select o from Matriculaperiodo o where o not in("+
-																	"select a from Matriculaperiodo a "+
-																	"inner join a.items b "+
-																	"inner join b.folha c "+
-																	"where c = '"+this.folhaSelecionado+"' "+
-																	") and o.periodoletivo = '"+this.folhaSelecionado.getPeriodoletivo()+"' " +
-																	"order by o.matricula.cursofaculdade.faculdade.sigla asc, o.matricula.pessoa.nome asc").getResultList();
+		QueryListResult<Matriculaperiodo> query = QueryManager.FOLHA.findMatriculaperiodoNotInFolha()
+															  .withFolha(this.folhaSelecionado);
 		
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("ref", folhaSelecionado.getReferencia());
 		 
 		try {
-			return  new DefaultStreamedContent(reportService.gerar(ReportModel.CONFERENCIA_FOLHA,params,values));
+			return  new DefaultStreamedContent(reportService.gerar(ReportModel.CONFERENCIA_FOLHA,params,Repositorio.executeQuery(query)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

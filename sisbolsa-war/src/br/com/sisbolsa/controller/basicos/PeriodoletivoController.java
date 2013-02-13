@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Periodoletivo;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class PeriodoletivoController extends AbstractController<Periodoletivo> i
 	private static final long serialVersionUID = 1L;
 
 	public PeriodoletivoController() {
-		super(Repositorio.GetInstance(Periodoletivo.class), 2,"semestre DESC, ano DESC");
+		super( 2,"semestre DESC, ano DESC");
 	}
 
 	@Override

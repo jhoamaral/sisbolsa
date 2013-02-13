@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Logradouro;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class LogradouroController extends AbstractController<Logradouro> impleme
 	private static final long serialVersionUID = -6773170615007046046L;
 
 	public LogradouroController() {
-		super(Repositorio.GetInstance(Logradouro.class), 4,"rua");
+		super( 4,"rua");
 	}
 
 	@Override

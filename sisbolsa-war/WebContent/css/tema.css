@@ -191,6 +191,14 @@ a.ui-menuitem-link.ui-corner-all.ui-state-hover{
  	font-size: 10px;
  }
  
+ .ui-panelgrid td{
+ border-style: none ;
+ }
+ 
+ .ui-panelgrid{
+ 	border-collapse: inherit !important;
+ }
+ 
  .ui-accordion .ui-accordion-content {
  	padding: 5px;
  }

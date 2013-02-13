@@ -3,7 +3,9 @@ package br.com.sisbolsa.controller.basicos;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +18,8 @@ import br.com.domain.Curso;
 import br.com.domain.Cursofaculdade;
 import br.com.domain.Faculdade;
 import br.com.repositorio.Repositorio;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.sisbolsa.controller.AbstractController;
 import br.com.sisbolsa.converter.EntityConverter;
 
@@ -29,7 +33,7 @@ public class FaculdadeController extends AbstractController<Faculdade> implement
 	
 
 	public FaculdadeController() {
-		super(Repositorio.GetInstance(Faculdade.class), 2,"nome");
+		super(2,"nome");
 	}
 	
 	public void novo(){
@@ -44,9 +48,10 @@ public class FaculdadeController extends AbstractController<Faculdade> implement
 	public void setObject(Faculdade obj) {
 		this.obj = obj;
 		
-		Repositorio<Cursofaculdade> cursos = Repositorio.GetInstance(Cursofaculdade.class);
-		cursos.addEquals("faculdade", this.obj);
-		this.obj.setCursofaculdades(cursos.getAllSet());
+		QueryListResult<Cursofaculdade> query = QueryManager.FACULDADE.findCursoFaculdadeByFaculdade()
+															.withFaculdade(this.obj);
+		Set<Cursofaculdade> lista = new LinkedHashSet<Cursofaculdade>(Repositorio.executeQuery(query));
+		this.obj.setCursofaculdades(lista);
 	}	
 	
 	public Cursofaculdade getCursoSelecionado() {
@@ -68,9 +73,9 @@ public class FaculdadeController extends AbstractController<Faculdade> implement
 
 	public List<SelectItem> getComboBoxCurso(){
 		if(this.comboBoxCurso.isEmpty()){
-			Repositorio<Curso> getCurso = Repositorio.GetInstance(Curso.class);
-			getCurso.addOrder("descricao");
-			for(Curso curso:getCurso.getAllList()){
+			QueryListResult<Curso> query = QueryManager.GENERIC.allObejctOrdered(Curso.class)
+													   .withOrder("descricao");
+			for(Curso curso:Repositorio.executeQuery(query)){
 				this.comboBoxCurso.add(new SelectItem(curso,curso.getDescricao()));
 			}
 		}
@@ -96,9 +101,8 @@ public class FaculdadeController extends AbstractController<Faculdade> implement
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
 			if(this.obj.getId() instanceof String){
-				Repositorio<Cursofaculdade> curso = Repositorio.GetInstance(Cursofaculdade.class);
 				cursoSelecionado.setFaculdade(this.obj);
-				curso.cadastrar(cursoSelecionado);
+				Repositorio.cadastrar(cursoSelecionado);
 				this.obj.getCursofaculdades().add(cursoSelecionado);
 			}
 		}catch (Exception e) {
@@ -113,9 +117,7 @@ public class FaculdadeController extends AbstractController<Faculdade> implement
 	public void removeCurso(){
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
-			
-			Repositorio<Cursofaculdade> curso = Repositorio.GetInstance(Cursofaculdade.class);
-			curso.delete(cursoSelecionado);
+			Repositorio.delete(cursoSelecionado);
 			this.obj.getCursofaculdades().remove(cursoSelecionado);
 		}catch (Exception e) {
 			context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!","Ocorreu um erro ao excluir este registro! "+ e.getMessage()));

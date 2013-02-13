@@ -8,29 +8,28 @@ import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import br.com.generic.AbstractEntityDomain;
 import br.com.repositorio.Repositorio;
-import br.com.service.UtilService;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.sisbolsa.util.WebUtils;
 
-public abstract class AbstractController<T> {
+public abstract class AbstractController<T extends AbstractEntityDomain> {
 
 	private List<T> allObj = new ArrayList<T>();
 	private String filtro;
 	protected int fields;
 	protected T obj;
 	private String orderField;
-	
-	protected Repositorio<T> repositorio;
 
 
 	public AbstractController() {
 		
 	}
 	
-	public AbstractController(Repositorio<T> repositorio, int fields, String orderField) {
+	public AbstractController(int fields, String orderField) {
 		this.novo();
 		this.fields = fields;
-		this.repositorio= repositorio;
 		this.setOrderField(orderField);
 	}
 	
@@ -119,18 +118,20 @@ public abstract class AbstractController<T> {
 	}
 
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void carregaAllObjects(){
-		repositorio.addOrder(this.getOrderField());
-		this.setAllObj(repositorio.getAllList());
+		QueryListResult query = QueryManager.GENERIC.allObejctOrdered(obj.getClass())
+									.withOrder(this.orderField);
+		this.setAllObj(Repositorio.executeQuery(query));
 	}
 	
 	public void salvar() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			if (UtilService.invocaMetodo(obj, "getId") instanceof String) {
-				repositorio.editar(obj);
+			if (obj.getId() instanceof String) {
+				Repositorio.editar(obj);
 			} else {
-				repositorio.cadastrar(obj);
+				Repositorio.cadastrar(obj);
 				WebUtils.refreshComboBox(obj.getClass());
 			}
 			this.carregaAllObjects();
@@ -145,7 +146,7 @@ public abstract class AbstractController<T> {
 	public void excluir(){
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			repositorio.delete(obj);
+			Repositorio.delete(obj);
 			WebUtils.refreshComboBox(obj.getClass());
 			this.carregaAllObjects();
 			this.novo();

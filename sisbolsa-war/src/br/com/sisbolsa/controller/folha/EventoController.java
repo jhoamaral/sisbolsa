@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +15,8 @@ import br.com.domain.Evento;
 import br.com.domain.Historicovalor;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.service.ServiceBoleto;
 import br.com.service.ServiceEvento;
 import br.com.service.UtilService;
@@ -33,7 +37,7 @@ public class EventoController extends AbstractController<Evento> implements Seri
 	ServiceBoleto serviceBoleto;
 
 	public EventoController() {
-		super(Repositorio.GetInstance(Evento.class), 3,"descricao");
+		super( 3,"descricao");
 	}
 	
 	
@@ -50,9 +54,12 @@ public class EventoController extends AbstractController<Evento> implements Seri
 			this.getUltimoHistoricovalor().setData(new Timestamp(System.currentTimeMillis()));
 			this.getUltimoHistoricovalor().setEvento(this.obj);
 		}
-		Repositorio<Historicovalor> getValores = Repositorio.GetInstance(Historicovalor.class);
-		getValores.addEquals("evento", this.obj);
-		this.obj.setHistoricovalors(getValores.getAllSet());
+		
+		QueryListResult<Historicovalor> query = QueryManager.EVENTO.findHistoricoValorByEvento()
+															.withEvento(this.obj);
+		
+		Set<Historicovalor> lista = new LinkedHashSet<Historicovalor>(Repositorio.executeQuery(query)); 
+		this.obj.setHistoricovalors(lista);
 	}
 	
 	@Override
@@ -97,7 +104,7 @@ public class EventoController extends AbstractController<Evento> implements Seri
 	public void salvar() {
 		if(this.ultimoValor instanceof BigDecimal){
 			if(!this.getUltimoHistoricovalor().getValor().equals(ultimoValor)){
-				Repositorio.GetInstance(Evento.class).getEntityManager().detach(this.getUltimoHistoricovalor());
+				Repositorio.persistenceBean(this.obj.getClass()).getEntityManager().detach(this.getUltimoHistoricovalor());
 				this.getUltimoHistoricovalor().setId(UtilService.generateOid());
 				this.getUltimoHistoricovalor().setData(new Timestamp(System.currentTimeMillis()));
 				this.obj.getHistoricovalors().add(this.getUltimoHistoricovalor());

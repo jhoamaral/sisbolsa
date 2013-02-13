@@ -6,9 +6,10 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.persistence.EntityManager;
 
+import br.com.generic.AbstractEntityDomain;
 import br.com.repositorio.Repositorio;
 
-public class EntityConverter<E> implements Converter {
+public class EntityConverter<E extends AbstractEntityDomain> implements Converter {
 	private EntityManager em;
 	private Class<E> type;
 	
@@ -18,11 +19,11 @@ public class EntityConverter<E> implements Converter {
 	}
 
 	public EntityConverter(Class<E> type) {
-		this.em = Repositorio.GetInstance(type).getEntityManager();
+		this.em = Repositorio.persistenceBean(type).getEntityManager();
 		this.type = type;
 	}
 	
-	public static <T> EntityConverter<T> GetInstance(Class<T> objClass) {
+	public static <T extends AbstractEntityDomain> EntityConverter<T> GetInstance(Class<T> objClass) {
 		EntityConverter<T> converter = new EntityConverter<T>(objClass);
 		return converter;
 	}

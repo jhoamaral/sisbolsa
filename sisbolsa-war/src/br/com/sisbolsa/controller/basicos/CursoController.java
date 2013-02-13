@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Curso;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class CursoController extends AbstractController<Curso> implements Serial
 	private static final long serialVersionUID = 1L;
 
 	public CursoController() {
-		super(Repositorio.GetInstance(Curso.class), 1,"descricao");
+		super(1,"descricao");
 	}
 
 	@Override

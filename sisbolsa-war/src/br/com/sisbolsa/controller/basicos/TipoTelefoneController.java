@@ -6,7 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Tipotelefone;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -16,7 +15,7 @@ public class TipoTelefoneController extends AbstractController<Tipotelefone> imp
 	private static final long serialVersionUID = -6773170615007046046L;
 
 	public TipoTelefoneController() {
-		super(Repositorio.GetInstance(Tipotelefone.class), 1,"descricao");
+		super(1,"descricao");
 	}
 
 	@Override

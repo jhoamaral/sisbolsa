@@ -21,6 +21,8 @@ import br.com.domain.Faculdade;
 import br.com.domain.Matricula;
 import br.com.domain.Periodoletivo;
 import br.com.repositorio.Repositorio;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.service.ReportService;
 import br.com.service.UtilService;
 import br.com.service.reports.ReportModel;
@@ -68,9 +70,9 @@ public class PossiveisFormandosController  implements Serializable{
 	
 	public List<SelectItem> getListaFaculdade() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		Repositorio<Faculdade> getObj = Repositorio.GetInstance(Faculdade.class);
-		getObj.addOrder("nome");
-		for (Faculdade obj : getObj.getAllList()) {
+		QueryListResult<Faculdade> query = QueryManager.GENERIC.allObejctOrdered(Faculdade.class)
+				   									   .withOrder("nome");
+		for (Faculdade obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj.getId(), String.valueOf(obj.getNome())));
 		}
 		
@@ -79,13 +81,9 @@ public class PossiveisFormandosController  implements Serializable{
 
 	public List<SelectItem> getListaCursoFaculdade() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		Repositorio<Curso> getObj = Repositorio.GetInstance(Curso.class);
-		getObj.setSelect("distinct a");
-		getObj.setAlias("a");
-		getObj.join("inner join a.cursofaculdades b");
-		getObj.addWhere("b.faculdade like '"+ this.getFaculdadeSelecionado()+"'");
-		getObj.addOrder("a.descricao");
-		for (Curso obj : getObj.getAllList()) {
+		QueryListResult<Curso> query = QueryManager.CURSO.findCursoLikeFaculdade()
+				   								   .withFaculdade(this.faculdadeSelecionado);
+		for (Curso obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj.getId(), obj.getDescricao()));
 		}
 
@@ -95,16 +93,13 @@ public class PossiveisFormandosController  implements Serializable{
 	public DefaultStreamedContent imprimir(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
 		
-		Repositorio<Matricula> getMatriculas = Repositorio.GetInstance(Matricula.class);
-		getMatriculas.setAlias("a");
-		getMatriculas.join("inner join a.matriculaperiodos b");
-		getMatriculas.addWhere("b.periodoletivo like '"+ this.periodoletivoSelecionado+"' ");
-		getMatriculas.addWhere("a.cursofaculdade.curso like '"+ this.cursoSelecionado+"' ");
-		getMatriculas.addWhere("a.cursofaculdade.faculdade like '"+ this.faculdadeSelecionado+"' ");
-		getMatriculas.addOrder("a.cursofaculdade.faculdade.sigla, a.cursofaculdade.curso.descricao, a.pessoa.nome");
+		QueryListResult<Matricula> query = QueryManager.BOLSISTA.findMatriculaLikeCursoLikeFaculdadeLikePeriodo()
+													   .withCurso(this.cursoSelecionado)
+													   .withFaculdade(this.faculdadeSelecionado)
+													   .withPeriodo(this.periodoletivoSelecionado.getId());
 		
 		HashSet<Matricula> result = new LinkedHashSet<Matricula>();
-		for(Matricula matricula:getMatriculas.getAllSet()){
+		for(Matricula matricula:Repositorio.executeQuery(query)){
 			if(UtilService.calculaPeriodoAtual(matricula.getPeriodoletivo(),this.periodoletivoSelecionado) >= matricula.getDuracaoCurso()){
 				result.add(matricula);
 			}

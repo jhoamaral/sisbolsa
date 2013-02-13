@@ -1,33 +1,30 @@
 package br.com.service;
 
+import java.util.HashSet;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
 import br.com.domain.Menu;
 import br.com.repositorio.Repositorio;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 
 @Stateless
 public class ServiceMenu {
-
-	private Repositorio<Menu> repositorioMenu;
-	
-	@PostConstruct
-	public void setObjClass(){
-		this.repositorioMenu = Repositorio.GetInstance(Menu.class);
-	}
 	
 	public List<Menu> getAllMenus(){
-		repositorioMenu.addWhere("menupai is null");
-		repositorioMenu.addOrder("ordem");
-		List<Menu> lista = repositorioMenu.getAllList();
+		
+		QueryListResult<Menu> query = QueryManager.MENU.menusPrincipais();
+		List<Menu> lista = Repositorio.executeQuery(query);
+		
 		for(Menu menu:lista){
-			repositorioMenu.clear();
-			repositorioMenu.addEquals("menupai", menu);
-			repositorioMenu.addOrder("ordem");
-			menu.setMenus(repositorioMenu.getAllSet());
+			QueryListResult<Menu> queryFilhos = QueryManager.MENU.menusFilhos()
+															.setMenuPai(menu);
+			HashSet<Menu> filhos = new HashSet<Menu>(Repositorio.executeQuery(queryFilhos));
+			menu.setMenus(filhos);
 		}
+		
 		return lista;
 	}
 }

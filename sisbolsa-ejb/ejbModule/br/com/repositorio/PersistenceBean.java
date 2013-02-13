@@ -6,8 +6,10 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.generic.AbstractEntityDomain;
+
 @Stateful
-public class PersistenceBean<T> {
+public class PersistenceBean<T extends AbstractEntityDomain> {
 
 	@PersistenceContext
 	private static EntityManager em;
@@ -16,18 +18,18 @@ public class PersistenceBean<T> {
 		return em;
 	}
 	
-	public synchronized void cadastrar(T obj) throws Exception {
+	public synchronized void cadastrar(AbstractEntityDomain obj) throws Exception {
 		em.persist(obj);
 		em.joinTransaction();
 	}
 	
-	public synchronized void editar(T obj) throws Exception {
+	public synchronized void editar(AbstractEntityDomain obj) throws Exception {
 		em.merge(obj);
 		em.joinTransaction();
 	}
 	
-	public synchronized void delete(Class<T> objClass, T obj) throws Exception{
-		obj = em.find(objClass, String.valueOf(obj));
+	public synchronized void delete(Class<? extends AbstractEntityDomain> class1, AbstractEntityDomain obj) throws Exception{
+		obj = em.find(class1, String.valueOf(obj));
 		em.remove(obj);
 		em.joinTransaction();
 	}

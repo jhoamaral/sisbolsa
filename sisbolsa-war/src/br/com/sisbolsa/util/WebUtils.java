@@ -9,43 +9,37 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityNotFoundException;
 
 import br.com.domain.Periodoletivo;
+import br.com.generic.AbstractEntityDomain;
 import br.com.repositorio.Repositorio;
-import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.service.UtilService;
-
 
 public abstract class WebUtils {
 
 	private static HashMap<String, List<SelectItem>> selectItemPool;
 
-	public static <T> List<SelectItem> getComboBox(Class<T> classe) {
+	public static <T extends AbstractEntityDomain> List<SelectItem> getComboBox(Class<T> classe) {
 		if (!(selectItemPool instanceof HashMap)) {
 			selectItemPool = new HashMap<String, List<SelectItem>>();
 		}
 
 		if (!selectItemPool.containsKey(classe)) {
 			List<SelectItem> lista = new ArrayList<SelectItem>();
-			Repositorio<T> getObj;
-
-			getObj = Repositorio.GetInstance(classe);
-			getObj.addOrder("descricao");
-			for (T obj : getObj.getAllList()) {
-				lista.add(new SelectItem(obj, UtilService.invocaMetodo(obj,
-						"getDescricao").toString()));
+			QueryListResult<T> query = QueryManager.GENERIC.allObejctOrdered(classe).withOrder("descricao");
+			for (T obj : Repositorio.executeQuery(query)) {
+				lista.add(new SelectItem(obj, UtilService.invocaMetodo(obj, "getDescricao").toString()));
 			}
 			selectItemPool.put(classe.getName(), lista);
-
 		}
 
 		return selectItemPool.get(classe.getName());
 	}
 
 	public static <T> void refreshComboBox(Class<T> classe) {
-		if (selectItemPool instanceof HashMap
-				&& selectItemPool.containsKey(classe.getName())) {
+		if (selectItemPool instanceof HashMap && selectItemPool.containsKey(classe.getName())) {
 			selectItemPool.remove(classe.getName());
 		}
 	}
@@ -73,38 +67,12 @@ public abstract class WebUtils {
 		return meses;
 	}
 
-	public static List<SelectItem> getMesesDoPeriodoComboBox(
-			Periodoletivo periodoletivo) {
+	public static List<SelectItem> getMesesDoPeriodoComboBox(Periodoletivo periodoletivo) {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
 		DateFormat format = new SimpleDateFormat("MMM/yyyy");
 		for (Date obj : getMesesDoPeriodo(periodoletivo)) {
-			lista.add(new SelectItem(String.valueOf(obj.getTime()), format
-					.format(obj)));
+			lista.add(new SelectItem(String.valueOf(obj.getTime()), format.format(obj)));
 		}
 		return lista;
-	}
-
-	public static Periodoletivo getPeriodoletivoAtual()
-			throws EntityNotFoundException {
-		Calendar cal = Calendar.getInstance();
-		int mes = cal.get(Calendar.MONTH);
-		int semestre;
-		int ano = cal.get(Calendar.YEAR);
-		if (mes <= 6) {
-			semestre = 1;
-		} else {
-			semestre = 2;
-		}
-
-		Periodoletivo periodoletivo = new Periodoletivo();
-		Repositorio<Periodoletivo> getPeriodo = Repositorio
-				.GetInstance(Periodoletivo.class);
-		getPeriodo.addEquals("ano", ano);
-		getPeriodo.addEquals("semestre", semestre);
-		try {
-			periodoletivo = getPeriodo.getFirstRow();
-		} catch (NoRecordFoundException e) {}
-
-		return periodoletivo;
 	}
 }

@@ -3,7 +3,6 @@ package br.com.service;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
@@ -14,25 +13,19 @@ import br.com.domain.Historicovalor;
 import br.com.domain.Matriculaperiodo;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 @Stateless
 public class ServiceBoleto {
 	
-	private Repositorio<Boleto> repositorioBoleto;
-	
 	@EJB
 	private ServiceEvento serviceEvento;
 	
-	
-	@PostConstruct
-	public void setObjClass(){
-		this.repositorioBoleto = Repositorio.GetInstance(Boleto.class);
-	}
-	
 	public Boleto getUltimoBoleto(Matriculaperiodo matricula) throws NoRecordFoundException{
-		repositorioBoleto.addEquals("matriculaperiodo",matricula);
-		repositorioBoleto.addOrder("data desc");
-		return repositorioBoleto.getFirstRow();	
+		QuerySingleResult<Boleto> query = QueryManager.BOLETO.findUltimoBoleto()
+													  .withMatriculaperiodo(matricula);
+		return Repositorio.executeQuery(query);	
 	}
 	
 	public BigDecimal calculaEvento(Evento evento,BigDecimal valorBoleto) throws NoRecordFoundException{
@@ -56,10 +49,12 @@ public class ServiceBoleto {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new EntityNotFoundException("Não Existe boleto anterior!");
 		}
-
-		repositorioBoleto.addEquals("matriculaperiodo",boleto.getMatriculaperiodo());
-		repositorioBoleto.addEquals("data", calendario.getTime());
-		return repositorioBoleto.getFirstRow();	
+		
+		QuerySingleResult<Boleto> query = QueryManager.BOLETO.findBoletoByData()
+													  .withMatriculaperiodo(boleto.getMatriculaperiodo())
+													  .withData(calendario.getTime());
+		
+		return Repositorio.executeQuery(query);	
 	}
 	
 	public BigDecimal calculaDiferenca(Evento evento, Boleto boletoAtual) throws NoRecordFoundException{

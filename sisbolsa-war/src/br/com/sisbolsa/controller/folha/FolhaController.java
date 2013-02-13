@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.domain.Folha;
-import br.com.repositorio.Repositorio;
 import br.com.sisbolsa.controller.AbstractController;
 
 @ManagedBean
@@ -19,7 +18,7 @@ public class FolhaController extends AbstractController<Folha> implements Serial
 	private static final long serialVersionUID = -6773170615007046046L;
 
 	public FolhaController() {
-		super(Repositorio.GetInstance(Folha.class), 5,"periodoletivo.ano desc, periodoletivo.semestre desc, referencia");
+		super(5, "dataFolha");
 	}
 
 	@Override

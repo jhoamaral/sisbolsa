@@ -9,6 +9,9 @@ import br.com.domain.Pessoa;
 import br.com.domain.Telefone;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
+import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 public aspect InnerType {
 
@@ -17,11 +20,10 @@ public aspect InnerType {
 
 	public Historicovalor Evento.getUltimoHistoricovalor(){
 		Historicovalor historicovalor = new Historicovalor();
-		Repositorio<Historicovalor> repositorioHistoricovalor = Repositorio.GetInstance(Historicovalor.class);
-		repositorioHistoricovalor.addEquals("eventoid",this);
-		repositorioHistoricovalor.addOrder("data desc");
+		QuerySingleResult<Historicovalor> query = QueryManager.EVENTO.findUltimoHistoricoEvento()
+															  .withEvento(this);
 		try {
-			historicovalor = repositorioHistoricovalor.getFirstRow();
+			historicovalor = Repositorio.executeQuery(query);
 		} catch (NoRecordFoundException e) {}
 		return historicovalor;
 	}
@@ -29,9 +31,9 @@ public aspect InnerType {
 	public Endereco Pessoa.getPrimeiroEndereco(){
 		Endereco endereco = new Endereco();
 		try {
-			Repositorio<Endereco> findEndereco = Repositorio.GetInstance(Endereco.class);
-			findEndereco.addEquals("pessoa", this);
-			endereco = findEndereco.getFirstRow();
+			QuerySingleResult<Endereco> query = QueryManager.PESSOA.findPrimeiroEndereco()
+															.withPessoa(this);
+			endereco = Repositorio.executeQuery(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,9 +43,9 @@ public aspect InnerType {
 	public String Pessoa.getAllTelefones(){
 		String retorno = "";
 		try {
-			Repositorio<Telefone> find= Repositorio.GetInstance(Telefone.class);
-			find.addEquals("pessoa", this);
-			for(Telefone tel:find.getAllList()){
+			QueryListResult<Telefone> query = QueryManager.PESSOA.findTelefonesByPessoa()
+														  .withPessoa(this);
+			for(Telefone tel:Repositorio.executeQuery(query)){
 				String newTel ="("+ tel.getDd()+")";
 				newTel += tel.getNumero();
 				retorno += newTel+"/";		
@@ -58,10 +60,9 @@ public aspect InnerType {
 	public Boleto Matriculaperiodo.getUltimoBoleto(){
 		Boleto boleto = new Boleto();
 		try {
-			Repositorio<Boleto> repositorioBoleto = Repositorio.GetInstance(Boleto.class);
-			repositorioBoleto.addEquals("matriculaperiodo",this);
-			repositorioBoleto.addOrder("data desc");			
-			boleto = repositorioBoleto.getFirstRow();	
+			QuerySingleResult<Boleto> query = QueryManager.BOLETO.findUltimoBoleto()
+					  									  .withMatriculaperiodo(this);
+			boleto = Repositorio.executeQuery(query);	
 		} catch (Exception e) {}
 		return boleto;
 	}

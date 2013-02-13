@@ -8,6 +8,8 @@ import br.com.domain.Familiar;
 import br.com.domain.Pessoa;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 public class PessoaEndereco{
 	
@@ -44,11 +46,10 @@ public class PessoaEndereco{
 		obj.setParente(parente);
 		obj.setPessoa(parente.getPessoa());	
 		Endereco endereco = new Endereco();
-		Repositorio<Endereco> getEndereco;
-		getEndereco = Repositorio.GetInstance(Endereco.class);
-		getEndereco.addEquals("pessoa", parente.getPessoa());
+		QuerySingleResult<Endereco> query = QueryManager.PESSOA.findPrimeiroEndereco()
+														.withPessoa(parente.getPessoa());
 		try {
-			endereco = getEndereco.getFirstRow();
+			endereco = Repositorio.executeQuery(query);
 		} catch (NoRecordFoundException e) {}
 		obj.setEndereco(endereco);	
 		return obj;

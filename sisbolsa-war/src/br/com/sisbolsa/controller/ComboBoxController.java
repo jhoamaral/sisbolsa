@@ -21,6 +21,8 @@ import br.com.domain.Tipoevento;
 import br.com.domain.Tipoparentesco;
 import br.com.domain.Tipotelefone;
 import br.com.repositorio.Repositorio;
+import br.com.repositorio.querybuilder.QueryManager;
+import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.sisbolsa.util.WebUtils;
 
 @ManagedBean
@@ -65,24 +67,23 @@ public class ComboBoxController {
 
 	public List<SelectItem> getListaPeriodoLetivo() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		Repositorio<Periodoletivo> getObj = Repositorio
-				.GetInstance(Periodoletivo.class);
-		getObj.addOrder("ano desc, semestre desc");
-		for (Periodoletivo obj : getObj.getAllList()) {
+		QueryListResult<Periodoletivo> query = QueryManager.GENERIC.allObejctOrdered(Periodoletivo.class)
+														   .withOrder("ano desc, semestre desc");
+		for (Periodoletivo obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj, obj.getAno() + "/"
 					+ obj.getSemestre()));
 		}
-
 		return lista;
 	}
 
 	public List<SelectItem> getListaFolha() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-
-		Repositorio<Folha> getObj = Repositorio.GetInstance(Folha.class);
-		getObj.addOrder("referencia desc");
+		
+		QueryListResult<Folha> query = QueryManager.GENERIC.allObejctOrdered(Folha.class)
+												   .withOrder("referencia desc");
 		DateFormat format = new SimpleDateFormat("MMM/yyyy");
-		for (Folha obj : getObj.getAllList()) {
+		
+		for (Folha obj :Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj, format.format(obj.getReferencia())));
 		}
 
