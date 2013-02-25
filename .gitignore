@@ -4,7 +4,7 @@
 build/
 
 *.pydevproject
-.project
+#.project
 .metadata
 bin/**
 tmp/**
@@ -14,7 +14,7 @@ tmp/**/*
 *.swp
 *~
 local.properties
-.classpath
+#.classpath
 .settings/
 .loadpath
 
