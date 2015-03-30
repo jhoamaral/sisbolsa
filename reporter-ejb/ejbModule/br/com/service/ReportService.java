@@ -17,7 +17,7 @@ import br.com.service.reports.ReportModel;
 @Stateless
 public class ReportService {
 	
-	public ByteArrayInputStream gerar(ReportModel reportModel, Map<?,?> parameter, Collection<?> collection) throws IOException, ClassNotFoundException{
+	public ByteArrayInputStream gerar(ReportModel reportModel, Map<String,Object> parameter, Collection<?> collection) throws IOException, ClassNotFoundException{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
 			GeneratorEnum.PDF.value().gerar(reportModel.value(), output, parameter, new JRBeanCollectionDataSource(collection));
@@ -30,7 +30,7 @@ public class ReportService {
 	public ByteArrayInputStream gerar(ReportModel reportModel,  Collection<?> collection) throws IOException, ClassNotFoundException{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
-			GeneratorEnum.PDF.value().gerar(reportModel.value(), output, new HashMap<Object,Object>(), new JRBeanCollectionDataSource(collection));
+			GeneratorEnum.PDF.value().gerar(reportModel.value(), output, new HashMap<String,Object>(), new JRBeanCollectionDataSource(collection));
 		} catch (JRException e) {
 			e.printStackTrace();
 		}

@@ -17,7 +17,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.model.DefaultStreamedContent;
 
 import br.com.domain.Curso;
-import br.com.domain.Faculdade;
+import br.com.domain.Instituicao;
 import br.com.domain.Matricula;
 import br.com.domain.Periodoletivo;
 import br.com.repositorio.Repositorio;
@@ -33,7 +33,7 @@ import br.com.sisbolsa.util.Constantes;
 public class AtivosPorCursoController  implements Serializable{
 	
 	private static final long serialVersionUID = -6773170615007046046L;
-	private String faculdadeSelecionado;
+	private String instituicaoSelecionado;
 	private String cursoSelecionado;
 	private Periodoletivo periodoletivoSelecionado;
 	private String periodoDoBolsista;
@@ -41,12 +41,12 @@ public class AtivosPorCursoController  implements Serializable{
 	@EJB
 	ReportService reportService;
 
-	public String getFaculdadeSelecionado() {
-		return faculdadeSelecionado;
+	public String getInstituicaoSelecionado() {
+		return instituicaoSelecionado;
 	}
 
-	public void setFaculdadeSelecionado(String faculdadeSelecionado) {
-		this.faculdadeSelecionado = faculdadeSelecionado;
+	public void setInstituicaoSelecionado(String instituicaoSelecionado) {
+		this.instituicaoSelecionado = instituicaoSelecionado;
 	}
 
 	public String getCursoSelecionado() {
@@ -77,21 +77,21 @@ public class AtivosPorCursoController  implements Serializable{
 	
 	}
 	
-	public List<SelectItem> getListaFaculdade() {
+	public List<SelectItem> getListaInstituicao() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		QueryListResult<Faculdade> query = QueryManager.GENERIC.allObejctOrdered(Faculdade.class)
+		QueryListResult<Instituicao> query = QueryManager.GENERIC.allObejctOrdered(Instituicao.class)
 													   .withOrder("nome");
-		for (Faculdade obj : Repositorio.executeQuery(query)) {
+		for (Instituicao obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj.getId(), String.valueOf(obj.getNome())));
 		}
 		
 		return lista;
 	}
 
-	public List<SelectItem> getListaCursoFaculdade() {
+	public List<SelectItem> getListaCursoInstituicao() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		QueryListResult<Curso> query = QueryManager.CURSO.findCursoLikeFaculdade()
-												   .withFaculdade(this.faculdadeSelecionado);
+		QueryListResult<Curso> query = QueryManager.CURSO.findCursoLikeInstituicao()
+												   .withInstituicao(this.instituicaoSelecionado);
 		for (Curso obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj.getId(), obj.getDescricao()));
 		}
@@ -102,9 +102,9 @@ public class AtivosPorCursoController  implements Serializable{
 	public DefaultStreamedContent imprimir(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
 		
-		QueryListResult<Matricula> query = QueryManager.BOLSISTA.findMatriculaLikeCursoLikeFaculdadeLikePeriodo()
+		QueryListResult<Matricula> query = QueryManager.BOLSISTA.findMatriculaLikeCursoLikeInstituicaoLikePeriodo()
 													   .withCurso(this.cursoSelecionado)
-													   .withFaculdade(this.faculdadeSelecionado)
+													   .withInstituicao(this.instituicaoSelecionado)
 													   .withPeriodo(this.periodoletivoSelecionado.getId());
 		HashSet<Matricula> result = new LinkedHashSet<Matricula>();
 		

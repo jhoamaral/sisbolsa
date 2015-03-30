@@ -10,11 +10,11 @@ public class FindItensWithCollectionsByFolha  extends QueryListResult<Item>{
 	
 	private static final String QUERY = "Select a from Item a " +
 										"LEFT join FETCH a.eventocauculados b " +
-										"LEFT join FETCH a.matriculaperiodo c " +
+										"LEFT join FETCH a.ativobolsa c " +
 										"LEFT join FETCH c.matricula d " +
 										"LEFT join FETCH d.pessoa e " +
 										"where a.folha = '${1}' " +
-										"order by d.cursofaculdade.faculdade.sigla asc,e.nome asc";
+										"order by d.cursoinstituicao.instituicao.sigla asc,e.nome asc";
 	@Override
 	protected void setType() {
 		this.type = Item.class;

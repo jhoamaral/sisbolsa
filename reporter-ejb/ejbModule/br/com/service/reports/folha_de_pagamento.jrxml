@@ -56,32 +56,32 @@
 	<field name="valor" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[item.valor]]></fieldDescription>
 	</field>
-	<field name="faculdade" class="java.lang.String">
-		<fieldDescription><![CDATA[item.matriculaperiodo.matricula.cursofaculdade.faculdade.sigla]]></fieldDescription>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[item.ativobolsa.matricula.cursoinstituicao.instituicao.sigla]]></fieldDescription>
 	</field>
 	<field name="curso" class="java.lang.String">
-		<fieldDescription><![CDATA[item.matriculaperiodo.matricula.cursofaculdade.curso.descricao]]></fieldDescription>
+		<fieldDescription><![CDATA[item.ativobolsa.matricula.cursoinstituicao.curso.descricao]]></fieldDescription>
 	</field>
 	<field name="pessoa" class="java.lang.String">
-		<fieldDescription><![CDATA[item.matriculaperiodo.matricula.pessoa.nome]]></fieldDescription>
+		<fieldDescription><![CDATA[item.ativobolsa.matricula.pessoa.nome]]></fieldDescription>
 	</field>
 	<field name="cpf" class="java.lang.String">
-		<fieldDescription><![CDATA[item.matriculaperiodo.matricula.pessoa.cpf.numero]]></fieldDescription>
+		<fieldDescription><![CDATA[item.ativobolsa.matricula.pessoa.cpf.numero]]></fieldDescription>
 	</field>
 	<variable name="dataAtual" class="java.util.Date">
 		<variableExpression><![CDATA[new java.util.Date()]]></variableExpression>
 	</variable>
-	<variable name="soma" class="java.math.BigDecimal" resetType="Group" resetGroup="Faculdade" calculation="Sum">
+	<variable name="soma" class="java.math.BigDecimal" resetType="Group" resetGroup="Instituicao" calculation="Sum">
 		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
 	</variable>
-	<variable name="total" class="java.lang.Integer" resetType="Group" resetGroup="Faculdade" calculation="Count">
+	<variable name="total" class="java.lang.Integer" resetType="Group" resetGroup="Instituicao" calculation="Count">
 		<variableExpression><![CDATA[$F{cpf}]]></variableExpression>
 	</variable>
 	<variable name="somaBosista" class="java.math.BigDecimal" resetType="Group" resetGroup="Pessoa" calculation="Sum">
 		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
 	</variable>
-	<group name="Faculdade">
-		<groupExpression><![CDATA[$F{faculdade}]]></groupExpression>
+	<group name="Instituicao">
+		<groupExpression><![CDATA[$F{instituicao}]]></groupExpression>
 		<groupHeader>
 			<band height="22" splitType="Prevent">
 				<textField>
@@ -89,7 +89,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{faculdade}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{instituicao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -100,7 +100,7 @@
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Total da Faculdade("+$F{faculdade}+"): R\$"+$V{soma}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total da Instituicao("+$F{instituicao}+"): R\$"+$V{soma}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="20" width="308" height="20"/>
@@ -243,7 +243,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{faculdade}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{instituicao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

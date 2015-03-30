@@ -12,14 +12,14 @@
 			<p:tabView id="tabs" style="width:960px;">
 				<p:tab title="Imprimir">
 				<h:panelGrid columns="2">
-					<h:outputLabel value="Faculdade: " />
-					<p:selectOneMenu value="#{possiveisFormandosController.faculdadeSelecionado}"
+					<h:outputLabel value="Instituicao: " />
+					<p:selectOneMenu value="#{possiveisFormandosController.instituicaoSelecionado}"
 					required="true"
-					requiredMessage="Selecione uma Faculdade">
+					requiredMessage="Selecione uma Instituicao">
 						<p:ajax event="change" process="@this" update="cbCurso" />
 						<f:selectItem itemLabel="Selecione..."/>
 						<f:selectItem itemLabel="Todos" itemValue="%"/>
-						<f:selectItems value="#{possiveisFormandosController.listaFaculdade}"/>
+						<f:selectItems value="#{possiveisFormandosController.listaInstituicao}"/>
 					</p:selectOneMenu>
 					
 					<h:outputLabel value="Curso: " />
@@ -28,7 +28,7 @@
 					requiredMessage="Selecione um Curso">
 						<f:selectItem itemLabel="Selecione..."/>
 						<f:selectItem itemLabel="Todos" itemValue="%"/>
-						<f:selectItems value="#{possiveisFormandosController.listaCursoFaculdade}"/>
+						<f:selectItems value="#{possiveisFormandosController.listaCursoInstituicao}"/>
 					</p:selectOneMenu>
 					
 					<h:outputLabel value="Perido Letivo: " />

@@ -34,10 +34,10 @@ public class Matricula implements Serializable {
 
 	private String matricula;
 
-	//bi-directional many-to-one association to Cursofaculdade
+	//bi-directional many-to-one association to Cursoinstituicao
     @ManyToOne
-	@JoinColumn(name="cursofaculdadeid")
-	private Cursofaculdade cursofaculdade;
+	@JoinColumn(name="cursoinstituicaoid")
+	private Cursoinstituicao cursoinstituicao;
     
     @ManyToOne
 	@JoinColumn(name="periodoletivoid")
@@ -48,9 +48,8 @@ public class Matricula implements Serializable {
 	@JoinColumn(name="pessoaid")
 	private Pessoa pessoa;
 
-	//bi-directional many-to-one association to Matriculaperiodo
 	@OneToMany(mappedBy="matricula",fetch=FetchType.LAZY)
-	private Set<Matriculaperiodo> matriculaperiodos;
+	private Set<Ativobolsa> ativobolsas;
 
     public Matricula() {
     }
@@ -95,12 +94,12 @@ public class Matricula implements Serializable {
 		this.matricula = matricula;
 	}
 
-	public Cursofaculdade getCursofaculdade() {
-		return this.cursofaculdade;
+	public Cursoinstituicao getCursoinstituicao() {
+		return this.cursoinstituicao;
 	}
 
-	public void setCursofaculdade(Cursofaculdade cursofaculdade) {
-		this.cursofaculdade = cursofaculdade;
+	public void setCursoinstituicao(Cursoinstituicao cursoinstituicao) {
+		this.cursoinstituicao = cursoinstituicao;
 	}
 	
 	public Pessoa getPessoa() {
@@ -110,13 +109,13 @@ public class Matricula implements Serializable {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-	
-	public Set<Matriculaperiodo> getMatriculaperiodos() {
-		return this.matriculaperiodos;
+
+	public Set<Ativobolsa> getAtivobolsas() {
+		return ativobolsas;
 	}
 
-	public void setMatriculaperiodos(Set<Matriculaperiodo> matriculaperiodos) {
-		this.matriculaperiodos = matriculaperiodos;
+	public void setAtivobolsas(Set<Ativobolsa> ativobolsas) {
+		this.ativobolsas = ativobolsas;
 	}
 	
 }

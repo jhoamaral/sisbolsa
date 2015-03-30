@@ -3,7 +3,7 @@ package br.com.repositorio.querybuilder.query.boleto;
 import java.util.Date;
 
 import br.com.domain.Boleto;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 
@@ -11,7 +11,7 @@ public class FindBoletoByData  extends QuerySingleResult<Boleto>{
 	
 	
 	private static final String QUERY = "Select o from Boleto o " +
-										"where matriculaperiodo = '${1}' and " +
+										"where ativobolsa = '${1}' and " +
 										"data = '${2}'";
 	
 	@Override
@@ -25,8 +25,8 @@ public class FindBoletoByData  extends QuerySingleResult<Boleto>{
 					.replace("${2}", String.valueOf(this.parameters.get(2)));
 	}
 	
-	public FindBoletoByData withMatriculaperiodo(Matriculaperiodo matricula){
-		this.setParamters(1, matricula);
+	public FindBoletoByData withAtivobolsa(Ativobolsa ativobolsa){
+		this.setParamters(1, ativobolsa);
 		return this;
 	}
 	

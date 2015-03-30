@@ -7,16 +7,16 @@ import javax.faces.convert.Converter;
 import br.com.domain.Ben;
 import br.com.domain.Boleto;
 import br.com.domain.Condicoesmoradia;
-import br.com.domain.Cursofaculdade;
+import br.com.domain.Cursoinstituicao;
 import br.com.domain.Escolaridade;
 import br.com.domain.Estadocivil;
 import br.com.domain.Evento;
-import br.com.domain.Faculdade;
+import br.com.domain.Instituicao;
 import br.com.domain.Folha;
 import br.com.domain.Item;
 import br.com.domain.Logradouro;
 import br.com.domain.Matricula;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.domain.Periodoletivo;
 import br.com.domain.Pessoa;
 import br.com.domain.Situacaojuridica;
@@ -66,12 +66,12 @@ public class ConverterController {
 		return EntityConverter.GetInstance(Ben.class);
 	}
 	
-	public Converter getFaculdadeConverter() {
-		return EntityConverter.GetInstance(Faculdade.class);
+	public Converter getInstituicaoConverter() {
+		return EntityConverter.GetInstance(Instituicao.class);
 	}
 	
-	public Converter getCursoFaculdadeConverter() {
-		return EntityConverter.GetInstance(Cursofaculdade.class);
+	public Converter getCursoInstituicaoConverter() {
+		return EntityConverter.GetInstance(Cursoinstituicao.class);
 	}
 	
 	public Converter getPessoaConverter() {
@@ -99,7 +99,7 @@ public class ConverterController {
 	}
 	
 	public Converter getMatriculaPeriodoConverter(){
-		return EntityConverter.GetInstance(Matriculaperiodo.class);
+		return EntityConverter.GetInstance(Ativobolsa.class);
 	}
 	
 	public Converter getBoletoConverter(){

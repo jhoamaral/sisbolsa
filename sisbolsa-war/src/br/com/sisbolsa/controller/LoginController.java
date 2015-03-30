@@ -3,6 +3,7 @@ package br.com.sisbolsa.controller;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -10,6 +11,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.domain.Usuario;
+import br.com.generic.AbstractEntityDomain;
+import br.com.repositorio.PersistenceBean;
 import br.com.repositorio.exceptions.LoginException;
 import br.com.service.ServiceUsuario;
 
@@ -20,9 +23,11 @@ public class LoginController implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Usuario user;
 	
-	
 	@EJB
 	private ServiceUsuario serviceUsuario;
+	
+	@EJB
+	private PersistenceBean<AbstractEntityDomain> persistenceBean;
 	
 	
 	public LoginController() {

@@ -2,6 +2,7 @@ package br.com.sisbolsa.controller.bolsista;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -23,7 +24,7 @@ import br.com.domain.Eventocauculado;
 import br.com.domain.Familiar;
 import br.com.domain.Item;
 import br.com.domain.Matricula;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.domain.Periodoletivo;
 import br.com.domain.Socioeconeomico;
 import br.com.domain.Tipoparentesco;
@@ -44,7 +45,7 @@ import br.com.sisbolsa.util.WebUtils;
 
 @ManagedBean
 @ViewScoped
-public class MatriculaPeriodoController extends AbstractController<Matriculaperiodo> implements Serializable{
+public class MatriculaPeriodoController extends AbstractController<Ativobolsa> implements Serializable{
 	
 	private static final long serialVersionUID = -6773170615007046046L;	
 	private List<Matricula> listPessoa = new ArrayList<Matricula>();
@@ -76,12 +77,12 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Boleto> getBoletoList() {
-		if (this.obj instanceof Matriculaperiodo) {
+		if (this.obj instanceof Ativobolsa) {
 			try{
 				return new ArrayList(this.obj.getBoletos());
 			}catch (Exception e) {
-				QueryListResult<Boleto> query = QueryManager.BOLETO.findBoletoByMatriculaperiodo()
-															.withMatriculaperiodo(this.obj);
+				QueryListResult<Boleto> query = QueryManager.BOLETO.findBoletoByAtivobolsa()
+															.withAtivobolsa(this.obj);
 				Set<Boleto> lista = new LinkedHashSet<Boleto>(Repositorio.executeQuery(query));
 				this.obj.setBoletos(lista);
 				return new ArrayList(this.obj.getBoletos());
@@ -93,7 +94,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Eventocauculado> getEventosList() {
-		if (this.obj instanceof Matriculaperiodo) {
+		if (this.obj instanceof Ativobolsa) {
 			try{
 				return new ArrayList(this.itemSelecionado.getEventocauculados());
 			}catch (Exception e) {
@@ -107,9 +108,9 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Item> getItemsList() {
-		if (this.obj instanceof Matriculaperiodo) {
-			QueryListResult<Item> query = QueryManager.ITEM.findItemByMatriculaperiodo()
-													  .withMatriculaperiodo(this.obj);
+		if (this.obj instanceof Ativobolsa) {
+			QueryListResult<Item> query = QueryManager.ITEM.findItemByAtivobolsa()
+													  .withAtivobolsa(this.obj);
 			Set<Item> lista = new LinkedHashSet<Item>(Repositorio.executeQuery(query));
 			this.obj.setItems(lista);
 			return new ArrayList(this.obj.getItems());
@@ -119,7 +120,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	}
 	
 	@Override
-	protected String getFieldValue(Matriculaperiodo obj, int i) {
+	protected String getFieldValue(Ativobolsa obj, int i) {
 		switch (i) {
 		case 0:
 			return  String.valueOf(obj.getMatricula().getPessoa().getNome());
@@ -134,7 +135,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 
 	@Override
 	public void novo() {
-		this.setObject(new Matriculaperiodo());
+		this.setObject(new Ativobolsa());
 		this.setFiltro("");
 		this.obj.setItems(new HashSet<Item>());
 		this.boletoSelecionado = new Boleto();
@@ -206,7 +207,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 			Socioeconeomico socioeconeomico = serviceBolsista.getUltimoSocioEconomico(this.obj.getMatricula());
 			Socioeconeomico newSocioeconeomico = new Socioeconeomico();
 			newSocioeconeomico.setId(UtilService.generateOid());
-			newSocioeconeomico.setMatriculaperiodo(this.obj);
+			newSocioeconeomico.setAtivobolsa(this.obj);
 			
 			
 			newSocioeconeomico.setCondicoesmoradia(socioeconeomico.getCondicoesmoradia());
@@ -252,12 +253,12 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	public DefaultStreamedContent imprimirFicha(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
 		try {
-			QuerySingleResult<Matriculaperiodo> query = QueryManager.PESSOA.findMatriculaPeriodoWithCollections()
-																	.withMatriculaperiodo(this.obj);		
-			List<Matriculaperiodo> lista = new ArrayList<Matriculaperiodo>();
+			QuerySingleResult<Ativobolsa> query = QueryManager.PESSOA.findMatriculaPeriodoWithCollections()
+																	.withAtivobolsa(this.obj);		
+			List<Ativobolsa> lista = new ArrayList<Ativobolsa>();
 			lista.add(Repositorio.executeQuery(query));
 			
-			Map<String,String> params = new HashMap<String, String>();	
+			Map<String,Object> params = new HashMap<String, Object>();	
 			params.put("logo", contexto.getExternalContext().getRealPath(Constantes.LOGO));
 			params.put("periodo",String.valueOf(UtilService.calculaPeriodoAtual(this.obj.getMatricula().getPeriodoletivo(),this.obj.getPeriodoletivo()))); 
 			
@@ -271,7 +272,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	public void addBoleto() {
 		try {
-			this.getBoletoSelecionado().setMatriculaperiodo(this.obj);
+			this.getBoletoSelecionado().setAtivobolsa(this.obj);
 			if (this.obj.getId() instanceof String) {
 				Repositorio.cadastrar(this.getBoletoSelecionado());
 			} else {
@@ -300,7 +301,7 @@ public class MatriculaPeriodoController extends AbstractController<Matriculaperi
 	
 	@Override
 	public void carregaAllObjects(){
-		QueryListResult<Matriculaperiodo> query = QueryManager.PESSOA.findMatriculaPeriodoByPeriodoLetivo()
+		QueryListResult<Ativobolsa> query = QueryManager.PESSOA.findMatriculaPeriodoByPeriodoLetivo()
 															  .withPeriodoLetivo(this.periodoletivoSelecionado);
 		this.setAllObj(Repositorio.executeQuery(query));
 	}

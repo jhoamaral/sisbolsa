@@ -1,0 +1,37 @@
+
+buildscript {
+    dependencies {
+        classpath fileTree(dir: 'C:/Desenvolvimento/workspace/sisbolsa/gradlelib/',includes: ['aspectj-0.1.1.jar'])
+    }
+}
+
+apply plugin: 'java'
+
+ext.aspectjVersion = '1.7.4'
+apply plugin: 'aspectj'
+
+configurations {
+  compile.extendsFrom provided
+  ajc
+}
+
+repositories { 
+    mavenCentral() 
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ["ejbModule"]
+    }
+}
+
+dependencies {	
+	// provided 'org.wildfly:wildfly-ejb3:8.1.0.Final'
+
+    provided "org.hibernate:hibernate-core:4+"
+    provided "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1+"
+    provided "javax.validation:validation-api:1+"
+    provided "org.jboss.spec.javax.ejb:jboss-ejb-api_3.1_spec:1+"
+    compile('org.aspectj:aspectjrt:1.7.4')
+	ajc "org.aspectj:aspectjtools:1.7.4"
+}

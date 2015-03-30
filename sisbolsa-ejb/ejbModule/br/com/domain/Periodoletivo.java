@@ -32,7 +32,7 @@ public class Periodoletivo implements Serializable {
 
 	//bi-directional many-to-one association to Matricula
 	@OneToMany(mappedBy="periodoletivo",fetch=FetchType.LAZY)
-	private Set<Matriculaperiodo> matriculasperiodo;
+	private Set<Ativobolsa> matriculasperiodo;
 
     public Periodoletivo() {
     }
@@ -69,11 +69,11 @@ public class Periodoletivo implements Serializable {
 		this.folhas = folhas;
 	}
 
-	public Set<Matriculaperiodo> getMatriculasperiodo() {
+	public Set<Ativobolsa> getMatriculasperiodo() {
 		return matriculasperiodo;
 	}
 
-	public void setMatriculasperiodo(Set<Matriculaperiodo> matriculasperiodo) {
+	public void setMatriculasperiodo(Set<Ativobolsa> matriculasperiodo) {
 		this.matriculasperiodo = matriculasperiodo;
 	}
 	

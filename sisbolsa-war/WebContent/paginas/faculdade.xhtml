@@ -11,32 +11,32 @@
 	<h:form prependId="false" id="form">
 		<p:tabView id="tabs" style="width:960px;">
 			<p:tab title="Formulário">
-				<p:fieldset legend="Faculdade">
+				<p:fieldset legend="Instituicao">
 					<p:outputPanel id="campos">
 					<h:panelGrid columns="2">
 						<h:outputLabel value="Nome: " />
-						<p:inputText value="#{faculdadeController.object.nome}"
+						<p:inputText value="#{instituicaoController.object.nome}"
 							size="50" />
 						<h:outputLabel value="Sigla: " />
-						<p:inputText value="#{faculdadeController.object.sigla}" />
+						<p:inputText value="#{instituicaoController.object.sigla}" />
 					</h:panelGrid>
 
 					<h:panelGrid columns="3"
-						rendered="#{not empty faculdadeController.object.id}">
+						rendered="#{not empty instituicaoController.object.id}">
 						<p:commandButton value="" styleClass="editButton"
-							actionListener="#{faculdadeController.salvar}" process="campos"
+							actionListener="#{instituicaoController.salvar}" process="campos"
 							update="@form" />
-						<p:commandButton value="" styleClass="deleteButton" disabled="#{not empty faculdadeController.object.cursofaculdades}"
-							actionListener="#{faculdadeController.excluir}" process="campos"
+						<p:commandButton value="" styleClass="deleteButton" disabled="#{not empty instituicaoController.object.cursoinstituicaos}"
+							actionListener="#{instituicaoController.excluir}" process="campos"
 							update="@form" />
 						<p:commandButton value="" styleClass="cancelButton"
-							actionListener="#{faculdadeController.novo}" process="campos"
+							actionListener="#{instituicaoController.novo}" process="campos"
 							update="@form" />
 					</h:panelGrid>
 					<h:panelGrid columns="1"
-						rendered="#{empty faculdadeController.object.id}">
+						rendered="#{empty instituicaoController.object.id}">
 						<p:commandButton value="" styleClass="saveButton" 
-							actionListener="#{faculdadeController.salvar}" process="campos"
+							actionListener="#{instituicaoController.salvar}" process="campos"
 							update="@form" />
 					</h:panelGrid>
 				</p:outputPanel>
@@ -47,27 +47,27 @@
 					<h:panelGrid columns="3">
 					<h:outputLabel value="Curso: " />
 					<p:selectOneMenu id="cbCurso"
-						value="#{faculdadeController.cursoSelecionado.curso}"
-						converter="#{faculdadeController.cursoConverter}">
+						value="#{instituicaoController.cursoSelecionado.curso}"
+						converter="#{instituicaoController.cursoConverter}">
 						<f:selectItem itemLabel="Selecione..." />
-						<f:selectItems value="#{faculdadeController.comboBoxCurso}" />
+						<f:selectItems value="#{instituicaoController.comboBoxCurso}" />
 					</p:selectOneMenu>
-					<p:commandButton value="" styleClass="addIcon" disabled="#{empty faculdadeController.object.id}"
-					action="#{faculdadeController.addCurso()}" process="@form"
+					<p:commandButton value="" styleClass="addIcon" disabled="#{empty instituicaoController.object.id}"
+					action="#{instituicaoController.addCurso()}" process="@form"
 					update="@form" />
 				</h:panelGrid>
 				
 				<p:dataTable var="curso" id="listaCurso"
-					value="#{faculdadeController.cursos}" rowKey="#{curso.id}"
+					value="#{instituicaoController.cursos}" rowKey="#{curso.id}"
 					paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" >
 					<p:column headerText="Cursos">
 							#{curso.curso.descricao}
 							
 						<p:commandButton  update="@form"
-							value="" styleClass="removeIcon" style="float:right" action="#{faculdadeController.removeCurso()}"
+							value="" styleClass="removeIcon" style="float:right" action="#{instituicaoController.removeCurso()}"
 							async="true">
 							<f:setPropertyActionListener value="#{curso}"
-								target="#{faculdadeController.cursoSelecionado}" />
+								target="#{instituicaoController.cursoSelecionado}" />
 						</p:commandButton>
                 	</p:column>
 
@@ -76,22 +76,22 @@
 			</p:tab>
 			<p:tab title="Pesquisar">
 				<div id="search">
-					<p:inputText id="search" value="#{faculdadeController.filtro}">
+					<p:inputText id="search" value="#{instituicaoController.filtro}">
 						<p:ajax event="keyup" update="lista" />
 					</p:inputText>
 					<p:watermark for="search" value="Pesquise aqui..." />
 				</div>
-				<p:dataTable var="faculdade" id="lista"
-					value="#{faculdadeController.objects}" rowKey="#{faculdade.id}"
+				<p:dataTable var="instituicao" id="lista"
+					value="#{instituicaoController.objects}" rowKey="#{instituicao.id}"
 					paginator="true" rows="10" paginatorAlwaysVisible="false"
 					selectionMode="single" paginatorPosition="bottom"
-					selection="#{faculdadeController.object}">
+					selection="#{instituicaoController.object}">
 					<p:ajax event="rowSelect" update="@form" />
-					<p:column headerText="Sigla" sortBy="#{faculdade.sigla}">
-						#{faculdade.sigla}
+					<p:column headerText="Sigla" sortBy="#{instituicao.sigla}">
+						#{instituicao.sigla}
                 	</p:column>
-					<p:column headerText="Nome" sortBy="#{faculdade.nome}">
-						#{faculdade.nome}
+					<p:column headerText="Nome" sortBy="#{instituicao.nome}">
+						#{instituicao.nome}
                 	</p:column>
 				</p:dataTable>
 

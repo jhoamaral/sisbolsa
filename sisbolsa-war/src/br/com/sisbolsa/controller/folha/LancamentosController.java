@@ -26,7 +26,7 @@ import br.com.domain.Evento;
 import br.com.domain.Eventocauculado;
 import br.com.domain.Folha;
 import br.com.domain.Item;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.domain.Periodoletivo;
 import br.com.domain.Usuario;
 import br.com.repositorio.Repositorio;
@@ -46,7 +46,7 @@ public class LancamentosController extends AbstractController<Folha> implements	
 
 	private static final long serialVersionUID = -6773170615007046046L;
 	private List<Evento> listEvento = new ArrayList<Evento>();
-	private List<Matriculaperiodo> listMatricula = new ArrayList<Matriculaperiodo>();
+	private List<Ativobolsa> listMatricula = new ArrayList<Ativobolsa>();
 	private Eventocauculado novoEvento;
 	private Item novoItem;
 	private boolean valorBloqueado = true;
@@ -115,7 +115,7 @@ public class LancamentosController extends AbstractController<Folha> implements	
 		this.setNovoEvento(new Eventocauculado());
 		this.setNovoItem(new Item());
 		this.obj.setItems(new HashSet<Item>());
-		this.novoItem.setMatriculaperiodo(new Matriculaperiodo());
+		this.novoItem.setAtivobolsa(new Ativobolsa());
 		this.setFiltro("");
 		this.boletoSelecionado = null;
 	}
@@ -135,7 +135,7 @@ public class LancamentosController extends AbstractController<Folha> implements	
 		} else {
 			for (Item item : this.obj.getItems()) {
 				try {
-					if (item.getMatriculaperiodo().getMatricula().getPessoa().getNome().toLowerCase().indexOf(this.getFiltroItens().toLowerCase()) > -1) {
+					if (item.getAtivobolsa().getMatricula().getPessoa().getNome().toLowerCase().indexOf(this.getFiltroItens().toLowerCase()) > -1) {
 						retorno.add(item);
 					}
 				} catch (Exception e) {
@@ -165,7 +165,7 @@ public class LancamentosController extends AbstractController<Folha> implements	
 	public void setNovoItem(Item novoItem) {
 		this.novoItem = novoItem;
 		try {
-			this.boletoSelecionado = serviceBoleto.getUltimoBoleto(this.novoItem.getMatriculaperiodo());
+			this.boletoSelecionado = serviceBoleto.getUltimoBoleto(this.novoItem.getAtivobolsa());
 		} catch (NoRecordFoundException e) {} 
 		catch (NullPointerException e) {}
 		QueryListResult<Eventocauculado> query = QueryManager.EVENTO.findEventoCalculadoByItem()
@@ -243,12 +243,12 @@ public class LancamentosController extends AbstractController<Folha> implements	
 		return suggestions;
 	}
 
-	public List<Matriculaperiodo> completeMatricula(String query) {
-		List<Matriculaperiodo> suggestions = new ArrayList<Matriculaperiodo>();
+	public List<Ativobolsa> completeMatricula(String query) {
+		List<Ativobolsa> suggestions = new ArrayList<Ativobolsa>();
 		if (this.listMatricula.isEmpty() && this.obj instanceof Folha) {
 			this.carregaListMatricula();
 		}
-		for (Matriculaperiodo obj : this.listMatricula) {
+		for (Ativobolsa obj : this.listMatricula) {
 			if (obj.getMatricula().getPessoa().getNome().toLowerCase().startsWith(query.toLowerCase()) || obj.getMatricula().getPessoa().getCpf().getNumero().toLowerCase().startsWith(query.toLowerCase()))
 				suggestions.add(obj);
 		}
@@ -256,30 +256,30 @@ public class LancamentosController extends AbstractController<Folha> implements	
 	}
 
 	public void carregaListMatricula() {
-		QueryListResult<Matriculaperiodo> query = QueryManager.PESSOA.findMatriculaPeriodoByPeriodoLetivo()
+		QueryListResult<Ativobolsa> query = QueryManager.PESSOA.findMatriculaPeriodoByPeriodoLetivo()
 															  .withPeriodoLetivo(this.periodoletivoSelecionado);
 		this.listMatricula = Repositorio.executeQuery(query);
 	}
 
 	public void carregaUltimoBoleto(SelectEvent event) {
 		try {
-			QuerySingleResult<Item> query = QueryManager.ITEM.findItemByMatriculaperiodoAndFolha()
+			QuerySingleResult<Item> query = QueryManager.ITEM.findItemByAtivobolsaAndFolha()
 														.withFolha(this.obj)
-														.withMatriculaperiodo((Matriculaperiodo) event.getObject());
+														.withAtivobolsa((Ativobolsa) event.getObject());
 			this.setNovoItem(Repositorio.executeQuery(query));
 		} catch (NoRecordFoundException e) {
-			this.novoItem.setMatriculaperiodo((Matriculaperiodo) event.getObject());
+			this.novoItem.setAtivobolsa((Ativobolsa) event.getObject());
 		}
 		try {
-			this.boletoSelecionado = serviceBoleto.getUltimoBoleto(this.novoItem.getMatriculaperiodo());
+			this.boletoSelecionado = serviceBoleto.getUltimoBoleto(this.novoItem.getAtivobolsa());
 		} catch (NoRecordFoundException e) {}
 	}
 
 	public List<SelectItem> getListaBoleto() {
 		DateFormat format = new SimpleDateFormat("MMM/yyyy");
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		QueryListResult<Boleto> query = QueryManager.BOLETO.findBoletoByMatriculaperiodo()
-													.withMatriculaperiodo(this.novoItem.getMatriculaperiodo());
+		QueryListResult<Boleto> query = QueryManager.BOLETO.findBoletoByAtivobolsa()
+													.withAtivobolsa(this.novoItem.getAtivobolsa());
 		for (Boleto obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj, format.format(obj.getData())));
 		}
@@ -343,14 +343,14 @@ public class LancamentosController extends AbstractController<Folha> implements	
 		this.setNovoEvento(new Eventocauculado());
 		this.periodoletivoSelecionado = this.obj.getPeriodoletivo();
 		this.carregaListMatricula();
-		this.novoItem.setMatriculaperiodo(new Matriculaperiodo());
+		this.novoItem.setAtivobolsa(new Ativobolsa());
 		this.boletoSelecionado = new Boleto();
 	}
 
 	public void addItem() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try {
-			if (this.novoItem.getMatriculaperiodo() instanceof Matriculaperiodo) {
+			if (this.novoItem.getAtivobolsa() instanceof Ativobolsa) {
 				this.novoItem.setFolha(this.obj);
 				this.calculuaItem();
 				this.obj.getItems().add(this.novoItem);
@@ -434,7 +434,7 @@ public class LancamentosController extends AbstractController<Folha> implements	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Eventocauculado> getEventosList() {
-		if (this.novoItem.getMatriculaperiodo() instanceof Matriculaperiodo) {
+		if (this.novoItem.getAtivobolsa() instanceof Ativobolsa) {
 			try {
 				return new ArrayList(this.itemSelecionado.getEventocauculados());
 			} catch (Exception e) {
@@ -448,13 +448,13 @@ public class LancamentosController extends AbstractController<Folha> implements	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Item> getItemsHistoricoList() {
-		if (this.novoItem.getMatriculaperiodo() instanceof Matriculaperiodo) {
-			QueryListResult<Item> query = QueryManager.ITEM.findItemByMatriculaperiodo()
-													  .withMatriculaperiodo(this.novoItem.getMatriculaperiodo());
+		if (this.novoItem.getAtivobolsa() instanceof Ativobolsa) {
+			QueryListResult<Item> query = QueryManager.ITEM.findItemByAtivobolsa()
+													  .withAtivobolsa(this.novoItem.getAtivobolsa());
 			Set<Item> lista = new LinkedHashSet<Item>(Repositorio.executeQuery(query));
-			this.novoItem.getMatriculaperiodo().setItems(lista);
-			this.novoItem.getMatriculaperiodo().getItems().remove(this.novoItem);
-			return new ArrayList(this.novoItem.getMatriculaperiodo().getItems());
+			this.novoItem.getAtivobolsa().setItems(lista);
+			this.novoItem.getAtivobolsa().getItems().remove(this.novoItem);
+			return new ArrayList(this.novoItem.getAtivobolsa().getItems());
 		} else {
 			return new ArrayList();
 		}

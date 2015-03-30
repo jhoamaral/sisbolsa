@@ -69,28 +69,28 @@
 							#{o.pessoa.nome}
 						</p:column>
 						<p:column>
-							#{o.cursofaculdade.curso.descricao}
+							#{o.cursoinstituicao.curso.descricao}
 						</p:column>
 						<p:column>
-							#{o.cursofaculdade.faculdade.sigla}
+							#{o.cursoinstituicao.instituicao.sigla}
 						</p:column>
 						</p:autoComplete>
 						<h:outputLabel value="Curso: " />
 						<p:outputPanel
 							rendered="#{not empty matriculaPeriodoController.object.matricula}">
 							<p:inputText
-								value="#{matriculaPeriodoController.object.matricula.cursofaculdade.curso.descricao}"
+								value="#{matriculaPeriodoController.object.matricula.cursoinstituicao.curso.descricao}"
 								readonly="true" id="itCurso" size="60" />
 						</p:outputPanel>
 						<p:outputPanel
 							rendered="#{empty matriculaPeriodoController.object.matricula}">
 							<p:inputText value="" readonly="true" />
 						</p:outputPanel>
-						<h:outputLabel value="Faculdade: " />
+						<h:outputLabel value="Instituicao: " />
 						<p:outputPanel
 							rendered="#{not empty matriculaPeriodoController.object.matricula}">
 							<p:inputText
-								value="#{matriculaPeriodoController.object.matricula.cursofaculdade.faculdade.nome}"
+								value="#{matriculaPeriodoController.object.matricula.cursoinstituicao.instituicao.nome}"
 								readonly="true" size="60" />
 						</p:outputPanel>
 						<p:outputPanel

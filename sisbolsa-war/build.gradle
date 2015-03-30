@@ -1,0 +1,13 @@
+apply plugin: 'war'
+
+repositories {
+	maven{
+		url 'http://jasperreports.sourceforge.net/maven2/' 
+	} 
+    mavenCentral() 
+}
+
+dependencies {
+	compile project(':reporter-ejb')
+	compile project(':sisbolsa-ejb')
+}

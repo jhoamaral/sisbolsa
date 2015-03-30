@@ -44,10 +44,9 @@ public class Socioeconeomico implements Serializable {
 	@JoinColumn(name="situacaooperacionalid")
 	private Situacaooperacional situacaooperacional;
 
-	//bi-directional many-to-one association to Matriculaperiodo
     @OneToOne
-	@JoinColumn(name="matriculaperiodoid")
-	private Matriculaperiodo matriculaperiodo;
+	@JoinColumn(name="ativobolsaid")
+	private Ativobolsa ativobolsa;
 
     public Socioeconeomico() {
     }
@@ -107,13 +106,14 @@ public class Socioeconeomico implements Serializable {
 	public void setSituacaooperacional(Situacaooperacional situacaooperacional) {
 		this.situacaooperacional = situacaooperacional;
 	}
-	
-	public Matriculaperiodo getMatriculaperiodo() {
-		return this.matriculaperiodo;
+
+	public Ativobolsa getAtivobolsa() {
+		return ativobolsa;
 	}
 
-	public void setMatriculaperiodo(Matriculaperiodo matriculaperiodo) {
-		this.matriculaperiodo = matriculaperiodo;
+	public void setAtivobolsa(Ativobolsa ativobolsa) {
+		this.ativobolsa = ativobolsa;
 	}
+
 	
 }

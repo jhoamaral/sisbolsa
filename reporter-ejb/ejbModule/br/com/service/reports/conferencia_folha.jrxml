@@ -30,17 +30,17 @@
 	<field name="nome" class="java.lang.String">
 		<fieldDescription><![CDATA[matricula.pessoa.nome]]></fieldDescription>
 	</field>
-	<field name="faculdade" class="java.lang.String">
-		<fieldDescription><![CDATA[matricula.cursofaculdade.faculdade.sigla]]></fieldDescription>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[matricula.cursoinstituicao.instituicao.sigla]]></fieldDescription>
 	</field>
 	<field name="curso" class="java.lang.String">
-		<fieldDescription><![CDATA[matricula.cursofaculdade.curso.descricao]]></fieldDescription>
+		<fieldDescription><![CDATA[matricula.cursoinstituicao.curso.descricao]]></fieldDescription>
 	</field>
 	<field name="data" class="java.util.Date">
 		<fieldDescription><![CDATA[ultimoBoleto.data]]></fieldDescription>
 	</field>
-	<group name="Faculdade">
-		<groupExpression><![CDATA[$F{faculdade}]]></groupExpression>
+	<group name="Instituicao">
+		<groupExpression><![CDATA[$F{instituicao}]]></groupExpression>
 		<groupHeader>
 			<band height="60">
 				<textField>
@@ -48,7 +48,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="18" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{faculdade}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{instituicao}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement style="table" mode="Opaque" x="0" y="46" width="275" height="14" forecolor="#000000" backcolor="#CCCCCC"/>

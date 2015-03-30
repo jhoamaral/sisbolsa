@@ -27,14 +27,14 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="faculdade" class="java.lang.String">
-		<fieldDescription><![CDATA[matricula.cursofaculdade.faculdade.sigla]]></fieldDescription>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[matricula.cursoinstituicao.instituicao.sigla]]></fieldDescription>
 	</field>
 	<field name="nome" class="java.lang.String">
 		<fieldDescription><![CDATA[matricula.pessoa.nome]]></fieldDescription>
 	</field>
-	<group name="faculdade" isStartNewPage="true">
-		<groupExpression><![CDATA[$F{faculdade}]]></groupExpression>
+	<group name="instituicao" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{instituicao}]]></groupExpression>
 		<groupHeader>
 			<band height="33">
 				<textField>
@@ -42,7 +42,7 @@
 					<textElement>
 						<font size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{faculdade}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{instituicao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

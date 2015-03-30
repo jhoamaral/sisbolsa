@@ -9,6 +9,7 @@ public enum ReportModel {
 	 ATIVOS_POR_CURSO("ativos_por_curso.jasper"),
 	 CONFERENCIA_FOLHA("conferencia_folha.jasper"),
 	 POSSIVEIS_FORMANDOS("possiveis_formandos.jasper"),
+	 EXTRATO_FOLHA("extrato_de_pagamento.jasper"),
 	 DECLARACAO_RENDIMENTOS("declaracao_rendimentos.jasper");
 	
 	String path;

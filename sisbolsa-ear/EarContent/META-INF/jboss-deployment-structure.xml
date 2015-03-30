@@ -3,8 +3,9 @@
   <deployment>
     <dependencies>
       <module name="org.apache.commons.collections" export="true"/>
-      <module name="org.apache.commons.digester" export="true"/>
+    <!--    <module name="org.apache.commons.digester" export="true"/>-->
       <module name="org.apache.commons.beanutils" export="true"/>
+      <module name="org.hibernate" />
     </dependencies>
   </deployment>
 </jboss-deployment-structure>

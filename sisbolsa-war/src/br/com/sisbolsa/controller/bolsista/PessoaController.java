@@ -10,9 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import br.com.domain.Cursofaculdade;
+import br.com.domain.Cursoinstituicao;
 import br.com.domain.Endereco;
-import br.com.domain.Faculdade;
+import br.com.domain.Instituicao;
 import br.com.domain.Familiar;
 import br.com.domain.Logradouro;
 import br.com.domain.Matricula;
@@ -37,7 +37,7 @@ public class PessoaController extends AbstractController<Pessoa> implements Seri
 	private Familiar parenteSelecionado = new Familiar();
 	private Pessoaben pessoabenSelecionado = new Pessoaben();
 	private Matricula matriculaSelecionado = new Matricula();
-	private Faculdade faculdadeSelecionada;
+	private Instituicao instituicaoSelecionada;
 
 	private List<Logradouro> listLogradouro = new ArrayList<Logradouro>();
 
@@ -191,18 +191,18 @@ public class PessoaController extends AbstractController<Pessoa> implements Seri
 	public void setMatriculaSelecionado(Matricula matriculaSelecionado) {
 
 		this.matriculaSelecionado = matriculaSelecionado;
-		if (this.matriculaSelecionado.getCursofaculdade() instanceof Cursofaculdade) {
-			this.faculdadeSelecionada = this.matriculaSelecionado.getCursofaculdade().getFaculdade();
+		if (this.matriculaSelecionado.getCursoinstituicao() instanceof Cursoinstituicao) {
+			this.instituicaoSelecionada = this.matriculaSelecionado.getCursoinstituicao().getInstituicao();
 		}
 		System.out.println(this.matriculaSelecionado);
 	}
 
-	public Faculdade getFaculdadeSelecionada() {
-		return faculdadeSelecionada;
+	public Instituicao getInstituicaoSelecionada() {
+		return instituicaoSelecionada;
 	}
 
-	public void setFaculdadeSelecionada(Faculdade faculdadeSelecionada) {
-		this.faculdadeSelecionada = faculdadeSelecionada;
+	public void setInstituicaoSelecionada(Instituicao instituicaoSelecionada) {
+		this.instituicaoSelecionada = instituicaoSelecionada;
 	}
 
 	protected String getFieldValue(Pessoa obj, int i) {
@@ -234,21 +234,21 @@ public class PessoaController extends AbstractController<Pessoa> implements Seri
 		return suggestions;
 	}
 
-	public List<SelectItem> getListaFaculdade() {
+	public List<SelectItem> getListaInstituicao() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		QueryListResult<Faculdade> query = QueryManager.GENERIC.allObejctOrdered(Faculdade.class)
+		QueryListResult<Instituicao> query = QueryManager.GENERIC.allObejctOrdered(Instituicao.class)
 													   .withOrder("nome");
-		for (Faculdade obj : Repositorio.executeQuery(query)) {
+		for (Instituicao obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj, String.valueOf(obj.getNome())));
 		}
 		return lista;
 	}
 
-	public List<SelectItem> getListaCursoFaculdade() {
+	public List<SelectItem> getListaCursoInstituicao() {
 		List<SelectItem> lista = new ArrayList<SelectItem>();
-		QueryListResult<Cursofaculdade> query = QueryManager.FACULDADE.findCursoFaculdadeByFaculdade()
-												   .withFaculdade(this.getFaculdadeSelecionada());
-		for (Cursofaculdade obj : Repositorio.executeQuery(query)) {
+		QueryListResult<Cursoinstituicao> query = QueryManager.FACULDADE.findCursoInstituicaoByInstituicao()
+												   .withInstituicao(this.getInstituicaoSelecionada());
+		for (Cursoinstituicao obj : Repositorio.executeQuery(query)) {
 			lista.add(new SelectItem(obj, obj.getCurso().getDescricao()));
 		}
 		return lista;
@@ -355,7 +355,7 @@ public class PessoaController extends AbstractController<Pessoa> implements Seri
 
 	public void configMatricula() {
 		this.setMatriculaSelecionado(new Matricula());
-		this.faculdadeSelecionada = null;
+		this.instituicaoSelecionada = null;
 	}
 
 	public void addMatricula() {
@@ -375,7 +375,7 @@ public class PessoaController extends AbstractController<Pessoa> implements Seri
 			e.printStackTrace();
 		}
 		this.setMatriculaSelecionado(new Matricula());
-		this.setFaculdadeSelecionada(new Faculdade());
+		this.setInstituicaoSelecionada(new Instituicao());
 	}
 
 	public void removeMatricula() {

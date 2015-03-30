@@ -47,7 +47,7 @@
 							<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}"/>
 						</p:selectOneMenu>	
 						<h:outputLabel value="Bolsista: " />
-						<p:autoComplete value="#{lancamentosController.novoItem.matriculaperiodo}" converter="#{converterController.matriculaPeriodoConverter}"
+						<p:autoComplete value="#{lancamentosController.novoItem.ativobolsa}" converter="#{converterController.matriculaPeriodoConverter}"
 							var="o" itemLabel="#{o.matricula.pessoa.nome}" itemValue="#{o}" completeMethod="#{lancamentosController.completeMatricula}" size="60"
 							 minQueryLength="5" forceSelection="true" readonly="#{not empty lancamentosController.novoItem.id}" 
 							 required="true"
@@ -74,7 +74,7 @@
 						<p:inputText id="itValor" value="#{lancamentosController.boletoSelecionado.valor}"  converter="MoedaConverter" readonly="true"/>
 						
 						<h:outputLabel value="CR: " />
-						<p:inputText id="itCr" value="#{lancamentosController.novoItem.matriculaperiodo.cr}" readonly="true"/>
+						<p:inputText id="itCr" value="#{lancamentosController.novoItem.ativobolsa.cr}" readonly="true"/>
 					</h:panelGrid>	
 				</h:panelGrid>
 				
@@ -201,7 +201,7 @@
 					paginator="true" rows="10" paginatorAlwaysVisible="false" 
 					paginatorPosition="bottom">					
 					<p:column headerText="Nome" >
-						<h:outputText value="#{obj.matriculaperiodo.matricula.pessoa.nome}" /> 
+						<h:outputText value="#{obj.ativobolsa.matricula.pessoa.nome}" /> 
                 	</p:column>
                 	<p:column headerText="Valor depositado" >
 						<h:outputText value="#{obj.valor}" converter="MoedaConverter"/> 

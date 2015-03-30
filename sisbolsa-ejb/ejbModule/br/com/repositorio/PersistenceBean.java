@@ -3,18 +3,19 @@ package br.com.repositorio;
 import java.util.LinkedHashSet;
 
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import br.com.generic.AbstractEntityDomain;
 
-@Stateful
+@Stateless
 public class PersistenceBean<T extends AbstractEntityDomain> {
 
 	@PersistenceContext
-	private static EntityManager em;
+	private EntityManager em;
 	
-	public  synchronized EntityManager getEntityManager() {
+	public synchronized EntityManager getEntityManager() {
 		return em;
 	}
 	

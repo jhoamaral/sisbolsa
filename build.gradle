@@ -1,0 +1,20 @@
+apply plugin: 'ear'
+
+repositories {
+	maven{
+		url 'http://jasperreports.sourceforge.net/maven2/' 
+	} 
+    mavenCentral() 
+}
+
+
+dependencies {
+	deploy project(path: ':reporter-ejb')
+	deploy project(path: ':sisbolsa-ejb')
+	deploy project(path: ':sisbolsa-war', configuration: 'archives')
+}
+
+ear {
+    appDirName 'sisbolsa-ear/EarContent/'
+    libDirName 'sisbolsa-ear/EarContent/lib'
+}

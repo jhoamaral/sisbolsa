@@ -93,18 +93,18 @@
 	<p:dialog widgetVar="janelaMatricula" modal="true" resizable="false" header="Matricula" closable="false" width="800">
 		<h:form id="newMatricula">
 			<h:panelGrid id="matricula" columns="4">
-				<h:outputLabel value="Faculdade: " />
-				<p:selectOneMenu value="#{pessoaController.faculdadeSelecionada}" converter="#{converterController.faculdadeConverter}" required="true" requiredMessage="Selecione uma faculdade">
+				<h:outputLabel value="Instituicao: " />
+				<p:selectOneMenu value="#{pessoaController.instituicaoSelecionada}" converter="#{converterController.instituicaoConverter}" required="true" requiredMessage="Selecione uma instituicao">
 					<p:ajax event="change" process="@this" update="cbCurso" />
 					<f:selectItem itemLabel="Selecione..." />
-					<f:selectItems value="#{pessoaController.listaFaculdade}" />
+					<f:selectItems value="#{pessoaController.listaInstituicao}" />
 				</p:selectOneMenu>
 
 
 				<h:outputLabel value="Curso: " />
-				<p:selectOneMenu id="cbCurso" value="#{pessoaController.matriculaSelecionado.cursofaculdade}" converter="#{converterController.cursoFaculdadeConverter}" required="true" requiredMessage="Selecione um curso">
+				<p:selectOneMenu id="cbCurso" value="#{pessoaController.matriculaSelecionado.cursoinstituicao}" converter="#{converterController.cursoInstituicaoConverter}" required="true" requiredMessage="Selecione um curso">
 					<f:selectItem itemLabel="Selecione..." />
-					<f:selectItems value="#{pessoaController.listaCursoFaculdade}" />
+					<f:selectItems value="#{pessoaController.listaCursoInstituicao}" />
 				</p:selectOneMenu>
 
 				<h:outputLabel value="Matricula: " />
@@ -120,8 +120,8 @@
 				<h:outputLabel value="Admissão na Bolsa: " />
 				<p:inputMask value="#{pessoaController.matriculaSelecionado.dataIngresso}" mask="99/99/9999" size="6" converter="SqlDateTimeConverter" required="true" requiredMessage="Digite a Admissão na Bolsa" />
 
-				<h:outputLabel value="Ingresso na Faculdade: " />
-				<p:selectOneMenu value="#{pessoaController.matriculaSelecionado.periodoletivo}" converter="#{converterController.periodoLetivoConverter}" required="true" requiredMessage="Digite o Ingresso na Faculdade">
+				<h:outputLabel value="Ingresso na Instituicao: " />
+				<p:selectOneMenu value="#{pessoaController.matriculaSelecionado.periodoletivo}" converter="#{converterController.periodoLetivoConverter}" required="true" requiredMessage="Digite o Ingresso na Instituicao">
 					<f:selectItem itemLabel="Selecione..." />
 					<f:selectItems value="#{comboBoxController.listaPeriodoLetivo}" />
 				</p:selectOneMenu>
@@ -321,12 +321,12 @@
 						<p:commandButton value="" styleClass="newItemButton" process="@none" action="#{pessoaController.configMatricula()}" oncomplete="janelaMatricula.show()" update=":newMatricula" />
 						<p:outputPanel id="listaMatricula">
 							<p:dataTable var="obj" value="#{pessoaController.matriculasList}" rowKey="#{obj.id}" paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom">
-								<p:column headerText="Curso" sortBy="#{obj.cursofaculdade.curso.descricao}">
-								#{obj.cursofaculdade.curso.descricao}
+								<p:column headerText="Curso" sortBy="#{obj.cursoinstituicao.curso.descricao}">
+								#{obj.cursoinstituicao.curso.descricao}
                 			</p:column>
 
-								<p:column headerText="Faculdade" sortBy="#{obj.cursofaculdade.faculdade.nome}">
-								#{obj.cursofaculdade.faculdade.nome}
+								<p:column headerText="Instituicao" sortBy="#{obj.cursoinstituicao.instituicao.nome}">
+								#{obj.cursoinstituicao.instituicao.nome}
                 			</p:column>
 
 								<p:column headerText="Matricula" sortBy="#{obj.matricula}">
@@ -337,7 +337,7 @@
 									<h:outputText value="#{obj.dataIngresso}" converter="SqlDateTimeConverter" />
 								</p:column>
 
-								<p:column headerText="Ingresso na Faculdade">
+								<p:column headerText="Ingresso na Instituicao">
 								#{obj.periodoletivo.ano}/#{obj.periodoletivo.semestre}
                 			</p:column>
 

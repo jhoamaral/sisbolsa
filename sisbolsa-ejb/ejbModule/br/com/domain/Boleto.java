@@ -24,10 +24,9 @@ public class Boleto implements Serializable {
 
 	private BigDecimal valor;
 
-	//bi-directional many-to-one association to Matriculaperiodo
     @ManyToOne
-	@JoinColumn(name="matriculaperiodoid")
-	private Matriculaperiodo matriculaperiodo;
+	@JoinColumn(name="ativobolsaid")
+	private Ativobolsa ativobolsa;
 
     public Boleto() {
     }
@@ -56,12 +55,12 @@ public class Boleto implements Serializable {
 		this.valor = valor;
 	}
 
-	public Matriculaperiodo getMatriculaperiodo() {
-		return this.matriculaperiodo;
+	public Ativobolsa getAtivobolsa() {
+		return this.ativobolsa;
 	}
 
-	public void setMatriculaperiodo(Matriculaperiodo matriculaperiodo) {
-		this.matriculaperiodo = matriculaperiodo;
+	public void setAtivobolsa(Ativobolsa ativobolsa) {
+		this.ativobolsa = ativobolsa;
 	}
 	
 }

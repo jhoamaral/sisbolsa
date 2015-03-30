@@ -1,7 +1,7 @@
 package br.com.repositorio.querybuilder.query.boleto;
 
 import br.com.domain.Boleto;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.repositorio.querybuilder.query.QuerySingleResult;
 
 
@@ -9,7 +9,7 @@ public class FindUltimoBoleto  extends QuerySingleResult<Boleto>{
 	
 	
 	private static final String QUERY = "Select o from Boleto o " +
-										"where matriculaperiodo = '${1}' " +
+										"where ativobolsa = '${1}' " +
 										"order by data desc";
 	
 	@Override
@@ -23,8 +23,8 @@ public class FindUltimoBoleto  extends QuerySingleResult<Boleto>{
 		return result;
 	}
 	
-	public FindUltimoBoleto withMatriculaperiodo(Matriculaperiodo matricula){
-		this.setParamters(1, matricula);
+	public FindUltimoBoleto withAtivobolsa(Ativobolsa ativobolsa){
+		this.setParamters(1, ativobolsa);
 		return this;
 	}
 

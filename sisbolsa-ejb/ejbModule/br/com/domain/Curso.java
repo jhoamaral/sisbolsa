@@ -24,9 +24,9 @@ public class Curso implements Serializable {
 
 	private String descricao;
 
-	//bi-directional many-to-one association to Cursofaculdade
+	//bi-directional many-to-one association to Cursoinstituicao
 	@OneToMany(mappedBy="curso",fetch=FetchType.LAZY)
-	private Set<Cursofaculdade> cursofaculdades;
+	private Set<Cursoinstituicao> cursoinstituicaos;
 
     public Curso() {
     }
@@ -47,12 +47,12 @@ public class Curso implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Set<Cursofaculdade> getCursofaculdades() {
-		return this.cursofaculdades;
+	public Set<Cursoinstituicao> getCursoinstituicaos() {
+		return this.cursoinstituicaos;
 	}
 
-	public void setCursofaculdades(Set<Cursofaculdade> cursofaculdades) {
-		this.cursofaculdades = cursofaculdades;
+	public void setCursoinstituicaos(Set<Cursoinstituicao> cursoinstituicaos) {
+		this.cursoinstituicaos = cursoinstituicaos;
 	}
 	
 }

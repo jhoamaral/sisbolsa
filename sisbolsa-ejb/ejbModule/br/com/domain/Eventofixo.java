@@ -34,10 +34,9 @@ public class Eventofixo implements Serializable {
 	@JoinColumn(name="eventoid")
 	private Evento evento;
 
-	//bi-directional many-to-one association to Matriculaperiodo
     @ManyToOne
-	@JoinColumn(name="matriculaperiodoid")
-	private Matriculaperiodo matriculaperiodo;
+	@JoinColumn(name="ativobolsaid")
+	private Ativobolsa ativobolsa;
 
     public Eventofixo() {
     }
@@ -90,12 +89,12 @@ public class Eventofixo implements Serializable {
 		this.evento = evento;
 	}
 	
-	public Matriculaperiodo getMatriculaperiodo() {
-		return this.matriculaperiodo;
+	public Ativobolsa getAtivobolsao() {
+		return this.ativobolsa;
 	}
 
-	public void setMatriculaperiodo(Matriculaperiodo matriculaperiodo) {
-		this.matriculaperiodo = matriculaperiodo;
+	public void setAtivobolsa(Ativobolsa ativobolsa) {
+		this.ativobolsa = ativobolsa;
 	}
 	
 }

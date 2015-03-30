@@ -4,7 +4,7 @@ import br.com.domain.Boleto;
 import br.com.domain.Endereco;
 import br.com.domain.Evento;
 import br.com.domain.Historicovalor;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.domain.Pessoa;
 import br.com.domain.Telefone;
 import br.com.repositorio.Repositorio;
@@ -12,6 +12,7 @@ import br.com.repositorio.exceptions.NoRecordFoundException;
 import br.com.repositorio.querybuilder.QueryManager;
 import br.com.repositorio.querybuilder.query.QueryListResult;
 import br.com.repositorio.querybuilder.query.QuerySingleResult;
+
 
 public aspect InnerType {
 
@@ -57,11 +58,11 @@ public aspect InnerType {
 		return retorno;
 	}
 	
-	public Boleto Matriculaperiodo.getUltimoBoleto(){
+	public Boleto Ativobolsa.getUltimoBoleto(){
 		Boleto boleto = new Boleto();
 		try {
 			QuerySingleResult<Boleto> query = QueryManager.BOLETO.findUltimoBoleto()
-					  									  .withMatriculaperiodo(this);
+					  									  .withAtivobolsa(this);
 			boleto = Repositorio.executeQuery(query);	
 		} catch (Exception e) {}
 		return boleto;

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="63320559-db09-4fb4-857a-6565e25c9ddb">
+	<property name="ireport.zoom" value="1.0263162364614133"/>
+	<property name="ireport.x" value="22"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="numCI" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cpf" class="java.lang.String">
+		<fieldDescription><![CDATA[cpf]]></fieldDescription>
+	</field>
+	<field name="curso" class="java.lang.String">
+		<fieldDescription><![CDATA[curso]]></fieldDescription>
+	</field>
+	<field name="dataConcessao" class="java.lang.String">
+		<fieldDescription><![CDATA[dataConcessao]]></fieldDescription>
+	</field>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[instituicao]]></fieldDescription>
+	</field>
+	<field name="mes" class="java.lang.String">
+		<fieldDescription><![CDATA[mes]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.String">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="dataDeposito" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="262" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="83" width="660" height="42" uuid="22ef8a17-289c-4807-badb-f00d69b27fac"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="20" uuid="99d16e3e-bbd8-491d-a268-ae4af1535392"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORMULÁRIO DE AUDITORIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="802" height="20" uuid="a4de78fc-1224-469c-94e4-e6bc5a9e3599"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FRM.SUM.02.001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="802" height="20" uuid="9473e182-038a-4239-91a0-7fada96fac21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Edição: 01| 20.03.14]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="84" width="99" height="16" uuid="d9b2e1b6-49da-42f7-bcb7-76fdaa19504a"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[JURISDICIONADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="612" y="84" width="47" height="16" uuid="203ddeb2-c073-47db-8f1a-e345ea473b74"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[N. FISC.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="613" y="109" width="47" height="16" uuid="b1f7b8a3-106b-4b09-91ca-5513aff85cab"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[___/___]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="660" y="83" width="142" height="42" uuid="54c1d736-0fa4-4d2e-a748-a0589df67aa2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="662" y="84" width="47" height="16" uuid="25fa1380-1d41-41e1-be1a-08dd247b9160"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DATA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="109" width="47" height="16" uuid="a7abccd4-752f-4153-ade9-e9844873f137"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[__.__.__]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="139" width="802" height="40" uuid="6043422d-d701-40f8-9df5-7352e95b482c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="140" width="137" height="20" uuid="ef6669e0-3165-4ee3-af18-509697f1110c"/>
+				<text><![CDATA[OBJETO DA AUDITORIA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="159" width="745" height="20" uuid="c256624c-98c2-4875-b968-74abd4a3194f"/>
+				<text><![CDATA[Verificar a regularidade da concessão de bolsas de estudo aos munícipes, do ato administrativ utilizado para formalizar esta intenção com as instituições]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="197" width="802" height="20" uuid="f5abbd71-a688-4f9e-bd0c-e82075040a00"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. relação dos beneficiários de bolsas de studos nos exercícios de 2010 a 2013 e os pagamentos efetuados:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="39" width="802" height="1" uuid="710dc315-6a10-4f9d-a591-53705e5f1f0c"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="802" height="1" uuid="08900dda-eb7e-4f53-9ced-58d1d9290c8b"/>
+			</line>
+			<staticText>
+				<reportElement style="table_TH" x="207" y="234" width="52" height="28" uuid="640b586b-ed1b-4d96-8c95-5b9200c633fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Processo de concessão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="537" y="234" width="100" height="28" uuid="ca0ec0df-3ec3-4663-9793-fc32dd4d324b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Curso frequentado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="259" y="234" width="48" height="28" uuid="70e2276c-5ec3-4cee-948b-db89755f1d30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data da concessão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="307" y="234" width="74" height="28" uuid="149ceb52-9034-488f-a445-7d150caf0ac0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fundamento normativo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="0" y="234" width="137" height="28" uuid="d555d7b1-8411-41a8-a403-ed5783d0c751"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Nome do beficiário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="637" y="234" width="56" height="28" uuid="c01ee8ed-d7c5-40e0-a084-72637b5b8981"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Data do Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="381" y="234" width="156" height="28" uuid="29993155-9007-47d5-9f4d-73af3830c4a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Instituição de ensino]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="693" y="234" width="52" height="28" uuid="f6c7d5d7-d70e-4839-aec1-75bddcc5f729"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Mês de competência]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="137" y="234" width="70" height="28" uuid="00db95b1-34f0-4df7-9b75-d0d5f8f743a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="745" y="234" width="57" height="28" uuid="8e69971d-e2f4-4c18-b306-074fb5fe6cf2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor do pagamento]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<staticText>
+				<reportElement style="table_TH" x="0" y="0" width="137" height="28" uuid="0646b1e0-80ff-4bdf-8c1c-e3adab459798"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Nome do beficiário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="137" y="0" width="70" height="28" uuid="2da40668-38eb-4246-b6b8-52f2022e4fea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="207" y="0" width="52" height="28" uuid="d17b3851-e704-4a77-be33-2ca169a6433b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Processo de concessão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="259" y="0" width="48" height="28" uuid="c486417d-e47f-4972-ad69-760fe1a34f65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data da concessão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="307" y="0" width="74" height="28" uuid="a0b9b2fe-01e5-4529-89e8-d501fcdc369e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fundamento normativo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="381" y="0" width="156" height="28" uuid="c2e2c192-f526-4acf-867d-3322f26ab550"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Instituição de ensino]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="537" y="0" width="100" height="28" uuid="cf1107ab-ba48-45fd-a6cc-3d0962896c21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Curso frequentado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="637" y="0" width="56" height="28" uuid="5ae9f677-dfdf-4a4e-87e3-1571dc3125e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Data do Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="693" y="0" width="52" height="28" uuid="afb36809-50ab-4d40-9b80-6b2c6b40eddf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Mês de competência]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="745" y="0" width="57" height="28" uuid="4f0c70e9-f960-4b7a-94eb-17fdd9980aab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor do pagamento]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<elementGroup/>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="137" y="0" width="70" height="15" uuid="c273a1b6-268c-4517-b6a1-63366a251097"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="0" y="0" width="137" height="15" uuid="38742829-4294-4331-8b73-4ad181b31df6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="259" y="0" width="48" height="15" uuid="b89418d1-1dbb-4945-8d7c-22f4bd187c6b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataConcessao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="381" y="0" width="156" height="15" uuid="4e0bc7b3-245d-4943-89f8-41f17cc65373"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instituicao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="537" y="0" width="100" height="15" uuid="dd412021-80f6-4e99-b39b-2ddc0fa062dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="693" y="0" width="52" height="15" uuid="8310ed29-2b55-4d09-8468-3d28c26dfe86"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="745" y="0" width="57" height="15" uuid="1b56af2c-cf13-49cb-890b-c0f16724188a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="207" y="0" width="52" height="15" uuid="1017a29e-1629-4a9b-8f1d-4dc72f7a9b1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INSCRIÇÃO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="307" y="0" width="74" height="15" uuid="08eebe72-7f89-4460-bfd9-614651de575d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lei 078/2007"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="637" y="0" width="56" height="15" uuid="78cbb350-b8f3-418d-9750-3171995b0bc4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataDeposito}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="23" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

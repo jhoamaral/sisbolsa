@@ -1,32 +1,33 @@
 package br.com.repositorio.querybuilder;
 
+import br.com.repositorio.querybuilder.query.boleto.FindBoletoByAtivobolsa;
 import br.com.repositorio.querybuilder.query.boleto.FindBoletoByData;
-import br.com.repositorio.querybuilder.query.boleto.FindBoletoByMatriculaperiodo;
 import br.com.repositorio.querybuilder.query.boleto.FindUltimoBoleto;
-import br.com.repositorio.querybuilder.query.bolsista.FindMatriculaLikeCursoLikeFaculdadeLikePeriodo;
+import br.com.repositorio.querybuilder.query.bolsista.FindMatriculaLikeCursoLikeInstituicaoLikePeriodo;
 import br.com.repositorio.querybuilder.query.bolsista.FindUltimoSocioEconomico;
-import br.com.repositorio.querybuilder.query.curso.FindCursoLikeFaculdade;
+import br.com.repositorio.querybuilder.query.curso.FindCursoLikeInstituicao;
 import br.com.repositorio.querybuilder.query.evento.FindEventoCalculadoByItem;
 import br.com.repositorio.querybuilder.query.evento.FindHistoricoValorByEvento;
 import br.com.repositorio.querybuilder.query.evento.FindUltimoHistoricoValor;
-import br.com.repositorio.querybuilder.query.faculdade.FindCursoFaculdadeByFaculdade;
+import br.com.repositorio.querybuilder.query.faculdade.FindCursoInstituicaoByInstituicao;
+import br.com.repositorio.querybuilder.query.folha.FindAtivobolsaByPeriodoLetivoOrderedByCurso;
+import br.com.repositorio.querybuilder.query.folha.FindAtivobolsaNotInFolha;
 import br.com.repositorio.querybuilder.query.folha.FindFolhasAbertas;
-import br.com.repositorio.querybuilder.query.folha.FindMatriculaPeriodoByPeriodoLetivoOrderedByCurso;
-import br.com.repositorio.querybuilder.query.folha.FindMatriculaperiodoNotInFolha;
 import br.com.repositorio.querybuilder.query.generic.AllObjects;
 import br.com.repositorio.querybuilder.query.generic.AllObjectsOrdered;
 import br.com.repositorio.querybuilder.query.generic.FindById;
+import br.com.repositorio.querybuilder.query.item.FindItemByAno;
+import br.com.repositorio.querybuilder.query.item.FindItemByAtivobolsa;
+import br.com.repositorio.querybuilder.query.item.FindItemByAtivobolsaAndFolha;
 import br.com.repositorio.querybuilder.query.item.FindItemByFolha;
-import br.com.repositorio.querybuilder.query.item.FindItemByMatriculaperiodo;
-import br.com.repositorio.querybuilder.query.item.FindItemByMatriculaperiodoAndFolha;
 import br.com.repositorio.querybuilder.query.item.FindItensWithCollectionsByFolha;
 import br.com.repositorio.querybuilder.query.menu.MenusFilhos;
 import br.com.repositorio.querybuilder.query.menu.MenusPrincipais;
 import br.com.repositorio.querybuilder.query.periodoletivo.FindByAnoSemestre;
+import br.com.repositorio.querybuilder.query.pessoa.FindAtivobolsaByPeriodoLetivo;
+import br.com.repositorio.querybuilder.query.pessoa.FindAtivobolsaWithCollections;
 import br.com.repositorio.querybuilder.query.pessoa.FindEnderecosByPessoa;
 import br.com.repositorio.querybuilder.query.pessoa.FindFamiliaresByPessoa;
-import br.com.repositorio.querybuilder.query.pessoa.FindMatriculaPeriodoByPeriodoLetivo;
-import br.com.repositorio.querybuilder.query.pessoa.FindMatriculaPeriodoWithCollections;
 import br.com.repositorio.querybuilder.query.pessoa.FindMatriculasByPessoa;
 import br.com.repositorio.querybuilder.query.pessoa.FindPessoaBensByPessoa;
 import br.com.repositorio.querybuilder.query.pessoa.FindPrimeiroEndereco;
@@ -89,12 +90,12 @@ public abstract class QueryManager {
 			return new FindFamiliaresByPessoa();
 		}
 		
-		public static FindMatriculaPeriodoWithCollections findMatriculaPeriodoWithCollections() {
-			return new FindMatriculaPeriodoWithCollections();
+		public static FindAtivobolsaWithCollections findMatriculaPeriodoWithCollections() {
+			return new FindAtivobolsaWithCollections();
 		}
 		
-		public static FindMatriculaPeriodoByPeriodoLetivo findMatriculaPeriodoByPeriodoLetivo() {
-			return new FindMatriculaPeriodoByPeriodoLetivo();
+		public static FindAtivobolsaByPeriodoLetivo findMatriculaPeriodoByPeriodoLetivo() {
+			return new FindAtivobolsaByPeriodoLetivo();
 		}
 	}
 
@@ -145,8 +146,8 @@ public abstract class QueryManager {
 			return new FindUltimoSocioEconomico();
 		}
 		
-		public static FindMatriculaLikeCursoLikeFaculdadeLikePeriodo findMatriculaLikeCursoLikeFaculdadeLikePeriodo() {
-			return new FindMatriculaLikeCursoLikeFaculdadeLikePeriodo();
+		public static FindMatriculaLikeCursoLikeInstituicaoLikePeriodo findMatriculaLikeCursoLikeInstituicaoLikePeriodo() {
+			return new FindMatriculaLikeCursoLikeInstituicaoLikePeriodo();
 		}
 	}
 	// ============================
@@ -161,8 +162,8 @@ public abstract class QueryManager {
 			return new FindBoletoByData();
 		}
 
-		public static FindBoletoByMatriculaperiodo findBoletoByMatriculaperiodo() {
-			return new FindBoletoByMatriculaperiodo();
+		public static FindBoletoByAtivobolsa findBoletoByAtivobolsa() {
+			return new FindBoletoByAtivobolsa();
 		}
 	}
 
@@ -170,8 +171,8 @@ public abstract class QueryManager {
 	// FACULDADE
 	// ============================
 	public static class FACULDADE {
-		public static FindCursoFaculdadeByFaculdade findCursoFaculdadeByFaculdade() {
-			return new FindCursoFaculdadeByFaculdade();
+		public static FindCursoInstituicaoByInstituicao findCursoInstituicaoByInstituicao() {
+			return new FindCursoInstituicaoByInstituicao();
 		}
 	}
 	
@@ -179,8 +180,8 @@ public abstract class QueryManager {
 	// FACULDADE
 	// ============================
 	public static class CURSO {
-		public static FindCursoLikeFaculdade findCursoLikeFaculdade() {
-			return new FindCursoLikeFaculdade();
+		public static FindCursoLikeInstituicao findCursoLikeInstituicao() {
+			return new FindCursoLikeInstituicao();
 		}
 	}
 
@@ -188,16 +189,20 @@ public abstract class QueryManager {
 	// ITEM
 	// ============================
 	public static class ITEM {
-		public static FindItemByMatriculaperiodo findItemByMatriculaperiodo() {
-			return new FindItemByMatriculaperiodo();
+		public static FindItemByAtivobolsa findItemByAtivobolsa() {
+			return new FindItemByAtivobolsa();
 		}
 		
 		public static FindItemByFolha findItemByFolha() {
 			return new FindItemByFolha();
 		}
 		
-		public static FindItemByMatriculaperiodoAndFolha findItemByMatriculaperiodoAndFolha() {
-			return new FindItemByMatriculaperiodoAndFolha();
+		public static FindItemByAtivobolsaAndFolha findItemByAtivobolsaAndFolha() {
+			return new FindItemByAtivobolsaAndFolha();
+		}
+		
+		public static FindItemByAno findItemByAno() {
+			return new FindItemByAno();
 		}
 	}
 	
@@ -213,12 +218,12 @@ public abstract class QueryManager {
 			return new FindItensWithCollectionsByFolha();
 		}
 		
-		public static FindMatriculaperiodoNotInFolha findMatriculaperiodoNotInFolha() {
-			return new FindMatriculaperiodoNotInFolha();
+		public static FindAtivobolsaNotInFolha findAtivobolsaNotInFolha() {
+			return new FindAtivobolsaNotInFolha();
 		}
 		
-		public static FindMatriculaPeriodoByPeriodoLetivoOrderedByCurso findMatriculaPeriodoByPeriodoLetivoOrderedByCurso() {
-			return new FindMatriculaPeriodoByPeriodoLetivoOrderedByCurso();
+		public static FindAtivobolsaByPeriodoLetivoOrderedByCurso findMatriculaPeriodoByPeriodoLetivoOrderedByCurso() {
+			return new FindAtivobolsaByPeriodoLetivoOrderedByCurso();
 		}
 	}
 

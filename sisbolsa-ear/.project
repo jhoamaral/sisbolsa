@@ -3,9 +3,9 @@
 	<name>sisbolsa-ear</name>
 	<comment></comment>
 	<projects>
-		<project>sisbolsa-ejb</project>
-		<project>sisbolsa-war</project>
 		<project>reporter-ejb</project>
+		<project>sisbolsa-ejb</project>
+		<project>sisbolsa-web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

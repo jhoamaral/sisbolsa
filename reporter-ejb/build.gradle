@@ -1,0 +1,44 @@
+apply plugin: 'java'
+
+configurations {
+  compile.extendsFrom releaseJar
+}
+
+repositories {
+	maven{
+		url 'http://jasperreports.sourceforge.net/maven2/' 
+	} 
+    mavenCentral() 
+}
+
+sourceSets {
+    main {
+        java{
+        	srcDirs = ["ejbModule"]
+        }
+        resources {
+            srcDir 'ejbModule'
+            include '**/*.jasper'
+            include '**/*.png'
+        }
+    }
+}
+
+
+
+dependencies {	
+	// provided 'org.wildfly:wildfly-ejb3:8.1.0.Final
+    compile  "org.hibernate:hibernate-core:4+"
+    compile  "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1+"
+    compile  "javax.validation:validation-api:1+"
+    compile  "org.jboss.spec.javax.ejb:jboss-ejb-api_3.1_spec:1+"
+    releaseJar  "net.sf.jasperreports:jasperreports:5.5.1"
+
+}
+
+
+jar {
+    into('lib') {
+        from configurations.releaseJar
+    }
+}

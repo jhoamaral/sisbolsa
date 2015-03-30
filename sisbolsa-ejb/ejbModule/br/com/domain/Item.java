@@ -38,10 +38,9 @@ public class Item implements Serializable {
 	@JoinColumn(name="folhaid")
 	private Folha folha;
 
-	//bi-directional many-to-one association to Matriculaperiodo
     @ManyToOne
-	@JoinColumn(name="matriculaperiodoid")
-	private Matriculaperiodo matriculaperiodo;
+	@JoinColumn(name="ativobolsaid")
+	private Ativobolsa ativobolsa;
 
     public Item() {
     	this.eventocauculados = new HashSet<Eventocauculado>();
@@ -79,13 +78,14 @@ public class Item implements Serializable {
 	public void setFolha(Folha folha) {
 		this.folha = folha;
 	}
-	
-	public Matriculaperiodo getMatriculaperiodo() {
-		return this.matriculaperiodo;
+
+	public Ativobolsa getAtivobolsa() {
+		return ativobolsa;
 	}
 
-	public void setMatriculaperiodo(Matriculaperiodo matriculaperiodo) {
-		this.matriculaperiodo = matriculaperiodo;
+	public void setAtivobolsa(Ativobolsa ativobolsa) {
+		this.ativobolsa = ativobolsa;
 	}
 	
+
 }

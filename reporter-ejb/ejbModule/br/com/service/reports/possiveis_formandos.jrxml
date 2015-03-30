@@ -35,10 +35,10 @@
 		<fieldDescription><![CDATA[pessoa.email]]></fieldDescription>
 	</field>
 	<field name="curso" class="java.lang.String">
-		<fieldDescription><![CDATA[cursofaculdade.curso.descricao]]></fieldDescription>
+		<fieldDescription><![CDATA[cursoinstituicao.curso.descricao]]></fieldDescription>
 	</field>
-	<field name="faculdade" class="java.lang.String">
-		<fieldDescription><![CDATA[cursofaculdade.faculdade.sigla]]></fieldDescription>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[cursoinstituicao.instituicao.sigla]]></fieldDescription>
 	</field>
 	<field name="allTelefones" class="java.lang.String">
 		<fieldDescription><![CDATA[pessoa.allTelefones]]></fieldDescription>
@@ -52,14 +52,14 @@
 	<field name="duracaoCurso" class="java.lang.Integer">
 		<fieldDescription><![CDATA[duracaoCurso]]></fieldDescription>
 	</field>
-	<variable name="totalFaculdade" class="java.lang.Integer" resetType="Group" resetGroup="faculdade" calculation="Count">
+	<variable name="totalInstituicao" class="java.lang.Integer" resetType="Group" resetGroup="instituicao" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<variable name="totalRelatorio" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
-	<group name="faculdade">
-		<groupExpression><![CDATA[$F{faculdade}]]></groupExpression>
+	<group name="instituicao">
+		<groupExpression><![CDATA[$F{instituicao}]]></groupExpression>
 		<groupHeader>
 			<band height="72">
 				<textField>
@@ -67,7 +67,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{faculdade}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{instituicao}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="11" y="52" width="235" height="20"/>
@@ -106,7 +106,7 @@
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Total da "+$F{faculdade}+": "+$V{totalFaculdade}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total da "+$F{instituicao}+": "+$V{totalInstituicao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>

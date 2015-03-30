@@ -10,7 +10,7 @@ public class FindItemByFolha  extends QueryListResult<Item>{
 	
 	private static final String QUERY = "Select o from Item o " +
 										"where folha = '${1}' " +
-										"order by matriculaperiodo.matricula.pessoa.nome";
+										"order by ativobolsa.matricula.pessoa.nome";
 	
 	@Override
 	protected void setType() {

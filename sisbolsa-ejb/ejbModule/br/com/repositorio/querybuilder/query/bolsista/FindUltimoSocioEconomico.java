@@ -9,7 +9,7 @@ public class FindUltimoSocioEconomico  extends QuerySingleResult<Socioeconeomico
 	
 	
 	private static final String QUERY = "Select o from Socioeconeomico o " +
-										"INNER JOIN o.matriculaperiodo b " +
+										"INNER JOIN o.ativobolsa b " +
 										"INNER JOIN b.matricula c "+
 										"where c = '${1}'";
 	

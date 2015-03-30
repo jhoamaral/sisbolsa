@@ -13,7 +13,7 @@ import org.primefaces.model.DefaultStreamedContent;
 
 import br.com.domain.Folha;
 import br.com.domain.Item;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.dto.ItemFolhaDTO;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.querybuilder.QueryManager;
@@ -70,7 +70,7 @@ public class relatoriosController  implements Serializable{
 	
 	public DefaultStreamedContent imprimirRecibo(){
 		FacesContext contexto = FacesContext.getCurrentInstance();
-		QueryListResult<Matriculaperiodo> query = QueryManager.FOLHA.findMatriculaPeriodoByPeriodoLetivoOrderedByCurso()
+		QueryListResult<Ativobolsa> query = QueryManager.FOLHA.findMatriculaPeriodoByPeriodoLetivoOrderedByCurso()
 															  .withPeriodoLetivo(this.folhaSelecionado.getPeriodoletivo());
 		
 		Map<String,Object> params = new HashMap<String, Object>();
@@ -86,7 +86,7 @@ public class relatoriosController  implements Serializable{
 	}
 	
 	public DefaultStreamedContent imprimirConferenciaFolha(){
-		QueryListResult<Matriculaperiodo> query = QueryManager.FOLHA.findMatriculaperiodoNotInFolha()
+		QueryListResult<Ativobolsa> query = QueryManager.FOLHA.findAtivobolsaNotInFolha()
 															  .withFolha(this.folhaSelecionado);
 		
 		Map<String,Object> params = new HashMap<String, Object>();

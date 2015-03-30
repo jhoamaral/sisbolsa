@@ -11,7 +11,7 @@ import net.sf.jasperreports.engine.JasperRunManager;
 public class PdfGenerator implements Generator{
 
 	@Override
-	public void gerar(InputStream inputStream,OutputStream outputStream, Map<?,?> parameters, JRDataSource jrDataSource) throws JRException {
+	public void gerar(InputStream inputStream,OutputStream outputStream, Map<String,Object> parameters, JRDataSource jrDataSource) throws JRException {
 		JasperRunManager.runReportToPdfStream(inputStream, outputStream, parameters, jrDataSource);
 	}
 

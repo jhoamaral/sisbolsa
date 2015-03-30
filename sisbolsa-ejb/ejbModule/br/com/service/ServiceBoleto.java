@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import br.com.domain.Boleto;
 import br.com.domain.Evento;
 import br.com.domain.Historicovalor;
-import br.com.domain.Matriculaperiodo;
+import br.com.domain.Ativobolsa;
 import br.com.repositorio.Repositorio;
 import br.com.repositorio.exceptions.NoRecordFoundException;
 import br.com.repositorio.querybuilder.QueryManager;
@@ -22,9 +22,9 @@ public class ServiceBoleto {
 	@EJB
 	private ServiceEvento serviceEvento;
 	
-	public Boleto getUltimoBoleto(Matriculaperiodo matricula) throws NoRecordFoundException{
+	public Boleto getUltimoBoleto(Ativobolsa matricula) throws NoRecordFoundException{
 		QuerySingleResult<Boleto> query = QueryManager.BOLETO.findUltimoBoleto()
-													  .withMatriculaperiodo(matricula);
+													  .withAtivobolsa(matricula);
 		return Repositorio.executeQuery(query);	
 	}
 	
@@ -51,7 +51,7 @@ public class ServiceBoleto {
 		}
 		
 		QuerySingleResult<Boleto> query = QueryManager.BOLETO.findBoletoByData()
-													  .withMatriculaperiodo(boleto.getMatriculaperiodo())
+													  .withAtivobolsa(boleto.getAtivobolsa())
 													  .withData(calendario.getTime());
 		
 		return Repositorio.executeQuery(query);	
